@@ -9,13 +9,37 @@ import Form from 'react-bootstrap/Form';
 import Navbar from 'react-bootstrap/Navbar';
 
 class NavigationBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toggleGlass: false
+    };
+    this.revealSearch = this.revealSearch.bind(this);
+  }
+
+  revealSearch() {
+    if (this.state.toggleGlass) {
+      this.setState({ toggleGlass: false });
+    } else {
+      this.setState({ toggleGlass: true });
+    }
+  }
+
   render() {
+
     const expand = 'lg';
+    let iconClass = 'fa-magnifying-glass';
+    let buttonClass = 'search-hide';
+    if (this.state.toggleGlass) {
+      iconClass = 'fa-xmark';
+      buttonClass = 'd-flex';
+    }
     return (
       <Navbar variant="dark" expand={expand} className="mb-3 search-green">
-        <Container fluid>
+        <Container fluid className="flex-nowrap">
           <Navbar.Brand className="text-white"href="#home">Parks</Navbar.Brand>
-          <Form className="d-flex">
+
+          <Form className={buttonClass}>
             <Form.Control
               type="search"
               placeholder="Search"
@@ -24,6 +48,11 @@ class NavigationBar extends React.Component {
             />
             <Button variant="outline-light">Search</Button>
           </Form>
+          <button className='navbar-toggler' onClick={this.revealSearch}>
+            <span>
+              <i className={`fa-solid ${iconClass}`} />
+            </span>
+          </button>
         </Container>
       </Navbar>
     );

@@ -13,3 +13,17 @@ html {
 .no-outline {
   border: none;
 }
+
+.inline {
+  display: inline;
+}
+
+.search-hide {
+  display: none;
+}
+
+@media screen and (min-width: 992px) {
+  .search-hide {
+    display: flex;
+  }
+}
