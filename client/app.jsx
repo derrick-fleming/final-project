@@ -37,22 +37,24 @@ class NavigationBar extends React.Component {
     return (
       <Navbar variant="dark" expand={expand} className="mb-3 search-green">
         <Container fluid className="flex-nowrap">
-          <Navbar.Brand className="text-white"href="#home">Parks</Navbar.Brand>
+          <a className="text-white nav-title"href="#home">Parks</a>
+          <div className='d-flex'>
+            <Form className={buttonClass}>
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+              />
+              <Button variant="outline-light">Search</Button>
+            </Form>
+            <button className='navbar-toggler no-outline text-white' onClick={this.revealSearch}>
+              <span>
+                <i className={`fa-solid ${iconClass}`} />
+              </span>
+            </button>
+          </div>
 
-          <Form className={buttonClass}>
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="outline-light">Search</Button>
-          </Form>
-          <button className='navbar-toggler' onClick={this.revealSearch}>
-            <span>
-              <i className={`fa-solid ${iconClass}`} />
-            </span>
-          </button>
         </Container>
       </Navbar>
     );

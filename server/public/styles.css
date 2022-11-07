@@ -1,21 +1,21 @@
-html {
+html,
+#root {
   background-color: #faf4e2;
+}
+
+.nav-title {
+  font-family: "Grand Hotel", sans-serif;
+  font-size: 32px;
+  text-decoration: none;
+  padding-right: 2rem;
 }
 
 .search-green {
   background-color: #779f7d;
 }
 
-#root {
-  background-color: #faf4e2;
-}
-
 .no-outline {
   border: none;
-}
-
-.inline {
-  display: inline;
 }
 
 .search-hide {
