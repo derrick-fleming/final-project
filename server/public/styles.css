@@ -9,3 +9,7 @@ html {
 #root {
   background-color: #faf4e2;
 }
+
+.no-outline {
+  border: none;
+}
