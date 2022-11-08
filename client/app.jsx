@@ -1,7 +1,7 @@
 import React from 'react';
 import parseRoute from './lib/parse-route';
 import SearchResults from './pages/searchResults';
-import SearchBar from './components/searchBar';
+import Home from './pages/home';
 import NavigationBar from './components/navigationBar';
 
 export default class App extends React.Component {
@@ -31,12 +31,10 @@ export default class App extends React.Component {
       );
     }
     return (
-      <AppContext.Provider value={this.state.route}>
+      <>
         <NavigationBar />
-        <SearchBar />
-      </ AppContext.Provider>
+        <Home />
+      </>
     );
   }
 }
-
-const AppContext = React.createContext();

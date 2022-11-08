@@ -58,9 +58,9 @@ export default class NavigationBar extends React.Component {
                 aria-label="Search"
                 onChange={this.handleChange}
               />
-              <Button variant="outline-light" onClick={this.handleSubmit}>Search</Button>
+              <Button variant="outline-light" onClick={this.handleSubmit} className='nav-search open-sans'>Search</Button>
             </Form>
-            <button className='navbar-toggler no-outline text-white' onClick={this.revealSearch}>
+            <button className='navbar-toggler border-0 text-white open-sans' onClick={this.revealSearch}>
               <span>
                 <i className={`fa-solid ${iconClass}`} />
               </span>
