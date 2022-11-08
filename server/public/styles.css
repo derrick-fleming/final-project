@@ -57,8 +57,14 @@ html,
   .search-hide {
     display: flex;
   }
+}
+
+@media screen and (min-width: 992px) {
+  .image-size {
+    height: 261px;
+  }
 
   .card-width {
-    width: 21.875rem;
+    width: 26.188rem;
   }
 }

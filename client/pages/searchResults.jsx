@@ -80,7 +80,7 @@ export default class SearchResult extends React.Component {
         <NavigationBar />
         <SearchBar />
         <Container fluid='xl' className='p-4'>
-          <Row>
+          <Row className='pb-4'>
             <h3 className='merriweather'>
               {results} search results found.
             </h3>
@@ -93,17 +93,17 @@ export default class SearchResult extends React.Component {
                   return (
                     <Col key={name} md={6} className='mt-2 mb-2'>
                       <Row className='d-flex justify-content-center'>
-                        <Card key={name} style={{ width: '21.875rem' }} className='p-0 open-sans card-width'>
+                        <Card key={name} className='p-0 open-sans card-width mb-4 shadow-sm'>
                           <Card.Img variant="top" src={wikiImage} alt={name} className='image-size'/>
                           <Card.Body>
-                            <Card.Text className='m-0'>
+                            <Card.Text className='m-0 lh-lg'>
                               {designation}
                             </Card.Text>
-                            <Card.Title className='merriweather m-0 fw-Semibold'>{name}</Card.Title>
-                            <Card.Text className='m-0 fst-italic fw-light'>
+                            <Card.Title className='m-0 merriweather fw-Semibold'>{name}</Card.Title>
+                            <Card.Text className='m-0 fst-italic fw-light lh-lg'>
                               {activityList}
                             </Card.Text>
-                            <Card.Text className='gold fw-bold'>
+                            <Card.Text className='m-0 gold fw-bold pb-2'>
                               {address}
                             </Card.Text>
                           </Card.Body>
