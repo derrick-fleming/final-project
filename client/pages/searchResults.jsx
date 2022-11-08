@@ -1,6 +1,5 @@
 import React from 'react';
 import SearchBar from '../components/searchBar';
-import NavigationBar from '../components/navigationBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
@@ -91,7 +90,6 @@ export default class SearchResult extends React.Component {
     });
     return (
       <>
-        <NavigationBar />
         <SearchBar />
         <Container fluid='xl' className='p-4'>
           <Row className='pb-4'>

@@ -11,6 +11,21 @@ export default class NavigationBar extends React.Component {
       toggleGlass: false
     };
     this.revealSearch = this.revealSearch.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const userInputValue = this.state.search;
+    if (userInputValue !== '') {
+      window.location.hash = 'search-results?search=' + userInputValue;
+    }
+  }
+
+  handleChange(event) {
+    const value = event.target.value;
+    this.setState({ search: value });
   }
 
   revealSearch() {
@@ -35,14 +50,15 @@ export default class NavigationBar extends React.Component {
         <Container fluid='xl' className="flex-nowrap">
           <a className="text-white nav-title" href="#home">Parks</a>
           <div className='d-flex'>
-            <Form className={buttonClass}>
+            <Form className={buttonClass} onSubmit={this.handleSubmit}>
               <Form.Control
                 type="search"
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
+                onChange={this.handleChange}
               />
-              <Button variant="outline-light">Search</Button>
+              <Button variant="outline-light" onClick={this.handleSubmit}>Search</Button>
             </Form>
             <button className='navbar-toggler no-outline text-white' onClick={this.revealSearch}>
               <span>

@@ -26,7 +26,12 @@ export default class App extends React.Component {
   render() {
     if (this.state.route.path === 'search-results') {
       const search = this.state.route.params.get('search');
-      return <SearchResults search={search} />;
+      return (
+        <>
+          <NavigationBar />
+          <SearchResults search={search} />
+        </>
+      );
     }
     return (
       <AppContext.Provider value={this.state.route}>
