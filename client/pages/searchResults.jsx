@@ -66,7 +66,10 @@ export default class SearchResult extends React.Component {
     if (this.state.isLoading === true) {
       return null;
     }
-    const results = this.state.results.length;
+    let results = `${this.state.results.length} search results found.`;
+    if (this.state.results.length === 0) {
+      results = 'Sorry, no results found.';
+    }
     const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Guided Tours', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking'];
     this.state.results.map(park => {
       const activityList = [];
@@ -93,7 +96,7 @@ export default class SearchResult extends React.Component {
         <Container fluid='xl' className='p-4'>
           <Row className='pb-4'>
             <h3 className='merriweather'>
-              {results} search results found.
+              {results}
             </h3>
           </Row>
           <Row>
