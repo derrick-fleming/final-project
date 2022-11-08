@@ -11,11 +11,23 @@ export default class SearchResult extends React.Component {
     super(props);
     this.state = {
       results: [],
-      isLoading: true
+      isLoading: true,
+      search: this.props.search
     };
+    this.fetchData = this.fetchData.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.state.search !== this.props.search) {
+      this.fetchData();
+    }
   }
 
   componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
     fetch(`https://developer.nps.gov/api/v1/parks?q=${search}&api_key=${parkKey}`)
@@ -48,7 +60,6 @@ export default class SearchResult extends React.Component {
           });
       })
       .catch(err => console.error(err));
-
   }
 
   render() {
