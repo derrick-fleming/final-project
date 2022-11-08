@@ -1,4 +1,5 @@
-h3 {
+h3,
+p {
   color: #454d55;
 }
 
@@ -9,6 +10,10 @@ html,
 
 .merriweather {
   font-family: Merriweather, serif;
+}
+
+.open-sans {
+  font-family: "Open Sans", sans-serif;
 }
 
 .nav-title {
@@ -35,8 +40,25 @@ html,
   display: none;
 }
 
+.image-size {
+  height: 192px;
+  object-fit: cover;
+}
+
+.card-width {
+  width: 21.875rem;
+}
+
+.gold {
+  color: #e0a800;
+}
+
 @media screen and (min-width: 768px) {
   .search-hide {
     display: flex;
+  }
+
+  .card-width {
+    width: 21.875rem;
   }
 }

@@ -29,7 +29,7 @@ export default class SearchBar extends React.Component {
 
   render() {
     return (
-      <Container fluid className='p-4'>
+      <Container fluid='xl' className='p-4'>
         <Row className='mb-4'>
           <h3 className='merriweather'>Search for a park.</h3>
         </Row>

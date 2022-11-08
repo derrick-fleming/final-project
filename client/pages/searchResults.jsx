@@ -3,7 +3,6 @@ import SearchBar from '../components/searchBar';
 import NavigationBar from '../components/navigationBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 
@@ -18,7 +17,7 @@ export default class SearchResult extends React.Component {
 
   componentDidMount() {
     const search = this.props.search;
-    const parkKey = '';
+    const parkKey = process.env.PARKS_API;
     fetch(`https://developer.nps.gov/api/v1/parks?q=${search}&api_key=${parkKey}`)
       .then(response => response.json())
       .then(states => {
@@ -57,15 +56,22 @@ export default class SearchResult extends React.Component {
       return null;
     }
     const results = this.state.results.length;
-    const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Guided Tours', 'Museum Exhibits', 'Fishing', 'Scenic Driving'];
+    const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Guided Tours', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking'];
     this.state.results.map(park => {
       const activityList = [];
-      park.activities.filter(activity => {
-        if (activities.includes(activity.name)) {
-          activityList.push(activity.name);
-        }
-        return activity;
+      const parkList = [];
+      park.activities.map(activity => {
+        parkList.push(activity.name);
+        return parkList;
       });
+      for (let i = 0; i < activities.length; i++) {
+        if (activityList.length > 3) {
+          break;
+        }
+        if (parkList.includes(activities[i])) {
+          activityList.push(activities[i]);
+        }
+      }
       park.activityList = activityList.join(' | ');
       return park;
     });
@@ -73,7 +79,7 @@ export default class SearchResult extends React.Component {
       <>
         <NavigationBar />
         <SearchBar />
-        <Container fluid className='m-2'>
+        <Container fluid='xl' className='p-4'>
           <Row>
             <h3 className='merriweather'>
               {results} search results found.
@@ -81,20 +87,28 @@ export default class SearchResult extends React.Component {
           </Row>
           <Row>
             {
-                this.state.results.map(state => {
-                  const { name, wikiImage, activityList } = state;
+                this.state.results.map(park => {
+                  const { name, wikiImage, activityList, designation } = park;
+                  const address = `${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
                   return (
                     <Col key={name} md={6} className='mt-2 mb-2'>
-                      <Card key={name} style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src={wikiImage} alt={name} />
-                        <Card.Body>
-                          <Card.Title>{name}</Card.Title>
-                          <Card.Text>
-                            {activityList}
-                          </Card.Text>
-                          <Button variant="primary">Learn More</Button>
-                        </Card.Body>
-                      </Card>
+                      <Row className='d-flex justify-content-center'>
+                        <Card key={name} style={{ width: '21.875rem' }} className='p-0 open-sans card-width'>
+                          <Card.Img variant="top" src={wikiImage} alt={name} className='image-size'/>
+                          <Card.Body>
+                            <Card.Text className='m-0'>
+                              {designation}
+                            </Card.Text>
+                            <Card.Title className='merriweather m-0 fw-Semibold'>{name}</Card.Title>
+                            <Card.Text className='m-0 fst-italic fw-light'>
+                              {activityList}
+                            </Card.Text>
+                            <Card.Text className='gold fw-bold'>
+                              {address}
+                            </Card.Text>
+                          </Card.Body>
+                        </Card>
+                      </Row>
                     </Col>
                   );
                 })
