@@ -40,10 +40,10 @@ export default class SearchResult extends React.Component {
             fetch(apiEndPoint + '?' + params + '&origin=*')
               .then(response => response.json())
               .then(image => {
-                if (image.query.pages[0].thumbnail !== undefined) {
-                  state.wikiImage = image.query.pages[0].thumbnail.source;
+                if (image.query.pages[0].thumbnail === undefined) {
+                  state.wikiImage = '/images/mountains.png';
                 } else {
-                  state.wikiImage = 'https://thumbs.dreamstime.com/b/illustration-glacier-national-park-mountains-lake-trees-85111728.jpg';
+                  state.wikiImage = image.query.pages[0].thumbnail.source;
                 }
               })
               .catch(err => console.error(err))
@@ -69,7 +69,7 @@ export default class SearchResult extends React.Component {
     if (this.state.results.length === 0) {
       results = 'Sorry, no results found.';
     }
-    const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Guided Tours', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking'];
+    const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours'];
     this.state.results.map(park => {
       const activityList = [];
       const parkList = [];
@@ -78,7 +78,7 @@ export default class SearchResult extends React.Component {
         return parkList;
       });
       for (let i = 0; i < activities.length; i++) {
-        if (activityList.length > 3) {
+        if (activityList.length > 2) {
           break;
         }
         if (parkList.includes(activities[i])) {
