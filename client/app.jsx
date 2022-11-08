@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from './pages/home';
+// import Home from './pages/home';
 import parseRoute from './lib/parse-route';
 import SearchResults from './pages/searchResults';
 // For the Navigation Bar //
@@ -7,6 +7,8 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Navbar from 'react-bootstrap/Navbar';
+import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
 
 class NavigationBar extends React.Component {
   constructor(props) {
@@ -27,7 +29,7 @@ class NavigationBar extends React.Component {
 
   render() {
 
-    const expand = 'lg';
+    const expand = 'md';
     let iconClass = 'fa-magnifying-glass';
     let buttonClass = 'search-hide';
     if (this.state.toggleGlass) {
@@ -78,8 +80,31 @@ export default class App extends React.Component {
     return (
       <>
         <NavigationBar />
-        <Home />
+        <HomePage />
       </>
+    );
+  }
+}
+
+class HomePage extends React.Component {
+  render() {
+    return (
+      <Container fluid className='p-4'>
+        <Row className='mb-4'>
+          <h3 className='merriweather'>Search for a park.</h3>
+        </Row>
+        <Row>
+          <Form className='d-flex' onSubmit={this.handleSearch}>
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+            />
+            <Button variant="success">Search</Button>
+          </Form>
+        </Row>
+      </Container>
     );
   }
 }

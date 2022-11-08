@@ -1,6 +1,14 @@
+h3 {
+  color: #454d55;
+}
+
 html,
 #root {
   background-color: #faf4e2;
+}
+
+.merriweather {
+  font-family: Merriweather, serif;
 }
 
 .nav-title {
@@ -14,6 +22,11 @@ html,
   background-color: #779f7d;
 }
 
+.btn-success {
+  background-color: #2e7d3280;
+  border: none;
+}
+
 .no-outline {
   border: none;
 }
@@ -22,7 +35,7 @@ html,
   display: none;
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 768px) {
   .search-hide {
     display: flex;
   }
