@@ -1,11 +1,8 @@
 import React from 'react';
-// import Home from './pages/home';
 import parseRoute from './lib/parse-route';
 import SearchResults from './pages/searchResults';
-// For the Navigation Bar //
 import SearchBar from './components/searchBar';
 import NavigationBar from './components/navigationBar';
-// import Col from 'react-bootstrap/Col';
 
 export default class App extends React.Component {
   constructor(props) {
