@@ -46,7 +46,7 @@ export default class NavigationBar extends React.Component {
       buttonClass = 'd-flex';
     }
     return (
-      <Navbar variant="dark" expand={expand} className="mb-3 search-green">
+      <Navbar variant="dark" expand={expand} className="p-0 mb-3 search-green">
         <Container fluid='xl' className="flex-nowrap">
           <a className="text-white nav-title" href="#home">Parks</a>
           <div className='d-flex'>
