@@ -38,7 +38,7 @@ export default class SearchResult extends React.Component {
           .all(imageFetches)
           .then(results => {
             this.setState({
-              states: states.data
+              results: states.data
             });
           });
       })
