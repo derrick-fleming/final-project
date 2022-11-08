@@ -3,17 +3,22 @@ import SearchBar from '../components/searchBar';
 import NavigationBar from '../components/navigationBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+
 export default class SearchResult extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      results: []
+      results: [],
+      isLoading: true
     };
   }
 
   componentDidMount() {
     const search = this.props.search;
-    const parkKey = 'p5Y4lLDLTYGsRUqXW3uQj242loZZ1WX6v1qBuW7U';
+    const parkKey = '';
     fetch(`https://developer.nps.gov/api/v1/parks?q=${search}&api_key=${parkKey}`)
       .then(response => response.json())
       .then(states => {
@@ -38,7 +43,8 @@ export default class SearchResult extends React.Component {
           .all(imageFetches)
           .then(results => {
             this.setState({
-              results: states.data
+              results: states.data,
+              isLoading: false
             });
           });
       })
@@ -47,10 +53,22 @@ export default class SearchResult extends React.Component {
   }
 
   render() {
-    const results = this.state.results.length;
-    if (results === 0) {
+    if (this.state.isLoading === true) {
       return null;
     }
+    const results = this.state.results.length;
+    const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Guided Tours', 'Museum Exhibits', 'Fishing', 'Scenic Driving'];
+    this.state.results.map(park => {
+      const activityList = [];
+      park.activities.filter(activity => {
+        if (activities.includes(activity.name)) {
+          activityList.push(activity.name);
+        }
+        return activity;
+      });
+      park.activityList = activityList.join(' | ');
+      return park;
+    });
     return (
       <>
         <NavigationBar />
@@ -62,7 +80,25 @@ export default class SearchResult extends React.Component {
             </h3>
           </Row>
           <Row>
-            <h1> Component</h1>
+            {
+                this.state.results.map(state => {
+                  const { name, wikiImage, activityList } = state;
+                  return (
+                    <Col key={name} md={6} className='mt-2 mb-2'>
+                      <Card key={name} style={{ width: '18rem' }}>
+                        <Card.Img variant="top" src={wikiImage} alt={name} />
+                        <Card.Body>
+                          <Card.Title>{name}</Card.Title>
+                          <Card.Text>
+                            {activityList}
+                          </Card.Text>
+                          <Button variant="primary">Learn More</Button>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  );
+                })
+            }
           </Row>
         </Container>
       </>

@@ -17,7 +17,9 @@ export default class SearchBar extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const userInputValue = this.state.search;
-    window.location.hash = 'search-results?search=' + userInputValue;
+    if (userInputValue !== '') {
+      window.location.hash = 'search-results?search=' + userInputValue;
+    }
   }
 
   handleChange(event) {
