@@ -72,21 +72,51 @@ export default class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    window.addEventListener('hashchange', () => {
+      this.setState({
+        route: parseRoute(window.location.hash)
+      });
+    });
+  }
+
   render() {
     if (this.state.route.path === 'search-results') {
       const search = this.state.route.params.get('search');
       return <SearchResults search={search} />;
     }
     return (
-      <>
+      <AppContext.Provider value={this.state.route}>
         <NavigationBar />
         <HomePage />
-      </>
+      </ AppContext.Provider>
     );
   }
 }
 
+const AppContext = React.createContext();
+
 class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const userInputValue = this.state.search;
+    window.location.hash = 'search-results?search=' + userInputValue;
+  }
+
+  handleChange(event) {
+    const value = event.target.value;
+    this.setState({ search: value });
+  }
+
   render() {
     return (
       <Container fluid className='p-4'>
@@ -94,17 +124,20 @@ class HomePage extends React.Component {
           <h3 className='merriweather'>Search for a park.</h3>
         </Row>
         <Row>
-          <Form className='d-flex' onSubmit={this.handleSearch}>
+          <Form className='d-flex' onSubmit={this.handleSubmit}>
             <Form.Control
               type="search"
               placeholder="Search"
               className="me-2"
               aria-label="Search"
+              onChange={this.handleChange}
             />
-            <Button variant="success">Search</Button>
+            <Button variant="success" onClick={this.handleSubmit}>Search</Button>
           </Form>
         </Row>
       </Container>
     );
   }
 }
+
+HomePage.contextType = AppContext;
