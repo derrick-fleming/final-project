@@ -59,9 +59,9 @@ export default class GoogleMaps extends React.Component {
             });
             const infoWindow = new window.google.maps.InfoWindow({
               content:
-                '<h4>' + state.name + '</h4>' +
-                '<p class="info-window">' + state.addresses[0].line1 + '</p>' +
-                '<p class="info-window gold bold">' + state.addresses[0].city + ', ' + state.addresses[0].stateCode + ' ' + state.addresses[0].postalCode + '</p>',
+                '<h6 class="info-title">' + state.name + '</h6>' +
+                '<p class="info-window mb-0">' + state.addresses[0].line1 + '</p>' +
+                '<p class="info-window gold fw-bold">' + state.addresses[0].city + ', ' + state.addresses[0].stateCode + ' ' + state.addresses[0].postalCode + '</p>',
               maxWidth: 250,
               ariaLabel: state.name
             });
