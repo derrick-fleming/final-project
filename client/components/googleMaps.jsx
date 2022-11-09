@@ -14,6 +14,7 @@ export default class GoogleMaps extends React.Component {
   }
 
   componentDidMount() {
+    const states = this.props.results;
     const mapOptions = {
       center: { lat: 37.0902, lng: -95.7129 },
       zoom: 4,
@@ -27,7 +28,22 @@ export default class GoogleMaps extends React.Component {
         map
       });
       return map;
-    });
+    })
+      .then(map => {
+        if (states.length !== 0) {
+          states.map(state => {
+            const destination = {
+              lat: Number(state.latitude),
+              lng: Number(state.longitude)
+            };
+            const marker = new window.google.maps.Marker({
+              position: destination,
+              map
+            });
+            return marker.setMap(map);
+          });
+        }
+      });
   }
 
   render() {
