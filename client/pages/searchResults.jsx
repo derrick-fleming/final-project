@@ -5,19 +5,33 @@ import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 
+const activities = new Set(['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours']);
+const activitiesOrder = {
+  Astronomy: 0,
+  Biking: 1,
+  Hiking: 2,
+  Camping: 3,
+  Birdwatching: 4,
+  'Museum Exhibits': 5,
+  Fishing: 6,
+  'Scenic Driving': 7,
+  Kayaking: 8,
+  Boating: 9,
+  'Guided Tours': 10
+};
+
 export default class SearchResult extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       results: [],
-      isLoading: true,
-      search: this.props.search
+      isLoading: true
     };
     this.fetchData = this.fetchData.bind(this);
   }
 
-  componentDidUpdate() {
-    if (this.state.search !== this.props.search) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.search !== prevProps.search) {
       this.fetchData();
     }
   }
@@ -69,25 +83,6 @@ export default class SearchResult extends React.Component {
     if (this.state.results.length === 0) {
       results = 'Sorry, no results found.';
     }
-    const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours'];
-    this.state.results.map(park => {
-      const activityList = [];
-      const parkList = [];
-      park.activities.map(activity => {
-        parkList.push(activity.name);
-        return parkList;
-      });
-      for (let i = 0; i < activities.length; i++) {
-        if (activityList.length > 2) {
-          break;
-        }
-        if (parkList.includes(activities[i])) {
-          activityList.push(activities[i]);
-        }
-      }
-      park.activityList = activityList.join(' | ');
-      return park;
-    });
     return (
       <>
         <SearchBar />
@@ -100,8 +95,13 @@ export default class SearchResult extends React.Component {
           <Row>
             {
                 this.state.results.map(park => {
-                  const { name, wikiImage, activityList, designation } = park;
+                  const { name, wikiImage, designation } = park;
                   const address = `${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
+                  let activityList = park.activities.filter(activity => activities.has(activity.name)).map(activity => activity.name).sort((a, b) => activitiesOrder[a] - activitiesOrder[b]);
+                  if (activityList.length > 3) {
+                    activityList.splice(4);
+                  }
+                  activityList = activityList.join(' | ');
                   return (
                     <Col key={name} md={6} className='mt-2 mb-2'>
                       <Row className='d-flex justify-content-center'>
