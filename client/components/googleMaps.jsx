@@ -31,17 +31,21 @@ export default class GoogleMaps extends React.Component {
     })
       .then(map => {
         if (states.length !== 0) {
+          const bound = new window.google.maps.LatLngBounds();
+
           states.map(state => {
             const destination = {
               lat: Number(state.latitude),
               lng: Number(state.longitude)
             };
+            bound.extend(new window.google.maps.LatLng(destination));
             const marker = new window.google.maps.Marker({
               position: destination,
               map
             });
             return marker.setMap(map);
           });
+          map.fitBounds(bound);
         }
       });
   }
