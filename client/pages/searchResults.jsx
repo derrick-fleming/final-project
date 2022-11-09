@@ -42,11 +42,11 @@ export default class SearchResult extends React.Component {
   }
 
   fetchData() {
-    // const search = this.props.search;
-    // const parkKey = process.env.PARKS_API;
-    // const link = `// https://developer.nps.gov/api/v1/parks?q=${search}&api_key=${parkKey}`;
-    const jsonLink = '/get-parks-results.json';
-    fetch(jsonLink)
+    const search = this.props.search;
+    const parkKey = process.env.PARKS_API;
+    const link = `https://developer.nps.gov/api/v1/parks?q=${search}&api_key=${parkKey}`;
+    // const jsonLink = '/get-parks-results.json';
+    fetch(link)
       .then(response => response.json())
       .then(states => {
         const apiEndPoint = 'https://en.wikipedia.org/w/api.php';

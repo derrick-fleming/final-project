@@ -11,9 +11,20 @@ export default class GoogleMaps extends React.Component {
   constructor(props) {
     super(props);
     this.googleMapDiv = React.createRef();
+    this.createMap = this.createMap.bind(this);
   }
 
   componentDidMount() {
+    this.createMap();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.results !== prevProps.results) {
+      this.createMap();
+    }
+  }
+
+  createMap() {
     const states = this.props.results;
     const mapOptions = {
       center: { lat: 37.0902, lng: -95.7129 },
