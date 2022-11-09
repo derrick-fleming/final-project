@@ -58,9 +58,15 @@ export default class GoogleMaps extends React.Component {
             });
             map.addListener('click', () => {
               infoWindow.close();
-              map.setCenter(map.fitBounds(bound));
+              map.setZoom(4);
+              map.fitBounds(bound);
+              map.getCenter();
+              // map.setCenter(map.fitBounds(bound));
             });
             return marker.setMap(map);
+          });
+          window.addEventListener('resize', () => {
+            map.fitBounds(bound);
           });
           map.fitBounds(bound);
           map.getCenter();
