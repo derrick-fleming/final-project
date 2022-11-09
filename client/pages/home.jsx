@@ -1,10 +1,8 @@
 import React from 'react';
-import HelloWorld from '../components/hello-world';
+import SearchBar from '../components/searchBar';
 
 export default function Home(props) {
   return (
-    <div>
-      <HelloWorld />
-    </div>
+    <SearchBar />
   );
 }
