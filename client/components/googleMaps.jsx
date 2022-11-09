@@ -46,16 +46,24 @@ export default class GoogleMaps extends React.Component {
             const infoWindow = new window.google.maps.InfoWindow({
               content:
                 '<h6>' + state.name + '</h6>' +
-                '<p>' + state.addresses[0].city + ',' + state.addresses[0].stateCode + '</p>',
+                '<p>' + state.addresses[0].line1 + '</p>' +
+                '<p>' + state.addresses[0].city + ', ' + state.addresses[0].stateCode + ' ' + state.addresses[0].postalCode + '</p>',
               maxWidth: 200,
               ariaLabel: state.name
             });
             marker.addListener('click', () => {
               infoWindow.open(marker.getMap(), marker);
+              map.setZoom(6);
+              map.setCenter(marker.getPosition());
+            });
+            map.addListener('click', () => {
+              infoWindow.close();
+              map.setCenter(map.fitBounds(bound));
             });
             return marker.setMap(map);
           });
           map.fitBounds(bound);
+          map.getCenter();
         }
       });
   }
