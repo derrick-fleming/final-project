@@ -43,6 +43,16 @@ export default class GoogleMaps extends React.Component {
               position: destination,
               map
             });
+            const infoWindow = new window.google.maps.InfoWindow({
+              content:
+                '<h6>' + state.name + '</h6>' +
+                '<p>' + state.addresses[0].city + ',' + state.addresses[0].stateCode + '</p>',
+              maxWidth: 200,
+              ariaLabel: state.name
+            });
+            marker.addListener('click', () => {
+              infoWindow.open(marker.getMap(), marker);
+            });
             return marker.setMap(map);
           });
           map.fitBounds(bound);
