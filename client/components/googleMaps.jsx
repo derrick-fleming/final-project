@@ -77,9 +77,8 @@ export default class GoogleMaps extends React.Component {
   render() {
     return (
       <div
-      id="the-div"
-      className='google-map'
-        ref={this.googleMapDiv} />
+      className='google-map w-100 p-2 rounded shadow-sm'
+      ref={this.googleMapDiv} />
     );
   }
 }

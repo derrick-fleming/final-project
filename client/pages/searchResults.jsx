@@ -90,13 +90,15 @@ export default class SearchResult extends React.Component {
       <>
         <SearchBar />
         <Container fluid='xl' className='p-4'>
-          <Row className='pb-4'>
+          <Row className='pb-2'>
             <h3 className='merriweather'>
               {results}
             </h3>
           </Row>
-          <Row>
-            <GoogleMaps results={this.state.results}/>
+          <Row className='justify-content-center'>
+            <Col md={11} className='mt-2 mb-4 m'>
+              <GoogleMaps results={this.state.results}/>
+            </Col>
           </Row>
           <Row>
             {
