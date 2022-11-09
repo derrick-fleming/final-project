@@ -12,6 +12,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.15.1",
     "argon2": "^0.29.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",

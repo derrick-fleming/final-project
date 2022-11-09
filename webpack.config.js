@@ -50,7 +50,7 @@ module.exports = {
   stats: 'minimal',
   devtool: isDevelopment ? 'cheap-module-source-map' : 'source-map',
   plugins: [
-    new webpack.EnvironmentPlugin(['PARKS_API']),
+    new webpack.EnvironmentPlugin(['PARKS_API', 'GOOGLE_API']),
     isDevelopment && new ReactRefreshWebpackPlugin(),
     isDevelopment && new webpack.NoEmitOnErrorsPlugin(),
     isDevelopment && new webpack.HotModuleReplacementPlugin()
