@@ -49,6 +49,9 @@ export default class GoogleMaps extends React.Component {
               lat: Number(state.latitude),
               lng: Number(state.longitude)
             };
+            if (state.latitude === '' || state.longititude === '') {
+              return null;
+            }
             bound.extend(new window.google.maps.LatLng(destination));
             const marker = new window.google.maps.Marker({
               position: destination,
@@ -56,10 +59,10 @@ export default class GoogleMaps extends React.Component {
             });
             const infoWindow = new window.google.maps.InfoWindow({
               content:
-                '<h6>' + state.name + '</h6>' +
-                '<p>' + state.addresses[0].line1 + '</p>' +
-                '<p>' + state.addresses[0].city + ', ' + state.addresses[0].stateCode + ' ' + state.addresses[0].postalCode + '</p>',
-              maxWidth: 200,
+                '<h4>' + state.name + '</h4>' +
+                '<p class="info-window">' + state.addresses[0].line1 + '</p>' +
+                '<p class="info-window gold bold">' + state.addresses[0].city + ', ' + state.addresses[0].stateCode + ' ' + state.addresses[0].postalCode + '</p>',
+              maxWidth: 250,
               ariaLabel: state.name
             });
             marker.addListener('click', () => {

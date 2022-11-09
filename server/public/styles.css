@@ -67,6 +67,10 @@ html,
   height: 40vh;
 }
 
+.info-window {
+  font-size: 1.2rem;
+}
+
 @media screen and (min-width: 768px) {
   .search-hide {
     display: flex;
