@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
+const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours'];
 const states = [
   { state: 'Alabama', code: 'AL' },
   { state: 'Alaska', code: 'AK' },
@@ -92,6 +92,7 @@ export default class filterResults extends React.Component {
       </Row>
       <div>
         {states}
+        {activities}
       </div>
     </Container>;
   }
