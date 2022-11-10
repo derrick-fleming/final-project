@@ -63,9 +63,25 @@ html,
   color: #e0a800;
 }
 
+.google-map {
+  height: 40vh;
+}
+
 @media screen and (min-width: 768px) {
   .search-hide {
     display: flex;
+  }
+
+  .google-map {
+    height: 55vh;
+  }
+
+  .info-window {
+    font-size: 1rem;
+  }
+
+  .info-title {
+    font-size: 1.2rem;
   }
 }
 

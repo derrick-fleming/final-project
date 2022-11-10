@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import GoogleMaps from '../components/googleMaps';
 
 const activities = new Set(['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours']);
 const activitiesOrder = {
@@ -43,7 +44,8 @@ export default class SearchResult extends React.Component {
   fetchData() {
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
-    fetch(`https://developer.nps.gov/api/v1/parks?q=${search}&api_key=${parkKey}`)
+    const link = `https://developer.nps.gov/api/v1/parks?q=${search}&api_key=${parkKey}`;
+    fetch(link)
       .then(response => response.json())
       .then(states => {
         const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
@@ -87,10 +89,15 @@ export default class SearchResult extends React.Component {
       <>
         <SearchBar />
         <Container fluid='xl' className='p-4'>
-          <Row className='pb-4'>
+          <Row className='pb-2'>
             <h3 className='merriweather'>
               {results}
             </h3>
+          </Row>
+          <Row className='justify-content-center'>
+            <Col md={11} className='mt-2 mb-4 m'>
+              <GoogleMaps results={this.state.results}/>
+            </Col>
           </Row>
           <Row>
             {
