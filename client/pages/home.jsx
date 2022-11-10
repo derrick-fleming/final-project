@@ -6,64 +6,64 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
-/* const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours'];
+// const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours'];
 const states = [
-  { state: 'Alabama', code: 'AL' },
-  { state: 'Alaska', code: 'AK' },
-  { state: 'Arizona', code: 'AZ' },
-  { state: 'Arkansas', code: 'AK' },
-  { state: 'America Samoa', code: 'AS' },
-  { state: 'California', code: 'CA' },
-  { state: 'Colorado', code: 'CO' },
-  { state: 'Connecticut', code: 'CT' },
-  { state: 'Deleware', code: 'DE' },
-  { state: 'District of Columbia', code: 'DC' },
-  { state: 'Florida', code: 'FL' },
-  { state: 'Guam', code: 'GU' },
-  { state: 'Georgia', code: 'GA' },
-  { state: 'Hawaii', code: 'HI' },
-  { state: 'Idaho', code: 'ID' },
-  { state: 'Illinois', code: 'IL' },
-  { state: 'Indiana', code: 'IN' },
-  { state: 'Iowa', code: 'IA' },
-  { state: 'Kansas', code: 'KS' },
-  { state: 'Kentucky', code: 'KY' },
-  { state: 'Louisiana', code: 'LA' },
-  { state: 'Maine', code: 'ME' },
-  { state: 'Maryland', code: 'MD' },
-  { state: 'Michigan', code: 'MI' },
-  { state: 'Minnesota', code: 'MN' },
-  { state: 'Massachusetts', code: 'MS' },
-  { state: 'Montana', code: 'MT' },
-  { state: 'Nebraska', code: 'NE' },
-  { state: 'Nevada', code: 'NV' },
-  { state: 'New Hampshire', code: 'NH' },
-  { state: 'New Jersey', code: 'NJ' },
-  { state: 'New Mexico', code: 'NM' },
-  { state: 'New York', code: 'NY' },
-  { state: 'North Carolina', code: 'NC' },
-  { state: 'North Dakota', code: 'ND' },
-  { state: 'Ohio', code: 'OH' },
-  { state: 'Oklahoma', code: 'OK' },
-  { state: 'Oregon', code: 'OR' },
-  { state: 'Pennsylvania', code: 'PA' },
-  { state: 'Puerto Rico', code: 'PR' },
-  { state: 'Rhode Island', code: 'RI' },
-  { state: 'South Carolina', code: 'SC' },
-  { state: 'South Dakota', code: 'SD' },
-  { state: 'Tennessee', code: 'TN' },
-  { state: 'Texas', code: 'TX' },
-  { state: 'Utah', code: 'UT' },
-  { state: 'Vermont', code: 'VT' },
-  { state: 'Virginia', code: 'VA' },
-  { state: 'Virgin Islands', code: 'VI' },
-  { state: 'Washington', code: 'WA' },
-  { state: 'West Virginia', code: 'WV' },
-  { state: 'Wisconsin', code: 'WI' },
-  { state: 'Wyoming', code: 'WY' }
+  { name: 'Alabama', code: 'AL' },
+  { name: 'Alaska', code: 'AK' },
+  { name: 'Arizona', code: 'AZ' },
+  { name: 'Arkansas', code: 'AK' },
+  { name: 'America Samoa', code: 'AS' },
+  { name: 'California', code: 'CA' },
+  { name: 'Colorado', code: 'CO' },
+  { name: 'Connecticut', code: 'CT' },
+  { name: 'Deleware', code: 'DE' },
+  { name: 'District of Columbia', code: 'DC' },
+  { name: 'Florida', code: 'FL' },
+  { name: 'Guam', code: 'GU' },
+  { name: 'Georgia', code: 'GA' },
+  { name: 'Hawaii', code: 'HI' },
+  { name: 'Idaho', code: 'ID' },
+  { name: 'Illinois', code: 'IL' },
+  { name: 'Indiana', code: 'IN' },
+  { name: 'Iowa', code: 'IA' },
+  { name: 'Kansas', code: 'KS' },
+  { name: 'Kentucky', code: 'KY' },
+  { name: 'Louisiana', code: 'LA' },
+  { name: 'Maine', code: 'ME' },
+  { name: 'Maryland', code: 'MD' },
+  { name: 'Michigan', code: 'MI' },
+  { name: 'Minnesota', code: 'MN' },
+  { name: 'Massachusetts', code: 'MS' },
+  { name: 'Montana', code: 'MT' },
+  { name: 'Nebraska', code: 'NE' },
+  { name: 'Nevada', code: 'NV' },
+  { name: 'New Hampshire', code: 'NH' },
+  { name: 'New Jersey', code: 'NJ' },
+  { name: 'New Mexico', code: 'NM' },
+  { name: 'New York', code: 'NY' },
+  { name: 'North Carolina', code: 'NC' },
+  { name: 'North Dakota', code: 'ND' },
+  { name: 'Ohio', code: 'OH' },
+  { name: 'Oklahoma', code: 'OK' },
+  { name: 'Oregon', code: 'OR' },
+  { name: 'Pennsylvania', code: 'PA' },
+  { name: 'Puerto Rico', code: 'PR' },
+  { name: 'Rhode Island', code: 'RI' },
+  { name: 'South Carolina', code: 'SC' },
+  { name: 'South Dakota', code: 'SD' },
+  { name: 'Tennessee', code: 'TN' },
+  { name: 'Texas', code: 'TX' },
+  { name: 'Utah', code: 'UT' },
+  { name: 'Vermont', code: 'VT' },
+  { name: 'Virginia', code: 'VA' },
+  { name: 'Virgin Islands', code: 'VI' },
+  { name: 'Washington', code: 'WA' },
+  { name: 'West Virginia', code: 'WV' },
+  { name: 'Wisconsin', code: 'WI' },
+  { name: 'Wyoming', code: 'WY' }
 ];
-*/
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -88,6 +88,8 @@ export default class Home extends React.Component {
   }
 
   render() {
+    states.forEach(state => {
+    });
     return (
       <>
         <SearchBar />
@@ -97,11 +99,11 @@ export default class Home extends React.Component {
               <Card className='mb-4 shadow-sm home-card'>
                 <Card.Img variant="top" alt="Trees illustration" src="/images/placeholder-trees.png" className='image-size' />
                 <Card.Body className='m-2'>
-                  <Card.Title className='merriweather fw-bold fs-4'>States</Card.Title>
+                  <Card.Title className='merriweather fw-bold fs-4'>States & Territories</Card.Title>
                   <Card.Text className='fs-6 pb-2'>
-                    Browse through a list of states to discover national parks found within each state.
+                    Browse through a list of states and territories to discover national parks found within each state.
                   </Card.Text>
-                  <Button variant="success" className='merriweather lh-lg' onClick={this.handleShow}>Select a State</Button>
+                  <Button variant="success" className='merriweather lh-lg' onClick={this.handleShow}>Select a Location</Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -122,9 +124,18 @@ export default class Home extends React.Component {
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Select a State</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, reading this text in a modal!</Modal.Body>
+          <Modal.Body>Find a park located near or in a state/territory.
+            <Form>
+              <Form.Select arialabel="Default select example">
+                <option>Choose a state</option>
+                {
+                states.map(state => <option key={state.code} value={state.code}>{state.name}</option>)
+                }
+              </Form.Select>
+            </Form>
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleClose}>
               Close
