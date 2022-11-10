@@ -69,7 +69,7 @@ export default class GoogleMaps extends React.Component {
             marker.addListener('click', () => {
               infoWindow.open(marker.getMap(), marker);
               map.setCenter(marker.getPosition());
-              map.setZoom(marker.position);
+              map.setZoom(6);
             });
             map.addListener('click', () => {
               infoWindow.close();
