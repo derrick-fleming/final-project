@@ -31,7 +31,7 @@ export default class SearchBar extends React.Component {
     return (
       <Container fluid='xl' className='p-4'>
         <Row className='mb-4'>
-          <h3 className='merriweather'>Search for a park.</h3>
+          <h4 className='merriweather lh-base fw-light'>Search for a park or browse through different states or activities.</h4>
         </Row>
         <Row>
           <Form className='d-flex' onSubmit={this.handleSubmit}>
@@ -42,7 +42,7 @@ export default class SearchBar extends React.Component {
               aria-label="Search"
               onChange={this.handleChange}
             />
-            <Button variant="success" onClick={this.handleSubmit}>Search</Button>
+            <Button variant="success" className="merriweather" onClick={this.handleSubmit}>Search</Button>
           </Form>
         </Row>
       </Container>

@@ -7,40 +7,34 @@ import Col from 'react-bootstrap/Col';
 
 export default class filterResults extends React.Component {
   render() {
-    return <>
-      <Container>
-        <Row>
-          <Col md={6}>
-            <Card style={{ width: '18rem' }} className='m-3'>
-              <Card.Img variant="top" src="holder.js/100px180" />
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk
-                </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={6}>
-            <Card style={{ width: '18rem' }} className='m-3'>
-              <Card.Img variant="top" src="holder.js/100px180" />
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up the
-                  bulk
-                </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+    return <Container>
+      <Row className='justify-content-center open-sans'>
+        <Col md={6}>
+          <Card className='mb-4 shadow-sm home-card'>
+            <Card.Img variant="top" alt="Trees illustration" src="/images/placeholder-trees.png" className='image-size'/>
+            <Card.Body className='m-2'>
+              <Card.Title className='merriweather fw-bold fs-4'>States</Card.Title>
+              <Card.Text className='fs-6 pb-2'>
+                Browse through a list of states to discover national parks found within each state.
+              </Card.Text>
+              <Button variant="success" className='merriweather lh-lg'>Select a State</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={6}>
+          <Card className='shadow-sm home-card'>
+            <Card.Img variant="top" alt="Mountain illustration" src="/images/placeholder-yosemite.png" className='image-size'/>
+            <Card.Body className='m-2'>
+              <Card.Title className='merriweather fw-bold fs-4'>Activities</Card.Title>
+              <Card.Text className='fs-6 pb-2'>
+                Browse through a list of activities to explore a park that matches your interests.
+              </Card.Text>
+              <Button variant="success" className='merriweather lh-lg px-4'>Browse</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
-      </Container>
-
-      <div />;
-    </>;
+    </Container>;
   }
 }

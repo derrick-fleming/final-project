@@ -1,4 +1,5 @@
 h3,
+h2,
 p {
   color: #454d55;
 }
@@ -28,6 +29,7 @@ html,
 
 .btn-success {
   background-color: #2e7d3280;
+  color: #ffff;
   border: none;
 }
 
@@ -55,8 +57,9 @@ html,
   object-fit: cover;
 }
 
-.card-width {
-  width: 21.875rem;
+.card-width,
+.home-card {
+  min-width: 21.875rem;
 }
 
 .gold {
