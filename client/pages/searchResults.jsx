@@ -30,6 +30,10 @@ export default class SearchResult extends React.Component {
     this.fetchData = this.fetchData.bind(this);
   }
 
+  handleClick(event) {
+    window.location.hash = 'home';
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.props.search !== prevProps.search) {
       this.fetchData();
@@ -90,10 +94,17 @@ export default class SearchResult extends React.Component {
     }
     return (
       <Container fluid='xl' className='p-4'>
-        <Row className='pb-2'>
-          <h3 className='merriweather'>
-            {results}
-          </h3>
+        <Row className='justify-content-between'>
+          <Col xs={10}>
+            <h4 className='p-2 merriweather'>
+              {results}
+            </h4>
+          </Col>
+          <Col xs={2} className='pt-2 px-1 text-end'>
+            <a className='go-back text-decoration-none open-sans' onClick={this.handleClick}>
+              Go Back
+            </a>
+          </Col>
         </Row>
         <Row className='justify-content-center'>
           <Col md={11} className='mt-2 mb-4 m'>

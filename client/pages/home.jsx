@@ -142,12 +142,12 @@ export default class Home extends React.Component {
           </Row>
         </Container>
 
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal centered show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Select a State</Modal.Title>
+            <Modal.Title className='merriweather gray-scale'>Select a State</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Find a park located near or in a state/territory.
-            <Form onSubmit={this.handleSubmit}>
+          <Modal.Body className='openSans fs-6 pt-4 gray-scale'>Find a park located near or in a state.
+            <Form className='pt-2' onSubmit={this.handleSubmit}>
               <Form.Select arialabel="Default select example" onChange={this.handleChange} value={this.state.value}>
                 <option>Choose a state</option>
                 {
@@ -155,11 +155,11 @@ export default class Home extends React.Component {
                 }
               </Form.Select>
               <Modal.Footer>
-                <Button variant="secondary" onClick={this.handleClose}>
+                <Button className='merriweather' variant="secondary" onClick={this.handleClose}>
                   Close
                 </Button>
-                <Button variant="primary" type="submit">
-                  Submit
+                <Button className='merriweather' variant="success" type="submit">
+                  Browse
                 </Button>
               </Modal.Footer>
             </Form>
