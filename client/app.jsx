@@ -21,20 +21,32 @@ export default class App extends React.Component {
   }
 
   render() {
+    if (this.state.route.path === '' || this.state.route.path === 'home') {
+      return (
+        <>
+          <NavigationBar />
+          <Home />
+        </>
+      );
+    }
     if (this.state.route.path === 'search-results') {
       const search = this.state.route.params.get('search');
       return (
         <>
           <NavigationBar />
-          <SearchResults search={search} />
+          <SearchResults search={search} action='search' />
+        </>
+      );
+    } else if (this.state.route.path === 'state-results') {
+      const search = this.state.route.params.get('stateCode');
+      return (
+        <>
+          <NavigationBar />
+          <SearchResults search={search} action='state' />
         </>
       );
     }
-    return (
-      <>
-        <NavigationBar />
-        <Home />
-      </>
-    );
+
   }
+
 }

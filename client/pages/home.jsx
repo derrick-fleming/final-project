@@ -13,7 +13,7 @@ const states = [
   { name: 'Alabama', code: 'AL' },
   { name: 'Alaska', code: 'AK' },
   { name: 'Arizona', code: 'AZ' },
-  { name: 'Arkansas', code: 'AK' },
+  { name: 'Arkansas', code: 'AR' },
   { name: 'America Samoa', code: 'AS' },
   { name: 'California', code: 'CA' },
   { name: 'Colorado', code: 'CO' },
@@ -69,22 +69,42 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: false
+      show: false,
+      selection: '',
+      value: ''
     };
     this.handleClose = this.handleClose.bind(this);
     this.handleShow = this.handleShow.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleClose(event) {
     this.setState({
-      show: false
+      show: false,
+      selection: ''
     });
   }
 
   handleShow(event) {
-    this.setState({
-      show: true
-    });
+    if (event.target.id === 'states') {
+      this.setState({
+        show: true,
+        selection: 'states'
+      });
+    }
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const userInputValue = this.state.value;
+    if (this.state.selection === 'states') {
+      window.location.hash = 'search-results?search=' + userInputValue;
+    }
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value });
   }
 
   render() {
@@ -103,7 +123,7 @@ export default class Home extends React.Component {
                   <Card.Text className='fs-6 pb-2'>
                     Browse through a list of states and territories to discover national parks found within each state.
                   </Card.Text>
-                  <Button variant="success" className='merriweather lh-lg' onClick={this.handleShow}>Select a Location</Button>
+                  <Button variant="success" className='merriweather lh-lg' onClick={this.handleShow} id='states'>Select a Location</Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -127,23 +147,24 @@ export default class Home extends React.Component {
             <Modal.Title>Select a State</Modal.Title>
           </Modal.Header>
           <Modal.Body>Find a park located near or in a state/territory.
-            <Form>
-              <Form.Select arialabel="Default select example">
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Select arialabel="Default select example" onChange={this.handleChange} value={this.state.value}>
                 <option>Choose a state</option>
                 {
                 states.map(state => <option key={state.code} value={state.code}>{state.name}</option>)
                 }
               </Form.Select>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.handleClose}>
+                  Close
+                </Button>
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+              </Modal.Footer>
             </Form>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={this.handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
+
         </Modal>
       </>
     );
