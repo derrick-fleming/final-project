@@ -8,7 +8,20 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
-// const activities = ['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours'];
+const activities = [
+  { name: 'Astronomy', code: 'Astronomy' },
+  { name: 'Biking', code: 'Biking' },
+  { name: 'Hiking', code: 'Hiking' },
+  { name: 'Camping', code: 'Camping' },
+  { name: 'Birdwatching', code: 'Birdwatching' },
+  { name: 'Museum Exhibits', code: 'Museum Exhibits' },
+  { name: 'Fishing', code: 'Fishing' },
+  { name: 'Scenic Driving', code: 'Scenic Driving' },
+  { name: 'Kayaking', code: 'Kayaking' },
+  { name: 'Boating', code: 'Boating' },
+  { name: 'Guided Tours', code: 'Guided Tours' }
+];
+
 const states = [
   { name: 'Alabama', code: 'AL' },
   { name: 'Alaska', code: 'AK' },
@@ -93,13 +106,24 @@ export default class Home extends React.Component {
         selection: 'states'
       });
     }
+    if (event.target.id === 'activities') {
+      this.setState({
+        show: true,
+        selection: 'activities'
+      });
+    }
   }
 
   handleSubmit(event) {
     event.preventDefault();
+    if (this.state.value === '') {
+      return;
+    }
     const userInputValue = this.state.value;
     if (this.state.selection === 'states') {
       window.location.hash = 'state-results?search=' + userInputValue;
+    } else {
+      window.location.hash = 'search-results?search=' + userInputValue;
     }
   }
 
@@ -108,8 +132,17 @@ export default class Home extends React.Component {
   }
 
   render() {
-    states.forEach(state => {
-    });
+    let choices = states;
+    let modalTitle = 'Select a State';
+    let modalBody = 'Find a park located near or in a state.';
+    let firstOption = 'Choose a state';
+    if (this.state.selection === 'activities') {
+      choices = activities;
+      modalTitle = 'Browse an activity';
+      modalBody = 'Find a park that relates to an activity';
+      firstOption = 'Choose an activity';
+    }
+
     return (
       <>
         <SearchBar />
@@ -135,7 +168,7 @@ export default class Home extends React.Component {
                   <Card.Text className='fs-6 pb-2'>
                     Browse through a list of activities to explore a park that matches your interests.
                   </Card.Text>
-                  <Button variant="success" className='merriweather lh-lg px-4' onClick={this.handleShow}>Browse</Button>
+                  <Button variant="success" className='merriweather lh-lg px-4' id='activities' onClick={this.handleShow}>Browse</Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -144,14 +177,14 @@ export default class Home extends React.Component {
 
         <Modal centered show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title className='merriweather gray-scale'>Select a State</Modal.Title>
+            <Modal.Title className='merriweather gray-scale'>{modalTitle}</Modal.Title>
           </Modal.Header>
-          <Modal.Body className='openSans fs-6 pt-4 gray-scale'>Find a park located near or in a state.
+          <Modal.Body className='openSans fs-6 pt-4 gray-scale'>{modalBody}
             <Form className='pt-2' onSubmit={this.handleSubmit}>
               <Form.Select arialabel="Default select example" onChange={this.handleChange} value={this.state.value}>
-                <option>Choose a state</option>
+                <option>{firstOption}</option>
                 {
-                states.map(state => <option key={state.code} value={state.code}>{state.name}</option>)
+                choices.map(state => <option key={state.code} value={state.code}>{state.name}</option>)
                 }
               </Form.Select>
               <Modal.Footer>
