@@ -99,7 +99,7 @@ export default class Home extends React.Component {
     event.preventDefault();
     const userInputValue = this.state.value;
     if (this.state.selection === 'states') {
-      window.location.hash = 'search-results?search=' + userInputValue;
+      window.location.hash = 'state-results?search=' + userInputValue;
     }
   }
 

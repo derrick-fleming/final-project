@@ -3,6 +3,7 @@ import parseRoute from './lib/parse-route';
 import SearchResults from './pages/searchResults';
 import Home from './pages/home';
 import NavigationBar from './components/navigationBar';
+import SearchBar from './components/searchBar';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -34,15 +35,16 @@ export default class App extends React.Component {
       return (
         <>
           <NavigationBar />
+          <SearchBar />
           <SearchResults search={search} action='search' />
         </>
       );
     } else if (this.state.route.path === 'state-results') {
-      const search = this.state.route.params.get('stateCode');
+      const search = this.state.route.params.get('search');
       return (
         <>
           <NavigationBar />
-          <SearchResults search={search} action='state' />
+          <SearchResults search={search} action='states' />
         </>
       );
     }

@@ -1,5 +1,4 @@
 import React from 'react';
-import SearchBar from '../components/searchBar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
@@ -44,7 +43,11 @@ export default class SearchResult extends React.Component {
   fetchData() {
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
-    const link = `https://developer.nps.gov/api/v1/parks?q=${search}&api_key=${parkKey}`;
+    let action = 'q=';
+    if (this.props.action === 'states') {
+      action = 'stateCode=';
+    }
+    const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
     fetch(link)
       .then(response => response.json())
       .then(states => {
@@ -86,23 +89,21 @@ export default class SearchResult extends React.Component {
       results = 'Sorry, no results found.';
     }
     return (
-      <>
-        <SearchBar />
-        <Container fluid='xl' className='p-4'>
-          <Row className='pb-2'>
-            <h3 className='merriweather'>
-              {results}
-            </h3>
-          </Row>
-          <Row className='justify-content-center'>
-            <Col md={11} className='mt-2 mb-4 m'>
-              <GoogleMaps results={this.state.results}/>
-            </Col>
-          </Row>
-          <Row>
-            {
+      <Container fluid='xl' className='p-4'>
+        <Row className='pb-2'>
+          <h3 className='merriweather'>
+            {results}
+          </h3>
+        </Row>
+        <Row className='justify-content-center'>
+          <Col md={11} className='mt-2 mb-4 m'>
+            <GoogleMaps results={this.state.results}/>
+          </Col>
+        </Row>
+        <Row>
+          {
                 this.state.results.map(park => {
-                  const { name, wikiImage, designation } = park;
+                  const { name, wikiImage, designation, parkCode } = park;
                   const address = `${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
                   let activityList = park.activities.filter(activity => activities.has(activity.name)).map(activity => activity.name).sort((a, b) => activitiesOrder[a] - activitiesOrder[b]);
                   if (activityList.length > 3) {
@@ -110,9 +111,9 @@ export default class SearchResult extends React.Component {
                   }
                   activityList = activityList.join(' | ');
                   return (
-                    <Col key={name} md={6} className='mt-2 mb-2'>
+                    <Col key={parkCode} md={6} className='mt-2 mb-2'>
                       <Row className='d-flex justify-content-center'>
-                        <Card key={name} className='p-0 open-sans card-width mb-4 shadow-sm'>
+                        <Card id={parkCode} className='p-0 open-sans card-width mb-4 shadow-sm'>
                           <Card.Img variant="top" src={wikiImage} alt={name} className='image-size'/>
                           <Card.Body>
                             <Card.Text className='m-0 lh-lg'>
@@ -132,9 +133,8 @@ export default class SearchResult extends React.Component {
                   );
                 })
             }
-          </Row>
-        </Container>
-      </>
+        </Row>
+      </Container>
     );
   }
 }
