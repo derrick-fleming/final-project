@@ -70,7 +70,22 @@ html,
   height: 40vh;
 }
 
+.go-back {
+  color: #17a2b8;
+  font-size: 0.8rem;
+}
+
+.go-back:hover {
+  cursor: pointer;
+  color: #117c8d;
+  text-align: right;
+}
+
 @media screen and (min-width: 768px) {
+  .go-back {
+    font-size: 1.25rem;
+  }
+
   .search-hide {
     display: flex;
   }
