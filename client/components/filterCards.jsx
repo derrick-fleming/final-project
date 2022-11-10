@@ -5,6 +5,62 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+const states = [
+  { state: 'Alabama', code: 'AL' },
+  { state: 'Alaska', code: 'AK' },
+  { state: 'Arizona', code: 'AZ' },
+  { state: 'Arkansas', code: 'AK' },
+  { state: 'America Samoa', code: 'AS' },
+  { state: 'California', code: 'CA' },
+  { state: 'Colorado', code: 'CO' },
+  { state: 'Connecticut', code: 'CT' },
+  { state: 'Deleware', code: 'DE' },
+  { state: 'District of Columbia', code: 'DC' },
+  { state: 'Florida', code: 'FL' },
+  { state: 'Guam', code: 'GU' },
+  { state: 'Georgia', code: 'GA' },
+  { state: 'Hawaii', code: 'HI' },
+  { state: 'Idaho', code: 'ID' },
+  { state: 'Illinois', code: 'IL' },
+  { state: 'Indiana', code: 'IN' },
+  { state: 'Iowa', code: 'IA' },
+  { state: 'Kansas', code: 'KS' },
+  { state: 'Kentucky', code: 'KY' },
+  { state: 'Louisiana', code: 'LA' },
+  { state: 'Maine', code: 'ME' },
+  { state: 'Maryland', code: 'MD' },
+  { state: 'Michigan', code: 'MI' },
+  { state: 'Minnesota', code: 'MN' },
+  { state: 'Massachusetts', code: 'MS' },
+  { state: 'Montana', code: 'MT' },
+  { state: 'Nebraska', code: 'NE' },
+  { state: 'Nevada', code: 'NV' },
+  { state: 'New Hampshire', code: 'NH' },
+  { state: 'New Jersey', code: 'NJ' },
+  { state: 'New Mexico', code: 'NM' },
+  { state: 'New York', code: 'NY' },
+  { state: 'North Carolina', code: 'NC' },
+  { state: 'North Dakota', code: 'ND' },
+  { state: 'Ohio', code: 'OH' },
+  { state: 'Oklahoma', code: 'OK' },
+  { state: 'Oregon', code: 'OR' },
+  { state: 'Pennsylvania', code: 'PA' },
+  { state: 'Puerto Rico', code: 'PR' },
+  { state: 'Rhode Island', code: 'RI' },
+  { state: 'South Carolina', code: 'SC' },
+  { state: 'South Dakota', code: 'SD' },
+  { state: 'Tennessee', code: 'TN' },
+  { state: 'Texas', code: 'TX' },
+  { state: 'Utah', code: 'UT' },
+  { state: 'Vermont', code: 'VT' },
+  { state: 'Virginia', code: 'VA' },
+  { state: 'Virgin Islands', code: 'VI' },
+  { state: 'Washington', code: 'WA' },
+  { state: 'West Virginia', code: 'WV' },
+  { state: 'Wisconsin', code: 'WI' },
+  { state: 'Wyoming', code: 'WY' }
+];
+
 export default class filterResults extends React.Component {
   render() {
     return <Container>
@@ -34,7 +90,9 @@ export default class filterResults extends React.Component {
           </Card>
         </Col>
       </Row>
-
+      <div>
+        {states}
+      </div>
     </Container>;
   }
 }
