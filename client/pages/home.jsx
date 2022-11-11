@@ -7,76 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-
-const activities = [
-  { name: 'Astronomy', code: 'Astronomy' },
-  { name: 'Biking', code: 'Biking' },
-  { name: 'Hiking', code: 'Hiking' },
-  { name: 'Camping', code: 'Camping' },
-  { name: 'Birdwatching', code: 'Birdwatching' },
-  { name: 'Museum Exhibits', code: 'Museum Exhibits' },
-  { name: 'Fishing', code: 'Fishing' },
-  { name: 'Scenic Driving', code: 'Scenic Driving' },
-  { name: 'Kayaking', code: 'Kayaking' },
-  { name: 'Boating', code: 'Boating' },
-  { name: 'Guided Tours', code: 'Guided Tours' }
-];
-
-const states = [
-  { name: 'Alabama', code: 'AL' },
-  { name: 'Alaska', code: 'AK' },
-  { name: 'Arizona', code: 'AZ' },
-  { name: 'Arkansas', code: 'AR' },
-  { name: 'America Samoa', code: 'AS' },
-  { name: 'California', code: 'CA' },
-  { name: 'Colorado', code: 'CO' },
-  { name: 'Connecticut', code: 'CT' },
-  { name: 'Deleware', code: 'DE' },
-  { name: 'District of Columbia', code: 'DC' },
-  { name: 'Florida', code: 'FL' },
-  { name: 'Guam', code: 'GU' },
-  { name: 'Georgia', code: 'GA' },
-  { name: 'Hawaii', code: 'HI' },
-  { name: 'Idaho', code: 'ID' },
-  { name: 'Illinois', code: 'IL' },
-  { name: 'Indiana', code: 'IN' },
-  { name: 'Iowa', code: 'IA' },
-  { name: 'Kansas', code: 'KS' },
-  { name: 'Kentucky', code: 'KY' },
-  { name: 'Louisiana', code: 'LA' },
-  { name: 'Maine', code: 'ME' },
-  { name: 'Maryland', code: 'MD' },
-  { name: 'Michigan', code: 'MI' },
-  { name: 'Minnesota', code: 'MN' },
-  { name: 'Massachusetts', code: 'MS' },
-  { name: 'Montana', code: 'MT' },
-  { name: 'Nebraska', code: 'NE' },
-  { name: 'Nevada', code: 'NV' },
-  { name: 'New Hampshire', code: 'NH' },
-  { name: 'New Jersey', code: 'NJ' },
-  { name: 'New Mexico', code: 'NM' },
-  { name: 'New York', code: 'NY' },
-  { name: 'North Carolina', code: 'NC' },
-  { name: 'North Dakota', code: 'ND' },
-  { name: 'Ohio', code: 'OH' },
-  { name: 'Oklahoma', code: 'OK' },
-  { name: 'Oregon', code: 'OR' },
-  { name: 'Pennsylvania', code: 'PA' },
-  { name: 'Puerto Rico', code: 'PR' },
-  { name: 'Rhode Island', code: 'RI' },
-  { name: 'South Carolina', code: 'SC' },
-  { name: 'South Dakota', code: 'SD' },
-  { name: 'Tennessee', code: 'TN' },
-  { name: 'Texas', code: 'TX' },
-  { name: 'Utah', code: 'UT' },
-  { name: 'Vermont', code: 'VT' },
-  { name: 'Virginia', code: 'VA' },
-  { name: 'Virgin Islands', code: 'VI' },
-  { name: 'Washington', code: 'WA' },
-  { name: 'West Virginia', code: 'WV' },
-  { name: 'Wisconsin', code: 'WI' },
-  { name: 'Wyoming', code: 'WY' }
-];
+import activities from '../lib/activities';
+import states from '../lib/states';
 
 export default class Home extends React.Component {
   constructor(props) {
