@@ -3,6 +3,34 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Accordion from 'react-bootstrap/Accordion';
 
+const activities = new Set(
+  ['Astronomy',
+    'Biking',
+    'Hiking',
+    'Camping',
+    'Birdwatching',
+    'Museum Exhibits',
+    'Fishing',
+    'Scenic Driving',
+    'Kayaking',
+    'Boating',
+    'Guided Tours',
+    'Arts and Culture',
+    'Sailing',
+    'RV Camping',
+    'Climbing',
+    'Dining',
+    'Hunting',
+    'Skiing',
+    'Water Skiing',
+    'Snowmobiling',
+    'Shopping',
+    'Wildlife Watching',
+    'Junior Ranger Program',
+    'Car or Front Country Camping',
+    'Auto and ATV',
+    'Horseback Riding']);
+
 export default class ParkDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -65,6 +93,7 @@ export default class ParkDetails extends React.Component {
       return;
     }
     const { name, wikiImage, description } = this.state.results;
+    const activityList = this.state.results.activities.filter(activity => activities.has(activity.name));
     return (
       <Container>
         <Row>
@@ -79,15 +108,14 @@ export default class ParkDetails extends React.Component {
         </Row>
         <Accordion defaultActiveKey="0">
           <Accordion.Item eventKey="0">
-            <Accordion.Header>Accordion Item #1</Accordion.Header>
+            <Accordion.Header>
+              <span className='fa-solid fa-person-biking' /> Popular Activities </Accordion.Header>
             <Accordion.Body>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-              minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum.
+              <ol>
+                {
+                  activityList.map(activity => <li key={activity.name}>{activity.name}</li>)
+                }
+              </ol>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="1">
