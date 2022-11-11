@@ -93,7 +93,7 @@ export default class ParkDetails extends React.Component {
       return;
     }
     const park = this.state.results;
-    const { name, wikiImage, description } = park;
+    const { name, wikiImage, description, weatherInfo } = park;
     const address =
       `${park.addresses[0].line1}
       ${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
@@ -155,6 +155,14 @@ export default class ParkDetails extends React.Component {
             <Accordion.Body>
               Entrance Fees:
               {entranceFees}
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="3">
+            <Accordion.Header>
+              <span className='fa-solid fa-cloud-sun' /> Weather Information
+            </Accordion.Header>
+            <Accordion.Body>
+              {weatherInfo}
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
