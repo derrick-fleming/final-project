@@ -50,10 +50,11 @@ export default class App extends React.Component {
         </>
       );
     } else if (this.state.route.path === 'details') {
+      const park = this.state.route.params.get('park');
       return (
         <>
           <NavigationBar />
-          <SearchResults />
+          <SearchResults park={park}/>
         </>
       );
     }

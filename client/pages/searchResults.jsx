@@ -109,7 +109,7 @@ export default class SearchResult extends React.Component {
     if (this.state.isLoading === true) {
       return null;
     }
-    if (parseRoute(window.location.hash).path === 'details') {
+    if (this.props.park) {
       const park = parseRoute(window.location.hash).params.get('park');
       const details = this.state.results.data.find(location => location.parkCode === park);
       return <ParkDetails info={details} />;
