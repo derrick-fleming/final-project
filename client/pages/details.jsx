@@ -51,7 +51,7 @@ export default class ParkDetails extends React.Component {
           .all(imageFetches)
           .then(results => {
             this.setState({
-              results: states,
+              results: states.data[0],
               isLoading: false
             });
           });
@@ -60,10 +60,10 @@ export default class ParkDetails extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading || !this.state.isLoading) {
+    if (this.state.isLoading) {
       return;
     }
-    const { name, wikiImage, description } = this.props.info;
+    const { name, wikiImage, description } = this.state.results;
     return (
       <Container>
         <Row>
