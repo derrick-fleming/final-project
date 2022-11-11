@@ -23,10 +23,11 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.route.path === '' || this.state.route.path === 'home') {
+      const browse = this.state.route.params.get('browse');
       return (
         <>
           <NavigationBar />
-          <Home />
+          <Home browse={browse}/>
         </>
       );
     }

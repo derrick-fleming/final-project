@@ -97,6 +97,7 @@ export default class Home extends React.Component {
       show: false,
       selection: ''
     });
+    window.location.hash = '#home';
   }
 
   handleShow(event) {
@@ -105,8 +106,37 @@ export default class Home extends React.Component {
         show: true,
         selection: 'states'
       });
+    } else if (event.target.id === 'activities') {
+      this.setState({
+        show: true,
+        selection: 'activities'
+      });
     }
-    if (event.target.id === 'activities') {
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.browse !== this.props.browse) {
+      if (this.props.browse === 'states') {
+        this.setState({
+          show: true,
+          selection: 'states'
+        });
+      } else if (this.props.browse === 'activities') {
+        this.setState({
+          show: true,
+          selection: 'activities'
+        });
+      }
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.browse === 'states') {
+      this.setState({
+        show: true,
+        selection: 'states'
+      });
+    } else if (this.props.browse === 'activities') {
       this.setState({
         show: true,
         selection: 'activities'

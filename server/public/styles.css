@@ -23,7 +23,6 @@ html,
 
 .nav-title {
   font-family: "Grand Hotel", sans-serif;
-  font-size: 32px;
   text-decoration: none;
 }
 
@@ -35,6 +34,15 @@ html,
   background-color: #2e7d3280;
   color: #ffff;
   border: none;
+}
+
+.nav-icon {
+  color: #c1d3c5;
+  transition: color 0.25s ease-in-out;
+}
+
+.nav-icon:hover {
+  color: #fff;
 }
 
 .btn-success:hover {
@@ -86,6 +94,16 @@ html,
 .go-back:hover {
   cursor: pointer;
   color: #117c8d;
+}
+
+.dropdown-menu {
+  --bs-dropdown-link-active-bg: #779f7d;
+  --bs-dropdown-link-hover-bg: #cbdfcc;
+  --bs-dropdown-link-color: #454d55;
+}
+
+.offcanvas.offcanvas-end {
+  width: 60%;
 }
 
 @media screen and (min-width: 768px) {

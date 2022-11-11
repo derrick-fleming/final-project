@@ -3,6 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import Nav from 'react-bootstrap/Nav';
 
 export default class NavigationBar extends React.Component {
   constructor(props) {
@@ -48,25 +51,51 @@ export default class NavigationBar extends React.Component {
     return (
       <Navbar variant="dark" expand={expand} className="p-0 mb-3 search-green">
         <Container fluid='xl' className="flex-nowrap">
-          <a className="text-white nav-title" href="#home">Parks</a>
+          <a className="pe-5 text-white nav-title fs-1" href="#home">Parks</a>
+          <Navbar.Offcanvas
+            id={`offcanvasNavbar-expand-${expand}`}
+            aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+            placement="end"
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title className='gray-scale merriweather fs-2' id={`offcanvasNavbarLabel-expand-${expand}`}>
+                Menu
+              </Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Nav className="justify-content-start flex-grow-1 pe-3">
+                <Nav.Link className='merriweather fs-6' href="#home">Home</Nav.Link>
+                <NavDropdown className='merriweather fs-6'
+                  title="Browse"
+                  id={`offcanvasNavbarDropdown-expand-${expand}`}
+                >
+                  <NavDropdown.Item href="#home?browse=states">Browse States</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#home?browse=activities">
+                    Browse Activities
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
           <div className='d-flex'>
+            <Navbar.Toggle className='border-0 px-1' aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Form className={buttonClass} onSubmit={this.handleSubmit}>
               <Form.Control
                 type="search"
                 placeholder="Search"
-                className="me-2"
+                className="me-1"
                 aria-label="Search"
                 onChange={this.handleChange}
               />
               <Button variant="outline-light" onClick={this.handleSubmit} className='nav-search open-sans'>Search</Button>
             </Form>
-            <button className='navbar-toggler border-0 text-white open-sans' onClick={this.revealSearch}>
+            <button className='navbar-toggler border-0 text-white open-sans px-1' onClick={this.revealSearch}>
               <span>
-                <i className={`fa-solid ${iconClass}`} />
+                <i className={`fa-solid ${iconClass} nav-icon`} />
               </span>
             </button>
           </div>
-
         </Container>
       </Navbar>
     );
