@@ -101,6 +101,15 @@ export default class ParkDetails extends React.Component {
     const longitude = park.longitude;
     const apiKey = process.env.GOOGLE_API;
     const mapLink = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&markers=|${latitude},${longitude}&zoom=12&size=400x400&key=${apiKey}`;
+    const entranceFees = park.entranceFees.map((fee, index) => {
+      return (
+        <div key={index}>
+          <p>${fee.cost}</p>
+          <p>{fee.title}</p>
+          <p>{fee.description}</p>
+        </div>
+      );
+    });
     const activityList = this.state.results.activities.filter(activity => activities.has(activity.name));
     return (
       <Container>
@@ -137,6 +146,15 @@ export default class ParkDetails extends React.Component {
               <img className='static-map' src={mapLink} />
               <br />
               {park.directionsInfo}
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="2">
+            <Accordion.Header>
+              <span className='fa-solid fa-hand-holding-dollar' /> Fees
+            </Accordion.Header>
+            <Accordion.Body>
+              Entrance Fees:
+              {entranceFees}
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
