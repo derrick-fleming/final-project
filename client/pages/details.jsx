@@ -97,6 +97,10 @@ export default class ParkDetails extends React.Component {
     const address =
       `${park.addresses[0].line1}
       ${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
+    const latitude = park.latitude;
+    const longitude = park.longitude;
+    const apiKey = process.env.GOOGLE_API;
+    const mapLink = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&markers=|${latitude},${longitude}&zoom=12&size=400x400&key=${apiKey}`;
     const activityList = this.state.results.activities.filter(activity => activities.has(activity.name));
     return (
       <Container>
@@ -130,6 +134,7 @@ export default class ParkDetails extends React.Component {
             <Accordion.Body>
               {address}
               <br />
+              <img className='static-map' src={mapLink} />
               <br />
               {park.directionsInfo}
             </Accordion.Body>

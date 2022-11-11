@@ -118,6 +118,10 @@ html,
   --bs-pagination-active-bg: #779f7d;
 }
 
+.static-map {
+  width: 100%;
+}
+
 @media screen and (min-width: 768px) {
   .go-back {
     font-size: 1.25rem;
