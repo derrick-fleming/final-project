@@ -4,6 +4,7 @@ import SearchResults from './pages/searchResults';
 import Home from './pages/home';
 import NavigationBar from './components/navigationBar';
 import SearchBar from './components/searchBar';
+import ParkDetails from './pages/details';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -54,7 +55,7 @@ export default class App extends React.Component {
       return (
         <>
           <NavigationBar />
-          <SearchResults park={park}/>
+          <ParkDetails search={park} />
         </>
       );
     }

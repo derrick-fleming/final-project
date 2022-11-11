@@ -5,8 +5,6 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import GoogleMaps from '../components/googleMaps';
 import Pagination from 'react-bootstrap/Pagination';
-import parseRoute from '../lib/parse-route';
-import ParkDetails from './details';
 
 const activities = new Set(['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours']);
 const activitiesOrder = {
@@ -61,6 +59,7 @@ export default class SearchResult extends React.Component {
   }
 
   fetchData() {
+
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
     let action = 'q=';
@@ -71,8 +70,8 @@ export default class SearchResult extends React.Component {
     if (this.props.page !== null) {
       start = ((Number(this.state.active) * 50) - 50);
     }
-    let link = `https://developer.nps.gov/api/v1/parks?${action}${search}&start=${start}&api_key=${parkKey}`;
-    link = '/get-parks-results.json';
+    const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&start=${start}&api_key=${parkKey}`;
+    // link = '/get-parks-results.json';
     fetch(link)
       .then(response => response.json())
       .then(states => {
@@ -108,11 +107,6 @@ export default class SearchResult extends React.Component {
   render() {
     if (this.state.isLoading === true) {
       return null;
-    }
-    if (this.props.park) {
-      const park = parseRoute(window.location.hash).params.get('park');
-      const details = this.state.results.data.find(location => location.parkCode === park);
-      return <ParkDetails info={details} />;
     }
 
     const maxResults = this.state.results.total;
