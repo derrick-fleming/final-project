@@ -69,7 +69,8 @@ export default class SearchResult extends React.Component {
     if (this.props.page !== null) {
       start = ((Number(this.state.active) * 50) - 50);
     }
-    const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&start=${start}&api_key=${parkKey}`;
+    let link = `https://developer.nps.gov/api/v1/parks?${action}${search}&start=${start}&api_key=${parkKey}`;
+    link = '/get-parks-results.json';
     fetch(link)
       .then(response => response.json())
       .then(states => {
@@ -187,6 +188,7 @@ export default class SearchResult extends React.Component {
                             <Card.Text className='m-0 gold fw-bold pb-2'>
                               {address}
                             </Card.Text>
+                            <a className='btn btn-success merriweather lh-lg my-2'>Learn More</a>
                           </Card.Body>
                         </Card>
                       </Row>
