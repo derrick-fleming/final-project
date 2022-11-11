@@ -5,6 +5,8 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import GoogleMaps from '../components/googleMaps';
 import Pagination from 'react-bootstrap/Pagination';
+import parseRoute from '../lib/parse-route';
+import ParkDetails from './details';
 
 const activities = new Set(['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours']);
 const activitiesOrder = {
@@ -107,6 +109,11 @@ export default class SearchResult extends React.Component {
     if (this.state.isLoading === true) {
       return null;
     }
+    if (parseRoute(window.location.hash).path === 'details') {
+      const park = parseRoute(window.location.hash).params.get('park');
+      return <ParkDetails info={park} />;
+    }
+
     const maxResults = this.state.results.total;
     let results = `${maxResults} search results found.`;
     if (this.state.results.length === 0) {
@@ -139,7 +146,6 @@ export default class SearchResult extends React.Component {
           <br />
         </div>;
     }
-
     return (
       <Container fluid='xl' className='p-4'>
         <Row className='justify-content-between'>
@@ -188,7 +194,7 @@ export default class SearchResult extends React.Component {
                             <Card.Text className='m-0 gold fw-bold pb-2'>
                               {address}
                             </Card.Text>
-                            <a href={`#details/park=${parkCode}`} className='btn btn-success merriweather lh-lg my-2'>Learn More</a>
+                            <a href={`#details?park=${parkCode}`} className='btn btn-success merriweather lh-lg my-2'>Learn More</a>
                           </Card.Body>
                         </Card>
                       </Row>

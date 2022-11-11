@@ -49,6 +49,13 @@ export default class App extends React.Component {
           <SearchResults search={search} action='states' />
         </>
       );
+    } else if (this.state.route.path === 'details') {
+      return (
+        <>
+          <NavigationBar />
+          <SearchResults />
+        </>
+      );
     }
 
   }
