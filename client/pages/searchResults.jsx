@@ -111,7 +111,8 @@ export default class SearchResult extends React.Component {
     }
     if (parseRoute(window.location.hash).path === 'details') {
       const park = parseRoute(window.location.hash).params.get('park');
-      return <ParkDetails info={park} />;
+      const details = this.state.results.data.find(location => location.parkCode === park);
+      return <ParkDetails info={details} />;
     }
 
     const maxResults = this.state.results.total;
