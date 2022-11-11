@@ -143,12 +143,12 @@ export default class SearchResult extends React.Component {
       <Container fluid='xl' className='p-4'>
         <Row className='justify-content-between'>
           <Col xs={10}>
-            <h4 className='pt-2 pb-0 merriweather m-0'>
+            <h4 className='pt-2 pb-0 merriweather fw-light m-0'>
               {results}
             </h4>
-            <h5 className='pt-0 open-sans gold fw-bold'>
+            <h6 className='pt-0 open-sans gold fw-bold'>
               {viewingResults}
-            </h5>
+            </h6>
           </Col>
           <Col xs={2} className='pt-2 px-1 text-end'>
             <a className='go-back text-decoration-none open-sans' onClick={this.handleClick}>
