@@ -32,11 +32,12 @@ export default class App extends React.Component {
     }
     if (this.state.route.path === 'search-results') {
       const search = this.state.route.params.get('search');
+      const page = this.state.route.params.get('page');
       return (
         <>
           <NavigationBar />
           <SearchBar />
-          <SearchResults search={search} action='search' />
+          <SearchResults search={search} action='search' page={page}/>
         </>
       );
     } else if (this.state.route.path === 'state-results') {
