@@ -188,7 +188,7 @@ export default class SearchResult extends React.Component {
                             <Card.Text className='m-0 gold fw-bold pb-2'>
                               {address}
                             </Card.Text>
-                            <a className='btn btn-success merriweather lh-lg my-2'>Learn More</a>
+                            <a href={`#details/park=${parkCode}`} className='btn btn-success merriweather lh-lg my-2'>Learn More</a>
                           </Card.Body>
                         </Card>
                       </Row>
