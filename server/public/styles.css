@@ -106,6 +106,15 @@ html,
   width: 60%;
 }
 
+.pagination {
+  --bs-pagination-color: #454d55;
+  --bs-pagination-hover-color: #4c6550;
+  --bs-pagination-hover-bg: #cbdfcc;
+  --bs-pagination-active-color: #fff;
+  --bs-pagination-active-border-color: #779f7d;
+  --bs-pagination-active-bg: #779f7d;
+}
+
 @media screen and (min-width: 768px) {
   .go-back {
     font-size: 1.25rem;
