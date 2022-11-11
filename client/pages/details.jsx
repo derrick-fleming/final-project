@@ -92,7 +92,11 @@ export default class ParkDetails extends React.Component {
     if (this.state.isLoading) {
       return;
     }
-    const { name, wikiImage, description } = this.state.results;
+    const park = this.state.results;
+    const { name, wikiImage, description } = park;
+    const address =
+      `${park.addresses[0].line1}
+      ${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
     const activityList = this.state.results.activities.filter(activity => activities.has(activity.name));
     return (
       <Container>
@@ -109,7 +113,8 @@ export default class ParkDetails extends React.Component {
         <Accordion defaultActiveKey="0">
           <Accordion.Item eventKey="0">
             <Accordion.Header>
-              <span className='fa-solid fa-person-biking' /> Popular Activities </Accordion.Header>
+              <span className='fa-solid fa-person-biking' /> Popular Activities
+            </Accordion.Header>
             <Accordion.Body>
               <ol>
                 {
@@ -119,15 +124,14 @@ export default class ParkDetails extends React.Component {
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="1">
-            <Accordion.Header>Accordion Item #2</Accordion.Header>
+            <Accordion.Header>
+              <span className='fa-solid fa-map-location-dot' /> Address & Directions
+            </Accordion.Header>
             <Accordion.Body>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-              minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum.
+              {address}
+              <br />
+              <br />
+              {park.directionsInfo}
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
