@@ -96,8 +96,9 @@ export default class ParkDetails extends React.Component {
     }
     const park = this.state.results;
     const { name, wikiImage, description, weatherInfo } = park;
-    const address = `${park.addresses[0].line1}
-${park.addresses[0].city}, ${park.addresses[0].stateCode} ${park.addresses[0].postalCode}`;
+    const address1 = `${park.addresses[0].line1}`;
+    const address2 = `${park.addresses[0].city}, ${park.addresses[0].stateCode} ${park.addresses[0].postalCode}`;
+
     const entranceFees = park.entranceFees.map((fee, index) => {
       return (
         <div key={index}>
@@ -159,11 +160,14 @@ ${park.addresses[0].city}, ${park.addresses[0].stateCode} ${park.addresses[0].po
                   <h6 className='mb-0 merriweather'><span className='fa-solid fa-map-location-dot pe-2' /> Address & Directions </h6>
                 </Accordion.Header>
                 <Accordion.Body className="large-screen-spacing">
-                  <p className='mb-2'>
-                    {address}
+                  <p className='mb-0 fst-italic'>
+                    {address1}
                   </p>
-                  <SinglePointMap results={this.state.results}/>
-                  <p className="description-text fw-light">
+                  <p className='mb-3 fst-italic'>
+                    {address2}
+                  </p>
+                  <SinglePointMap results={this.state.results} />
+                  <p className="description-text fw-light pt-4">
                     {park.directionsInfo}
                   </p>
                 </Accordion.Body>
