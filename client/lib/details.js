@@ -1,0 +1,28 @@
+const activities = new Set(
+  ['Astronomy',
+    'Biking',
+    'Hiking',
+    'Camping',
+    'Birdwatching',
+    'Museum Exhibits',
+    'Fishing',
+    'Scenic Driving',
+    'Kayaking',
+    'Boating',
+    'Guided Tours',
+    'Arts and Culture',
+    'Sailing',
+    'RV Camping',
+    'Climbing',
+    'Dining',
+    'Hunting',
+    'Skiing',
+    'Water Skiing',
+    'Snowmobiling',
+    'Shopping',
+    'Wildlife Watching',
+    'Junior Ranger Program',
+    'Auto and ATV',
+    'Horseback Riding']);
+
+module.exports = activities;

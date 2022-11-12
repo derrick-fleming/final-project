@@ -4,33 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Accordion from 'react-bootstrap/Accordion';
 import Col from 'react-bootstrap/Col';
 import SinglePointMap from '../components/oneLocationMap';
-
-const activities = new Set(
-  ['Astronomy',
-    'Biking',
-    'Hiking',
-    'Camping',
-    'Birdwatching',
-    'Museum Exhibits',
-    'Fishing',
-    'Scenic Driving',
-    'Kayaking',
-    'Boating',
-    'Guided Tours',
-    'Arts and Culture',
-    'Sailing',
-    'RV Camping',
-    'Climbing',
-    'Dining',
-    'Hunting',
-    'Skiing',
-    'Water Skiing',
-    'Snowmobiling',
-    'Shopping',
-    'Wildlife Watching',
-    'Junior Ranger Program',
-    'Auto and ATV',
-    'Horseback Riding']);
+import activities from '../lib/details';
 
 export default class ParkDetails extends React.Component {
   constructor(props) {
@@ -124,7 +98,7 @@ export default class ParkDetails extends React.Component {
               <h2 className=' merriweather fw-bold'>{name}</h2>
             </Col>
             <Col xs={3} className='text-end'>
-              <a className='open-sans go-back text-decoration-none fw-bold fs-6' onClick={this.goBack}>Go Back</a>
+              <a className='open-sans go-back text-decoration-none fw-bold' onClick={this.goBack}>Go Back</a>
             </Col>
           </Row>
           <Row className='justify-content-center large-screen-spacing'>
