@@ -103,7 +103,7 @@ export default class ParkDetails extends React.Component {
       return (
         <div key={index}>
           <hr />
-          <p className='fw-bold m-0 pb-0'>${fee.cost}</p>
+          <p className='fw-bold m-0'>${fee.cost}</p>
           <p className='fst-italic'>{fee.title}</p>
           <p className='fw-light'>{fee.description}</p>
         </div>
@@ -114,7 +114,7 @@ export default class ParkDetails extends React.Component {
 
     return (
       <>
-        <div className='mb-4 position-relative hero-background'>
+        <div className='mb-4 position-relative hero-background text-center'>
           <img src='images/lake.png' alt='Mountain view with lake' className='hero-image' />
           <h2 className='merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-info-circle pe-2' />Park Info</h2>
         </div>
@@ -171,7 +171,7 @@ export default class ParkDetails extends React.Component {
                     <p className='mb-3 fst-italic'>
                       {address2}
                     </p>
-                    <SinglePointMap results={this.state.results} />
+                    <SinglePointMap className='google-map' results={this.state.results} />
                     <p className="description-text fw-light pt-4">
                       {park.directionsInfo}
                     </p>
