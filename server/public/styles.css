@@ -126,6 +126,8 @@ html,
 
 .static-map {
   width: 100%;
+  margin: 0;
+  height: 251px;
 }
 
 .description-text {
@@ -136,40 +138,42 @@ html,
   --bs-accordion-active-color: #000;
   --bs-accordion-active-bg: #cbdfcc;
   --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-}
+  --bs-accordion-btn-focus-border-color: #779f7d;
+  --bs-accordion-btn-focus-box-shadow: #4c6550;
 
-@media screen and (min-width: 768px) {
-  .image-details {
-    max-width: 310px;
+  @media screen and (min-width: 768px) {
+    .image-details {
+      max-width: 310px;
+    }
+
+    .go-back {
+      font-size: 1.25rem;
+    }
+
+    .search-hide {
+      display: flex;
+    }
+
+    .google-map {
+      height: 55vh;
+    }
+
+    .info-window {
+      font-size: 1rem;
+    }
+
+    .info-title {
+      font-size: 1.2rem;
+    }
   }
 
-  .go-back {
-    font-size: 1.25rem;
-  }
+  @media screen and (min-width: 992px) {
+    .image-size {
+      height: 261px;
+    }
 
-  .search-hide {
-    display: flex;
-  }
-
-  .google-map {
-    height: 55vh;
-  }
-
-  .info-window {
-    font-size: 1rem;
-  }
-
-  .info-title {
-    font-size: 1.2rem;
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .image-size {
-    height: 261px;
-  }
-
-  .card-width {
-    width: 26.188rem;
+    .card-width {
+      width: 26.188rem;
+    }
   }
 }

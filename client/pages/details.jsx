@@ -96,26 +96,27 @@ export default class ParkDetails extends React.Component {
     }
     const park = this.state.results;
     const { name, wikiImage, description, weatherInfo } = park;
-    const address =
-      `${park.addresses[0].line1}
-      ${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
-    // const latitude = park.latitude;
-    // const longitude = park.longitude;
-    // const apiKey = process.env.GOOGLE_API;
-    // const mapLink = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&markers=|${latitude},${longitude}&zoom=12&size=400x400&key=${apiKey}`;
+    const address = `${park.addresses[0].line1}
+${park.addresses[0].city}, ${park.addresses[0].stateCode} ${park.addresses[0].postalCode}`;
+    const latitude = park.latitude;
+    const longitude = park.longitude;
+    const apiKey = process.env.GOOGLE_API;
+    const mapLink = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&markers=|${latitude},${longitude}&zoom=9&size=400x400&key=${apiKey}`;
     const entranceFees = park.entranceFees.map((fee, index) => {
       return (
         <div key={index}>
-          <p>${fee.cost}</p>
-          <p>{fee.title}</p>
-          <p>{fee.description}</p>
+          <hr />
+          <p className='fw-bold m-0 pb-0'>${fee.cost}</p>
+          <p className='fst-italic'>{fee.title}</p>
+          <p className='fw-light'>{fee.description}</p>
         </div>
       );
     });
     const activityList = this.state.results.activities.filter(activity => activities.has(activity.name));
+
     return (
-      <Container p-2>
-        <Row>
+      <Container>
+        <Row className='mb-2'>
           <Col xs={9}>
             <h2 className='px-2 merriweather fs-bold'>{name}</h2>
           </Col>
@@ -139,15 +140,16 @@ export default class ParkDetails extends React.Component {
           </Col>
         </Row>
         <Col>
-          <Accordion className='open-sans mb-2' defaultActiveKey="0">
+          <Accordion className='open-sans mb-2'>
             <Accordion.Item eventKey="0">
-              <Accordion.Header>
+              <Accordion.Header className='fw-bold'>
                 <span className='fa-solid fa-person-biking pe-2' /> Popular Activities
               </Accordion.Header>
               <Accordion.Body>
+                <p className='fw-bold'>Here are some popular activities:</p>
                 <ol>
                   {
-                    activityList.map(activity => <li key={activity.name}>{activity.name}</li>)
+                    activityList.map(activity => <li key={activity.name} className='fw-light'>{activity.name}</li>)
                   }
                 </ol>
               </Accordion.Body>
@@ -156,12 +158,14 @@ export default class ParkDetails extends React.Component {
               <Accordion.Header>
                 <span className='fa-solid fa-map-location-dot pe-2' /> Address & Directions
               </Accordion.Header>
-              <Accordion.Body>
-                {address}
-                <br />
-                <img className='static-map' src='images/beach.png' />
-                <br />
-                {park.directionsInfo}
+              <Accordion.Body className="p-0">
+                <p className='p-4 mb-0'>
+                  {address}
+                </p>
+                <img className='static-map' src={mapLink} />
+                <p className="p-4 description-text fw-light">
+                  {park.directionsInfo}
+                </p>
               </Accordion.Body>
             </Accordion.Item>
             <Accordion.Item eventKey="2">
@@ -177,7 +181,7 @@ export default class ParkDetails extends React.Component {
               <Accordion.Header>
                 <span className='fa-solid fa-cloud-sun pe-2' /> Weather Information
               </Accordion.Header>
-              <Accordion.Body>
+              <Accordion.Body className='fw-light descriptive-text'>
                 {weatherInfo}
               </Accordion.Body>
             </Accordion.Item>
