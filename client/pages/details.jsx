@@ -113,36 +113,41 @@ export default class ParkDetails extends React.Component {
     activityList.sort((a, b) => a.name.localeCompare(b.name));
 
     return (
-      <Container>
-        <Row className='mb-2 large-screen-spacing justify-content-center'>
-          <Col xs={9} xl={8}>
-            <h2 className=' merriweather fw-bold'>{name}</h2>
-          </Col>
-          <Col xs={3} className='text-end'>
-            <a className='open-sans go-back text-decoration-none fw-bold fs-6' onClick={this.goBack}>Go Back</a>
-          </Col>
-        </Row>
-        <Row className='justify-content-center large-screen-spacing'>
-          <Col xs={12} md={6} xl={5}>
-            <img className='shadow-sm p-0 rounded image-details mt-1 mb-3' src={wikiImage} alt={name} />
-          </Col>
-          <Col xs={12} md={6}>
-            <h3 className='px-1 merriweather fw-bold'> Description </h3>
-            <p className='p-1 description-text fw-light fs-6'>{description}</p>
-          </Col>
-        </Row>
-        <Row className='justify-content-center'>
-          <Col xs={12} xl={11}>
-            <Accordion className='open-sans mb-2 large-screen-spacing'>
-              <Accordion.Item eventKey="0">
-                <Accordion.Header>
-                  <h6 className='mb-0 merriweather'><span className='fa-solid fa-person-biking pe-2' /> Popular Activities </h6>
-                </Accordion.Header>
-                <Accordion.Body className='large-screen-spacing'>
-                  <p className='fst-italic'>Here are some popular activities:</p>
-                  <ul className>
-                    <Row>
-                      {
+      <>
+        <div className='mb-4 position-relative hero-background'>
+          <img src='images/lake.png' alt='Mountain view with lake' className='hero-image' />
+          <h2 className='merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-info-circle pe-2' />Park Info</h2>
+        </div>
+        <Container>
+          <Row className='mb-2 large-screen-spacing justify-content-center'>
+            <Col xs={9} xl={8}>
+              <h2 className=' merriweather fw-bold'>{name}</h2>
+            </Col>
+            <Col xs={3} className='text-end'>
+              <a className='open-sans go-back text-decoration-none fw-bold fs-6' onClick={this.goBack}>Go Back</a>
+            </Col>
+          </Row>
+          <Row className='justify-content-center large-screen-spacing'>
+            <Col xs={12} md={6} xl={5}>
+              <img className='shadow-sm p-0 rounded image-details mt-1 mb-3' src={wikiImage} alt={name} />
+            </Col>
+            <Col xs={12} md={6}>
+              <h3 className='px-1 merriweather fw-bold'> Description </h3>
+              <p className='p-1 description-text fw-light fs-6'>{description}</p>
+            </Col>
+          </Row>
+          <Row className='justify-content-center mb-4'>
+            <Col xs={12} xl={11}>
+              <Accordion className='open-sans large-screen-spacing'>
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>
+                    <h6 className='mb-0 merriweather'><span className='fa-solid fa-person-biking pe-2' /> Popular Activities </h6>
+                  </Accordion.Header>
+                  <Accordion.Body className='large-screen-spacing'>
+                    <p className='fst-italic'>Here are some popular activities:</p>
+                    <ul className>
+                      <Row>
+                        {
                       activityList.map(activity => {
                         return (
                           <Col key={activity.name} xs={12} md={6} xl={4}>
@@ -151,48 +156,49 @@ export default class ParkDetails extends React.Component {
                         );
                       })
                     }
-                    </Row>
-                  </ul>
-                </Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item eventKey="1">
-                <Accordion.Header>
-                  <h6 className='mb-0 merriweather'><span className='fa-solid fa-map-location-dot pe-2' /> Address & Directions </h6>
-                </Accordion.Header>
-                <Accordion.Body className="large-screen-spacing">
-                  <p className='mb-0 fst-italic'>
-                    {address1}
-                  </p>
-                  <p className='mb-3 fst-italic'>
-                    {address2}
-                  </p>
-                  <SinglePointMap results={this.state.results} />
-                  <p className="description-text fw-light pt-4">
-                    {park.directionsInfo}
-                  </p>
-                </Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item eventKey="2">
-                <Accordion.Header>
-                  <h6 className='mb-0 merriweather'><span className='fa-solid fa-hand-holding-dollar pe-2' /> Fees </h6>
-                </Accordion.Header>
-                <Accordion.Body className='large-screen-spacing'>
-                  Entrance Fees:
-                  {entranceFees}
-                </Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item eventKey="3">
-                <Accordion.Header>
-                  <h6 className='mb-0 merriweather'><span className='fa-solid fa-cloud-sun pe-2' /> Weather Information </h6>
-                </Accordion.Header>
-                <Accordion.Body className='fw-light description-text large-screen-spacing'>
-                  {weatherInfo}
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
-          </Col>
-        </Row>
-      </Container>
+                      </Row>
+                    </ul>
+                  </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>
+                    <h6 className='mb-0 merriweather'><span className='fa-solid fa-map-location-dot pe-2' /> Address & Directions </h6>
+                  </Accordion.Header>
+                  <Accordion.Body className="large-screen-spacing">
+                    <p className='mb-0 fst-italic'>
+                      {address1}
+                    </p>
+                    <p className='mb-3 fst-italic'>
+                      {address2}
+                    </p>
+                    <SinglePointMap results={this.state.results} />
+                    <p className="description-text fw-light pt-4">
+                      {park.directionsInfo}
+                    </p>
+                  </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="2">
+                  <Accordion.Header>
+                    <h6 className='mb-0 merriweather'><span className='fa-solid fa-hand-holding-dollar pe-2' /> Fees </h6>
+                  </Accordion.Header>
+                  <Accordion.Body className='large-screen-spacing'>
+                    Entrance Fees:
+                    {entranceFees}
+                  </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="3">
+                  <Accordion.Header>
+                    <h6 className='mb-0 merriweather'><span className='fa-solid fa-cloud-sun pe-2' /> Weather Information </h6>
+                  </Accordion.Header>
+                  <Accordion.Body className='fw-light description-text large-screen-spacing'>
+                    {weatherInfo}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+            </Col>
+          </Row>
+        </Container>
+      </>
     );
   }
 }
