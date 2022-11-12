@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Accordion from 'react-bootstrap/Accordion';
 import Col from 'react-bootstrap/Col';
+import SinglePointMap from '../components/oneLocationMap';
 
 const activities = new Set(
   ['Astronomy',
@@ -28,7 +29,6 @@ const activities = new Set(
     'Shopping',
     'Wildlife Watching',
     'Junior Ranger Program',
-    'Car or Front Country Camping',
     'Auto and ATV',
     'Horseback Riding']);
 
@@ -98,10 +98,6 @@ export default class ParkDetails extends React.Component {
     const { name, wikiImage, description, weatherInfo } = park;
     const address = `${park.addresses[0].line1}
 ${park.addresses[0].city}, ${park.addresses[0].stateCode} ${park.addresses[0].postalCode}`;
-    const latitude = park.latitude;
-    const longitude = park.longitude;
-    const apiKey = process.env.GOOGLE_API;
-    const mapLink = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&markers=|${latitude},${longitude}&zoom=9&size=400x400&key=${apiKey}`;
     const entranceFees = park.entranceFees.map((fee, index) => {
       return (
         <div key={index}>
@@ -113,80 +109,85 @@ ${park.addresses[0].city}, ${park.addresses[0].stateCode} ${park.addresses[0].po
       );
     });
     const activityList = this.state.results.activities.filter(activity => activities.has(activity.name));
+    activityList.sort((a, b) => a.name.localeCompare(b.name));
 
     return (
       <Container>
-        <Row className='mb-2'>
-          <Col xs={9}>
-            <h2 className='px-2 merriweather fs-bold'>{name}</h2>
+        <Row className='mb-2 large-screen-spacing justify-content-center'>
+          <Col xs={9} xl={8}>
+            <h2 className=' merriweather fw-bold'>{name}</h2>
           </Col>
-          <Col xs={3}>
-            <a className='open-sans go-back text-decoration-none fs-bolder' onClick={this.goBack}>Go Back</a>
+          <Col xs={3} className='text-end'>
+            <a className='open-sans go-back text-decoration-none fw-bold fs-6' onClick={this.goBack}>Go Back</a>
+          </Col>
+        </Row>
+        <Row className='justify-content-center large-screen-spacing'>
+          <Col xs={12} md={6} xl={5}>
+            <img className='shadow-sm p-0 rounded image-details mt-1 mb-3' src={wikiImage} alt={name} />
+          </Col>
+          <Col xs={12} md={6}>
+            <h3 className='px-1 merriweather fw-bold'> Description </h3>
+            <p className='p-1 description-text fw-light fs-6'>{description}</p>
           </Col>
         </Row>
         <Row className='justify-content-center'>
-          <Col xs={11}>
-            <img className='shadow-sm p-0 rounded image-details mb-3' src={wikiImage} alt={name} />
+          <Col xs={12} xl={11}>
+            <Accordion className='open-sans mb-2 large-screen-spacing'>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>
+                  <h6 className='mb-0 merriweather'><span className='fa-solid fa-person-biking pe-2' /> Popular Activities </h6>
+                </Accordion.Header>
+                <Accordion.Body className='large-screen-spacing'>
+                  <p className='fst-italic'>Here are some popular activities:</p>
+                  <ul className>
+                    <Row>
+                      {
+                      activityList.map(activity => {
+                        return (
+                          <Col key={activity.name} xs={12} md={6} xl={4}>
+                            <li className='fw-light'>{activity.name}</li>
+                          </Col>
+                        );
+                      })
+                    }
+                    </Row>
+                  </ul>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>
+                  <h6 className='mb-0 merriweather'><span className='fa-solid fa-map-location-dot pe-2' /> Address & Directions </h6>
+                </Accordion.Header>
+                <Accordion.Body className="large-screen-spacing">
+                  <p className='mb-2'>
+                    {address}
+                  </p>
+                  <SinglePointMap results={this.state.results}/>
+                  <p className="description-text fw-light">
+                    {park.directionsInfo}
+                  </p>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="2">
+                <Accordion.Header>
+                  <h6 className='mb-0 merriweather'><span className='fa-solid fa-hand-holding-dollar pe-2' /> Fees </h6>
+                </Accordion.Header>
+                <Accordion.Body className='large-screen-spacing'>
+                  Entrance Fees:
+                  {entranceFees}
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="3">
+                <Accordion.Header>
+                  <h6 className='mb-0 merriweather'><span className='fa-solid fa-cloud-sun pe-2' /> Weather Information </h6>
+                </Accordion.Header>
+                <Accordion.Body className='fw-light description-text large-screen-spacing'>
+                  {weatherInfo}
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </Col>
         </Row>
-        <Row>
-          <Col xs={6}>
-            <h3 className='px-2 merriweather fs-bold'> Description </h3>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <p className='p-2 description-text fw-light'>{description}</p>
-          </Col>
-        </Row>
-        <Col>
-          <Accordion className='open-sans mb-2'>
-            <Accordion.Item eventKey="0">
-              <Accordion.Header className='fw-bold'>
-                <span className='fa-solid fa-person-biking pe-2' /> Popular Activities
-              </Accordion.Header>
-              <Accordion.Body>
-                <p className='fw-bold'>Here are some popular activities:</p>
-                <ol>
-                  {
-                    activityList.map(activity => <li key={activity.name} className='fw-light'>{activity.name}</li>)
-                  }
-                </ol>
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="1">
-              <Accordion.Header>
-                <span className='fa-solid fa-map-location-dot pe-2' /> Address & Directions
-              </Accordion.Header>
-              <Accordion.Body className="p-0">
-                <p className='p-4 mb-0'>
-                  {address}
-                </p>
-                <img className='static-map' src={mapLink} />
-                <p className="p-4 description-text fw-light">
-                  {park.directionsInfo}
-                </p>
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="2">
-              <Accordion.Header>
-                <span className='fa-solid fa-hand-holding-dollar pe-2' /> Fees
-              </Accordion.Header>
-              <Accordion.Body>
-                Entrance Fees:
-                {entranceFees}
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="3">
-              <Accordion.Header>
-                <span className='fa-solid fa-cloud-sun pe-2' /> Weather Information
-              </Accordion.Header>
-              <Accordion.Body className='fw-light descriptive-text'>
-                {weatherInfo}
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-        </Col>
       </Container>
     );
   }
