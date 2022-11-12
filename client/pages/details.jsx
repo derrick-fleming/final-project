@@ -30,8 +30,7 @@ export default class ParkDetails extends React.Component {
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
     const action = 'parkCode=';
-    let link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
-    link = '/get-parks-results.json';
+    const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
     fetch(link)
       .then(response => response.json())
       .then(states => {
