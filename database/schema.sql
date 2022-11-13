@@ -11,7 +11,7 @@ CREATE TABLE "public"."accounts" (
 	"accountId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
-	"joinedAt" timestamp with time zone NOT NULL,
+	"joinedAt" timestamp with time zone NOT NULL default now(),
 	CONSTRAINT "accounts_pk" PRIMARY KEY ("accountId")
 ) WITH (
   OIDS=FALSE
@@ -30,7 +30,7 @@ CREATE TABLE "public"."reviews" (
 	"tips" TEXT NOT NULL,
 	"generalThoughts" TEXT,
 	"imageUrl" TEXT,
-	"postedAt" timestamp with time zone NOT NULL,
+	"postedAt" timestamp with time zone NOT NULL default now(),
 	CONSTRAINT "reviews_pk" PRIMARY KEY ("reviewId")
 ) WITH (
   OIDS=FALSE
