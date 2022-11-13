@@ -59,6 +59,7 @@ export default class SearchResult extends React.Component {
   }
 
   fetchData() {
+
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
     let action = 'q=';
@@ -70,6 +71,7 @@ export default class SearchResult extends React.Component {
       start = ((Number(this.state.active) * 50) - 50);
     }
     const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&start=${start}&api_key=${parkKey}`;
+    // link = '/get-parks-results.json';
     fetch(link)
       .then(response => response.json())
       .then(states => {
@@ -106,6 +108,7 @@ export default class SearchResult extends React.Component {
     if (this.state.isLoading === true) {
       return null;
     }
+
     const maxResults = this.state.results.total;
     let results = `${maxResults} search results found.`;
     if (this.state.results.length === 0) {
@@ -138,7 +141,6 @@ export default class SearchResult extends React.Component {
           <br />
         </div>;
     }
-
     return (
       <Container fluid='xl' className='p-4'>
         <Row className='justify-content-between'>
@@ -187,6 +189,7 @@ export default class SearchResult extends React.Component {
                             <Card.Text className='m-0 gold fw-bold pb-2'>
                               {address}
                             </Card.Text>
+                            <a href={`#details?park=${parkCode}`} className='btn btn-success merriweather lh-lg my-2'>Learn More</a>
                           </Card.Body>
                         </Card>
                       </Row>

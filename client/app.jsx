@@ -4,6 +4,7 @@ import SearchResults from './pages/searchResults';
 import Home from './pages/home';
 import NavigationBar from './components/navigationBar';
 import SearchBar from './components/searchBar';
+import ParkDetails from './pages/details';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -47,6 +48,14 @@ export default class App extends React.Component {
         <>
           <NavigationBar />
           <SearchResults search={search} action='states' />
+        </>
+      );
+    } else if (this.state.route.path === 'details') {
+      const park = this.state.route.params.get('park');
+      return (
+        <>
+          <NavigationBar />
+          <ParkDetails search={park} />
         </>
       );
     }
