@@ -1,14 +1,42 @@
 require('dotenv/config');
+const pg = require('pg');
 const express = require('express');
+const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const errorMiddleware = require('./error-middleware');
 
+const db = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
 const app = express();
+const jsonMiddleWare = express.json();
 
 app.use(staticMiddleware);
+app.use(jsonMiddleWare);
 
 app.get('/api/hello', (req, res) => {
   res.json({ hello: 'world' });
+});
+
+app.post('/api/parksCache', (req, res, next) => {
+  const { parkCode, details, stateCode } = req.body;
+  if (!parkCode || !details || !stateCode) {
+    throw new ClientError(400, 'Park information: parkCode, details, and stateCode are required fields');
+  }
+  const sql = `
+    insert into "parksCache" ("parkCode", "details", "stateCode")
+    values ($1, $2, $3)`;
+  const params = [parkCode, details, stateCode];
+  db.query(sql, params)
+    .then(result => {
+      const [park] = result.rows;
+      res.status(201).json(park);
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
