@@ -7,7 +7,7 @@ drop schema "public" cascade;
 
 create schema "public";
 
-CREATE TABLE "public.accounts" (
+CREATE TABLE "public"."accounts" (
 	"accountId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE "public.accounts" (
 
 
 
-CREATE TABLE "public.reviews" (
+CREATE TABLE "public"."reviews" (
 	"reviewId" serial NOT NULL,
 	"accountId" int NOT NULL,
 	"parkCode" TEXT NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE "public.reviews" (
 
 
 
-CREATE TABLE "public.parksCache" (
+CREATE TABLE "public"."parksCache" (
 	"parkCode" TEXT NOT NULL,
 	"details" json NOT NULL,
 	"stateCode" TEXT NOT NULL,
