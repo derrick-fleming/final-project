@@ -39,6 +39,26 @@ app.post('/api/parksCache', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/reviews', (req, res, next) => {
+  const { accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, imageUrl } = req.body;
+  if (!accountId) {
+    throw new ClientError(400, 'User account required to post review');
+  }
+  if (!rating | !datesVisited | !recommendedActivities | !recommendedVisitors | !tips) {
+    throw new ClientError(400, 'Required information missing: rating, dates, activities, visitors, or tips');
+  }
+  const sql = `
+    insert into "reviews" ("accountId", "parkCode", "rating", "datesVisited", "recommendedActivities", "recommendedVisitors", "tips", "generalThoughts", "imageUrl")
+    values ($1, $2, $3, $4, $5, $6, $7, $8, $9) `;
+  const params = [accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, imageUrl];
+  db.query(sql, params)
+    .then(result => {
+      const [review] = result.rows;
+      res.status(201).json(review);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
