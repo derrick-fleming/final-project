@@ -22,6 +22,27 @@ app.get('/api/hello', (req, res) => {
   res.json({ hello: 'world' });
 });
 
+app.get('/api/parksCache/:parkCode', (req, res, next) => {
+  const parkCode = req.params.parkCode;
+  const { accountId } = req.body;
+  if (!parkCode) {
+    throw new ClientError(400, 'Park Code must be provided');
+  }
+  const sql = `
+    select "rating"
+    from "parksCache"
+    join "reviews" using ("parkCode")
+    where "parkCode" = $1
+    and "accountId" = $2`;
+  const params = [parkCode, accountId];
+  db.query(sql, params)
+    .then(result => {
+      const [rating] = result.rows;
+      res.json(rating);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/parksCache', (req, res, next) => {
   const { parkCode, details, stateCode } = req.body;
   if (!parkCode || !details || !stateCode) {
