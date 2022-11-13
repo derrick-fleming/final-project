@@ -38,6 +38,11 @@ app.get('/api/parksCache/:parkCode', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       const [rating] = result.rows;
+      if (!rating) {
+        res.status(404).json({
+          error: `Cannot find park with "parkCode" ${parkCode}`
+        });
+      }
       res.json(rating);
     })
     .catch(err => next(err));
