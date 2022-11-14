@@ -63,25 +63,30 @@ app.post('/api/parksCache', (req, res, next) => {
 });
 
 app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
-  const { accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts } = req.body;
+  // console.log(req.body);
+  const { accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, parkDetails, stateCode } = req.body;
   if (!accountId) {
     throw new ClientError(400, 'User account required to post review');
   }
   if (!rating | !datesVisited | !recommendedActivities | !recommendedVisitors | !tips) {
     throw new ClientError(400, 'Required information missing: rating, dates, activities, visitors, or tips');
   }
+  const dates = `[${datesVisited}]`;
   let url = null;
-  if (req.file.filename !== null) {
+  if (req.file !== undefined) {
     url = `/images/${req.file.filename}`;
   }
   const sql = `
-    insert into "reviews" ("accountId", "parkCode", "rating", "datesVisited", "recommendedActivities", "recommendedVisitors", "tips", "generalThoughts", "imageUrl")
-    values ($1, $2, $3, $4, $5, $6, $7, $8, $9) `;
-  const params = [accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
+  insert into "parksCache" ("parkCode", "details", "stateCode")
+    values ($2, $11, $12)
+  insert into "reviews" ("accountId", "parkCode", "rating", "datesVisited", "recommendedActivities", "recommendedVisitors", "tips", "generalThoughts", "imageUrl")
+    values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+     `;
+  const params = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url, parkDetails, stateCode];
   db.query(sql, params)
     .then(result => {
-      const [review] = result.rows;
-      res.status(201).json(review);
+      // console.log(result.rows);
+      res.status(201);
     })
     .catch(err => next(err));
 });

@@ -18,7 +18,9 @@ export default class ReviewPage extends React.Component {
       activities: [],
       visitors: [],
       tips: '',
-      generalThoughts: ''
+      generalThoughts: '',
+      startDate: '',
+      endDate: ''
     };
     this.fileInputRef = React.createRef();
     this.fetchData = this.fetchData.bind(this);
@@ -67,22 +69,33 @@ export default class ReviewPage extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    const parkDetails = {
+      name: this.state.results.name,
+      imageUrl: this.state.results.wikiImage
+    };
+    const dates = [this.state.startDate, this.state.endDate];
+    let imageUrl = null;
+    if (this.fileInputRef.current.files[0]) {
+      imageUrl = this.fileInputRef.current.files[0];
+    }
     const formData = new FormData();
     formData.append('accountId', 1);
-    formData.append('imageFile', this.fileInputRef.current.files[0]);
+    formData.append('image', imageUrl);
     formData.append('parkCode', this.props.park);
-    formData.append('recommendedAcitivites', this.state.activities);
+    formData.append('recommendedActivities', this.state.activities);
     formData.append('recommendedVisitors', this.state.visitors);
     formData.append('tips', this.state.tips);
     formData.append('generalThoughts', this.state.generalThoughts);
     formData.append('rating', this.state.rating);
+    formData.append('datesVisited', dates);
+    formData.append('stateCode', this.state.results.stateCode);
+    formData.append('parkDetails', JSON.stringify(parkDetails));
     fetch('/api/reviews', {
       method: 'POST',
       body: formData
     })
       .then(response => response.json())
       .then(result => {
-        // console.log(result);
       });
   }
 
@@ -159,11 +172,11 @@ export default class ReviewPage extends React.Component {
             <hr />
             <div>
               <Form.Label htmlFor='start-dates'> Start Date: </Form.Label>
-              <input id='start-dates' type='date'/>
+              <input id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
             </div>
             <div>
               <Form.Label htmlFor='end-dates'> End Date: </Form.Label>
-              <input id='end-dates' type='date' />
+              <input id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
             </div>
           </Form.Group>
           <Form.Group>
@@ -235,3 +248,15 @@ export default class ReviewPage extends React.Component {
     );
   }
 }
+
+/*
+const formData = new FormData();
+formData.append('accountId', 1);
+formData.append('imageFile', this.fileInputRef.current.files[0]);
+formData.append('parkCode', this.props.park);
+formData.append('recommendedAcitivites', this.state.activities);
+formData.append('recommendedVisitors', this.state.visitors);
+formData.append('tips', this.state.tips);
+formData.append('generalThoughts', this.state.generalThoughts);
+formData.append('rating', this.state.rating);
+*/
