@@ -18,6 +18,7 @@ export default class ReviewPage extends React.Component {
       visitors: []
 
     };
+    this.fileInputRef = React.createRef();
     this.fetchData = this.fetchData.bind(this);
     this.handleRating = this.handleRating.bind(this);
     this.handleCheckBox = this.handleCheckBox.bind(this);
@@ -181,7 +182,7 @@ export default class ReviewPage extends React.Component {
             <Form.Text>
               Provide future visitors with tips for a great experience at Devils Postpile
             </Form.Text>
-            <Form.Control required id='tips' name='tips' type='text' onChange={this.handleInputChange}/>
+            <Form.Control required id='tips' name='tips' type='text' value={this.state.tips} onChange={this.handleInputChange}/>
           </Form.Group>
           <Form.Group>
             <Form.Label htmlFor='generalThoughts'>
@@ -190,7 +191,7 @@ export default class ReviewPage extends React.Component {
             <hr />
             <Form.Text>
               Explain your rating or mention other activites someone should know about this park.            </Form.Text>
-            <Form.Control id='generalThoughts' name='generalThoughts' type='text' onChange={this.handleInputChange} />
+            <Form.Control id='generalThoughts' name='generalThoughts' type='text' value={this.state.generalThoughts} onChange={this.handleInputChange} />
           </Form.Group>
           <Form.Group>
             <Form.Label htmlFor='imageUrl'>
@@ -200,7 +201,7 @@ export default class ReviewPage extends React.Component {
             <Form.Text>
               Upload your favorite photos from this park.
             </Form.Text>
-            <Form.Control id='imageUrl' name='imageUrl' type='file' onChange={this.handleInputChange} />
+            <Form.Control id='imageUrl' name='imageUrl' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
           </Form.Group>
         </Form>
       </Container>
