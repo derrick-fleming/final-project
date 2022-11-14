@@ -4,6 +4,7 @@ const express = require('express');
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const errorMiddleware = require('./error-middleware');
+const uploadsMiddleware = require('./uploads-middleware');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -61,18 +62,22 @@ app.post('/api/parksCache', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/reviews', (req, res, next) => {
-  const { accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, imageUrl } = req.body;
+app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
+  const { accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts } = req.body;
   if (!accountId) {
     throw new ClientError(400, 'User account required to post review');
   }
   if (!rating | !datesVisited | !recommendedActivities | !recommendedVisitors | !tips) {
     throw new ClientError(400, 'Required information missing: rating, dates, activities, visitors, or tips');
   }
+  let url = null;
+  if (req.file.filename !== null) {
+    url = `/images/${req.file.filename}`;
+  }
   const sql = `
     insert into "reviews" ("accountId", "parkCode", "rating", "datesVisited", "recommendedActivities", "recommendedVisitors", "tips", "generalThoughts", "imageUrl")
     values ($1, $2, $3, $4, $5, $6, $7, $8, $9) `;
-  const params = [accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, imageUrl];
+  const params = [accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
   db.query(sql, params)
     .then(result => {
       const [review] = result.rows;
