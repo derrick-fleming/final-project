@@ -153,18 +153,18 @@ html,
   transition: all 0.2s ease-in-out;
 }
 
-input:checked ~ label {
+.star-radio input:checked ~ label {
   color: #779f7d;
   -webkit-text-stroke: 2px #779f7d;
 }
 
-input:not(:checked) ~ label:hover,
-input:not(:checked) ~ label:hover ~ label {
+.star-radio input:not(:checked) ~ label:hover,
+.star-radio input:not(:checked) ~ label:hover ~ label {
   color: #779f7d;
   -webkit-text-stroke: 2px #779f7d;
 }
 
-input[type="radio"] {
+.star-radio input[type="radio"] {
   appearance: none;
   background-color: none;
 }
