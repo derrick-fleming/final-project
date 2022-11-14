@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import activities from '../lib/activities';
+import Button from 'react-bootstrap/Button';
 
 const visitors = ['Everyone', 'History Buffs', 'Families', 'Casual Travelers', 'Teens & Adults', 'Outdoor Enthusiasts', 'Nature Lovers'];
 
@@ -15,14 +16,16 @@ export default class ReviewPage extends React.Component {
       isLoading: true,
       rating: '',
       activities: [],
-      visitors: []
-
+      visitors: [],
+      tips: '',
+      generalThoughts: ''
     };
     this.fileInputRef = React.createRef();
     this.fetchData = this.fetchData.bind(this);
     this.handleRating = this.handleRating.bind(this);
     this.handleCheckBox = this.handleCheckBox.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -60,6 +63,27 @@ export default class ReviewPage extends React.Component {
         name: array.splice(index, 1)
       });
     }
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('accountId', 1);
+    formData.append('imageFile', this.fileInputRef.current.files[0]);
+    formData.append('parkCode', this.props.park);
+    formData.append('recommendedAcitivites', this.state.activities);
+    formData.append('recommendedVisitors', this.state.visitors);
+    formData.append('tips', this.state.tips);
+    formData.append('generalThoughts', this.state.generalThoughts);
+    formData.append('rating', this.state.rating);
+    fetch('/api/reviews', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(result => {
+        // console.log(result);
+      });
   }
 
   fetchData() {
@@ -108,7 +132,7 @@ export default class ReviewPage extends React.Component {
     return (
       <Container>
         <h2>{name}</h2>
-        <Form>
+        <Form onSubmit={this.handleSubmit}>
           <Form.Group className='d-flex'>
             <Col xs={2} md={1}>
               <Form.Label htmlFor='rating-5' className='pb-0 m-0'>
@@ -203,6 +227,9 @@ export default class ReviewPage extends React.Component {
             </Form.Text>
             <Form.Control id='imageUrl' name='imageUrl' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
           </Form.Group>
+          <Button type='submit'>
+            Submit
+          </Button>
         </Form>
       </Container>
     );
