@@ -85,7 +85,7 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
           .then(result => {
             db.query(sqlTwo, paramsTwo)
               .then(result => {
-                res.status(201);
+                res.status(201).json(result);
               })
               .catch(err => next(err));
           })
@@ -93,7 +93,7 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
       } else {
         db.query(sqlTwo, paramsTwo)
           .then(result => {
-            res.status(201);
+            res.status(201).json(result);
           })
           .catch(err => next(err));
       }

@@ -96,8 +96,20 @@ export default class ReviewPage extends React.Component {
     })
       .then(response => response.json())
       .then(result => {
-        // console.log(result);
-      });
+        this.setState({
+          results: [],
+          rating: '',
+          activities: [],
+          visitors: [],
+          tips: '',
+          generalThoughts: '',
+          startDate: '',
+          endDate: ''
+        });
+        this.fileInputRef.current.value = null;
+        window.location.hash = `#details?park=${this.props.park}`;
+      })
+      .catch(err => console.error(err));
   }
 
   fetchData() {
