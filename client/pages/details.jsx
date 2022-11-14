@@ -172,7 +172,7 @@ export default class ParkDetails extends React.Component {
           </Row>
           <Row className='justify-content-center mb-2'>
             <Col xl={11}>
-              <a className='btn btn-success merriweather lh-lg my-2 large-screen-spacing'> <span className='fa-solid fa-pen-to-square pe-2' />Write a Review </a>
+              <a href={`#reviews?parkCode=${this.state.results.parkCode}`}className='btn btn-success merriweather lh-lg my-2 large-screen-spacing'> <span className='fa-solid fa-pen-to-square pe-2' />Write a Review </a>
             </Col>
           </Row>
         </Container>

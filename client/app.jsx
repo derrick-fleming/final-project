@@ -5,6 +5,7 @@ import Home from './pages/home';
 import NavigationBar from './components/navigationBar';
 import SearchBar from './components/searchBar';
 import ParkDetails from './pages/details';
+import ReviewPage from './pages/reviews';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -56,6 +57,14 @@ export default class App extends React.Component {
         <>
           <NavigationBar />
           <ParkDetails search={park} />
+        </>
+      );
+    } else if (this.state.route.path === 'reviews') {
+      const review = this.state.route.params.get('parkCode');
+      return (
+        <>
+          <NavigationBar />
+          <ReviewPage park={review}/>
         </>
       );
     }
