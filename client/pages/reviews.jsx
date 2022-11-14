@@ -88,7 +88,7 @@ export default class ReviewPage extends React.Component {
     formData.append('generalThoughts', this.state.generalThoughts);
     formData.append('rating', this.state.rating);
     formData.append('datesVisited', dates);
-    formData.append('stateCode', this.state.results.stateCode);
+    formData.append('stateCode', this.state.results.addresses[0].stateCode);
     formData.append('parkDetails', JSON.stringify(parkDetails));
     fetch('/api/reviews', {
       method: 'POST',
@@ -96,6 +96,7 @@ export default class ReviewPage extends React.Component {
     })
       .then(response => response.json())
       .then(result => {
+        // console.log(result);
       });
   }
 
@@ -103,8 +104,8 @@ export default class ReviewPage extends React.Component {
     const search = this.props.park;
     const parkKey = process.env.PARKS_API;
     const action = 'parkCode=';
-    let link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
-    link = 'get-parks-results.json';
+    const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
+    // link = 'get-parks-results.json';
     fetch(link)
       .then(response => response.json())
       .then(states => {
@@ -248,15 +249,3 @@ export default class ReviewPage extends React.Component {
     );
   }
 }
-
-/*
-const formData = new FormData();
-formData.append('accountId', 1);
-formData.append('imageFile', this.fileInputRef.current.files[0]);
-formData.append('parkCode', this.props.park);
-formData.append('recommendedAcitivites', this.state.activities);
-formData.append('recommendedVisitors', this.state.visitors);
-formData.append('tips', this.state.tips);
-formData.append('generalThoughts', this.state.generalThoughts);
-formData.append('rating', this.state.rating);
-*/

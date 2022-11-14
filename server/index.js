@@ -45,25 +45,7 @@ app.get('/api/parksCache/:parkCode', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/parksCache', (req, res, next) => {
-  const { parkCode, details, stateCode } = req.body;
-  if (!parkCode || !details || !stateCode) {
-    throw new ClientError(400, 'Park information: parkCode, details, and stateCode are required fields');
-  }
-  const sql = `
-    insert into "parksCache" ("parkCode", "details", "stateCode")
-    values ($1, $2, $3)`;
-  const params = [parkCode, details, stateCode];
-  db.query(sql, params)
-    .then(result => {
-      const [park] = result.rows;
-      res.status(201).json(park);
-    })
-    .catch(err => next(err));
-});
-
 app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
-  // console.log(req.body);
   const { accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, parkDetails, stateCode } = req.body;
   if (!accountId) {
     throw new ClientError(400, 'User account required to post review');
@@ -76,17 +58,45 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
   if (req.file !== undefined) {
     url = `/images/${req.file.filename}`;
   }
-  const sql = `
+
+  const sqlSelect = `
+    select "parkCode"
+    from "parksCache"
+    where  "parkCode" = $1`;
+
+  const paramsSelect = [parkCode];
+
+  const sqlOne = `
   insert into "parksCache" ("parkCode", "details", "stateCode")
-    values ($2, $11, $12)
+  values ($1, $2, $3) `;
+
+  const sqlTwo = `
   insert into "reviews" ("accountId", "parkCode", "rating", "datesVisited", "recommendedActivities", "recommendedVisitors", "tips", "generalThoughts", "imageUrl")
-    values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+  values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
      `;
-  const params = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url, parkDetails, stateCode];
-  db.query(sql, params)
+  const paramsOne = [parkCode, parkDetails, stateCode];
+  const paramsTwo = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
+
+  db.query(sqlSelect, paramsSelect)
     .then(result => {
-      // console.log(result.rows);
-      res.status(201);
+      const park = result.rows[0];
+      if (!park) {
+        db.query(sqlOne, paramsOne)
+          .then(result => {
+            db.query(sqlTwo, paramsTwo)
+              .then(result => {
+                res.status(201);
+              })
+              .catch(err => next(err));
+          })
+          .catch(err => next(err));
+      } else {
+        db.query(sqlTwo, paramsTwo)
+          .then(result => {
+            res.status(201);
+          })
+          .catch(err => next(err));
+      }
     })
     .catch(err => next(err));
 });
