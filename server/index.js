@@ -18,10 +18,6 @@ const jsonMiddleWare = express.json();
 app.use(staticMiddleware);
 app.use(jsonMiddleWare);
 
-app.get('/api/hello', (req, res) => {
-  res.json({ hello: 'world' });
-});
-
 app.get('/api/parksCache/:parkCode', (req, res, next) => {
   const parkCode = req.params.parkCode;
   const { accountId } = req.body;

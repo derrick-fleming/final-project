@@ -111,7 +111,7 @@ export default class ParkDetails extends React.Component {
           </Row>
           <Row className='justify-content-center mb-4'>
             <Col xs={12} xl={11}>
-              <Accordion className='open-sans large-screen-spacing'>
+              <Accordion className='open-sans large-screen-spacing shadow-sm'>
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>
                     <h6 className='mb-0 merriweather'><span className='fa-solid fa-person-biking pe-2' /> Popular Activities </h6>
@@ -168,6 +168,11 @@ export default class ParkDetails extends React.Component {
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
+            </Col>
+          </Row>
+          <Row className='justify-content-center mb-2'>
+            <Col xl={11}>
+              <a className='btn btn-success merriweather lh-lg my-2 large-screen-spacing'> <span className='fa-solid fa-pen-to-square pe-2' />Write a Review </a>
             </Col>
           </Row>
         </Container>
