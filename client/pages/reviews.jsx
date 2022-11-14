@@ -1,7 +1,8 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-// import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
 
 export default class ReviewPage extends React.Component {
   constructor(props) {
@@ -62,9 +63,31 @@ export default class ReviewPage extends React.Component {
     const { name } = this.state.results;
     return (
       <Container>
-        <Row>
-          <h2>{name}</h2>
-        </Row>
+        <h2>{name}</h2>
+        <Form>
+          <Form.Group className='d-flex'>
+            <Col xs={2} md={1}>
+              <Form.Label htmlFor='rating-5' className='pb-0 m-0'>
+                Rating:
+              </Form.Label>
+            </Col>
+            <Col xs={3}>
+              <div className='star-radio d-flex flex-row-reverse justify-content-end'>
+                <input required id='rating-5' className='px-1' type='radio' name='rating' value='5' />
+                <label htmlFor="rating-5" className='pt-1 fa-solid fa-star'/>
+                <input className='px-1' id='rating-4' type='radio' name='rating' value='4' />
+                <label htmlFor="rating-4" className='pt-1 fa-solid fa-star d-inline'/>
+                <input className='px-1' id='rating-3' type='radio' name='rating' value='3' />
+                <label htmlFor="rating-3" className='pt-1 fa-solid fa-star'/>
+                <input className='px-1' id='rating-2' type='radio' name='rating' value='2' />
+                <label htmlFor="rating-2" className='pt-1 fa-solid fa-star'/>
+                <input className='px-1' id='rating-1' type='radio' name='rating' value='1' />
+                <label htmlFor="rating-1" className='pt-1 fa-solid fa-star'/>
+              </div>
+            </Col>
+          </Form.Group>
+          <Row />
+        </Form>
       </Container>
     );
   }

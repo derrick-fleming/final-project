@@ -147,6 +147,28 @@ html,
   background-color: rgba(0, 0, 0, 0.389);
 }
 
+.star-radio label {
+  -webkit-text-stroke: 2px #454d55;
+  color: #faf4e2;
+  transition: all 0.2s ease-in-out;
+}
+
+input:checked ~ label {
+  color: #779f7d;
+  -webkit-text-stroke: 2px #779f7d;
+}
+
+input:not(:checked) ~ label:hover,
+input:not(:checked) ~ label:hover ~ label {
+  color: #779f7d;
+  -webkit-text-stroke: 2px #779f7d;
+}
+
+input[type="radio"] {
+  appearance: none;
+  background-color: none;
+}
+
 @media screen and (min-width: 768px) {
   .image-details {
     height: 310px;
