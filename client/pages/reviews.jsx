@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import activities from '../lib/activities';
 import Button from 'react-bootstrap/Button';
 
-const visitors = ['Everyone', 'History Buffs', 'Families', 'Casual Travelers', 'Teens & Adults', 'Outdoor Enthusiasts', 'Nature Lovers'];
+const visitors = ['Everyone', 'History Buffs', 'Families', 'Casual Travelers', 'Teens & Adults', 'Outdoor Enthusiast', 'Nature Lovers'];
 
 export default class ReviewPage extends React.Component {
   constructor(props) {
@@ -116,8 +116,8 @@ export default class ReviewPage extends React.Component {
     const search = this.props.park;
     const parkKey = process.env.PARKS_API;
     const action = 'parkCode=';
-    const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
-    // link = 'get-parks-results.json';
+    let link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
+    link = 'get-parks-results.json';
     fetch(link)
       .then(response => response.json())
       .then(states => {
@@ -157,11 +157,11 @@ export default class ReviewPage extends React.Component {
     const { name } = this.state.results;
     return (
       <Container>
-        <h2>{name}</h2>
-        <Form onSubmit={this.handleSubmit}>
+        <h2 className='mt-4 merriweather fw-bold'>{name}</h2>
+        <Form onSubmit={this.handleSubmit} className='open-sans'>
           <Form.Group className='d-flex'>
             <Col xs={2} md={1}>
-              <Form.Label htmlFor='rating-5' className='pb-0 m-0'>
+              <Form.Label htmlFor='rating-5' className='fs-6 pb-4 m-0'>
                 Rating:
               </Form.Label>
             </Col>
@@ -180,28 +180,28 @@ export default class ReviewPage extends React.Component {
               </div>
             </Col>
           </Form.Group>
-          <Form.Group>
-            <h2><span className='fa-regular fa-calendar-days pe-2' />Dates Visited</h2>
-            <hr />
+          <Form.Group className='mb-3'>
+            <h5 className='mb-0 pb-1'><span className='fa-regular fa-calendar-days pe-2' />Dates Visited*</h5>
+            <hr className='mt-0'/>
             <div>
-              <Form.Label htmlFor='start-dates'> Start Date: </Form.Label>
-              <input id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
+              <Form.Label htmlFor='start-dates' className='pe-2'> Start Date: </Form.Label>
+              <input required id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
             </div>
             <div>
-              <Form.Label htmlFor='end-dates'> End Date: </Form.Label>
-              <input id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
+              <Form.Label htmlFor='end-dates' className='pe-3'> End Date: </Form.Label>
+              <input required id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
             </div>
           </Form.Group>
-          <Form.Group>
-            <h2><span className="fa-solid fa-person-biking pe-2" />Recommended Activities</h2>
-            <hr />
+          <Form.Group className='mb-3'>
+            <h5 className='mb-0 pb-1'><span className="fa-solid fa-person-biking pe-2" />Recommended Activities*</h5>
+            <hr className='mt-0'/>
             <Row>
               {
                 activities.map(activity => {
                   return (
                     <Col xs={6} key={activity.name}>
                       <input type='checkbox' id={activity.name} name='activities' value={activity.name} onChange={this.handleCheckBox}/>
-                      <label htmlFor={activity.name}>{activity.name}</label>
+                      <label htmlFor={activity.name} className='fw-light ps-2 lh-lg'>{activity.name}</label>
                     </Col>
                   );
                 })
@@ -209,15 +209,15 @@ export default class ReviewPage extends React.Component {
             </Row>
           </Form.Group>
           <Form.Group>
-            <h2><span className="fa-solid fa-person-hiking pe-2" />Recommended Visitors</h2>
-            <hr />
+            <h5 className='mb-0 pb-1'><span className="fa-solid fa-person-hiking pe-2" />Recommended Visitors*</h5>
+            <hr className='mt-0'/>
             <Row>
               {
                 visitors.map(visitor => {
                   return (
                     <Col xs={6} key={visitor}>
                       <input type='checkbox' id={visitor} name='visitors' value={visitor} onChange={this.handleCheckBox} />
-                      <label htmlFor={visitor}>{visitor}</label>
+                      <label htmlFor={visitor} className='fw-light ps-2 lh-lg'>{visitor}</label>
                     </Col>
                   );
                 })
