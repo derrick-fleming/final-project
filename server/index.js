@@ -21,17 +21,15 @@ app.use(jsonMiddleWare);
 
 app.get('/api/parksCache/:parkCode', (req, res, next) => {
   const parkCode = req.params.parkCode;
-  const { accountId } = req.body;
   if (!parkCode) {
     throw new ClientError(400, 'Park Code must be provided');
   }
   const sql = `
-    select "rating"
+    select avg("rating") as "rating"
     from "parksCache"
     join "reviews" using ("parkCode")
-    where "parkCode" = $1
-    and "accountId" = $2`;
-  const params = [parkCode, accountId];
+    where "parkCode" = $1`;
+  const params = [parkCode];
   db.query(sql, params)
     .then(result => {
       const [rating] = result.rows;
@@ -40,7 +38,7 @@ app.get('/api/parksCache/:parkCode', (req, res, next) => {
           error: `Cannot find park with "parkCode" ${parkCode}`
         });
       }
-      res.json(rating);
+      res.status(200).json(rating);
     })
     .catch(err => next(err));
 });

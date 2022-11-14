@@ -15,14 +15,27 @@ export default class ParkDetails extends React.Component {
     };
     this.goBack = this.goBack.bind(this);
     this.fetchData = this.fetchData.bind(this);
+    this.showRating = this.showRating.bind(this);
   }
 
   goBack() {
     window.history.back();
   }
 
+  showRating() {
+    const park = this.props.search;
+    fetch(`/api/parksCache/${park}`)
+      .then(response => response.json())
+      .then(rating => {
+        this.setState({
+          parkRating: rating
+        });
+      });
+  }
+
   componentDidMount() {
     this.fetchData();
+    this.showRating();
   }
 
   fetchData() {
