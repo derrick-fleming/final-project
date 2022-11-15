@@ -134,7 +134,7 @@ export default class ParkDetails extends React.Component {
               <img className='shadow-sm p-0 rounded image-details mt-1 mb-3' src={wikiImage} alt={name} />
             </Col>
             <Col xs={12} md={6}>
-              <h3 className='px-1 merriweather fw-bold'> Description <span className='fs-5'>Rating: {rating}</span></h3>
+              <h3 className='px-0 px-1-sm merriweather fw-bold'> Description <span className='fs-6 ps-1 ps-sm-5 ps-md-2 ps-lg-5'>Rating: {rating}</span></h3>
               <p className='p-1 description-text fw-light fs-6'>{description}</p>
             </Col>
           </Row>
