@@ -7,6 +7,10 @@ p {
   color: #454d55;
 }
 
+hr {
+  opacity: 50%;
+}
+
 .gray-scale {
   color: #454d55;
 }
@@ -167,6 +171,15 @@ html,
 .star-radio input[type="radio"] {
   appearance: none;
   background-color: none;
+}
+
+input:checked {
+  accent-color: #779f7d;
+  color: white;
+}
+
+.text-box {
+  height: 100px;
 }
 
 @media screen and (min-width: 768px) {
