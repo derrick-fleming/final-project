@@ -82,12 +82,21 @@ export default class ParkDetails extends React.Component {
     }
     const park = this.state.results;
     let rating;
-    if (this.state.rating === null) {
+    if (this.state.parkRating.rating === null) {
       rating = 'N/A';
     } else {
-      rating = this.state.rating;
-
+      const score = Number(this.state.parkRating.rating);
+      Math.floor(score);
+      const stars = [1, 2, 3, 4, 5];
+      rating = stars.map((star, index) => {
+        if (index <= score - 1) {
+          return <span key={index} className='fa-solid fa-star green' />;
+        } else {
+          return <span key={index} className='fa-regular fa-star' />;
+        }
+      });
     }
+
     const { name, wikiImage, description, weatherInfo } = park;
     const address1 = `${park.addresses[0].line1}`;
     const address2 = `${park.addresses[0].city}, ${park.addresses[0].stateCode} ${park.addresses[0].postalCode}`;
@@ -125,7 +134,7 @@ export default class ParkDetails extends React.Component {
               <img className='shadow-sm p-0 rounded image-details mt-1 mb-3' src={wikiImage} alt={name} />
             </Col>
             <Col xs={12} md={6}>
-              <h3 className='px-1 merriweather fw-bold'> Description <span>Rating: {rating}</span></h3>
+              <h3 className='px-1 merriweather fw-bold'> Description <span className='fs-5'>Rating: {rating}</span></h3>
               <p className='p-1 description-text fw-light fs-6'>{description}</p>
             </Col>
           </Row>

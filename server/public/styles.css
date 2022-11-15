@@ -37,6 +37,10 @@ html,
   background-color: #779f7d;
 }
 
+.green {
+  color: #779f7d;
+}
+
 .btn-success {
   background-color: #2e7d3280;
   color: #ffff;
