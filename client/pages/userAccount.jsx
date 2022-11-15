@@ -7,6 +7,7 @@ export default class UserAccount extends React.Component {
     this.state = {
       accountId: 1
     };
+    this.renderInforgraphic = this.renderInforgraphic.bind(this);
   }
 
   componentDidMount() {
@@ -20,8 +21,18 @@ export default class UserAccount extends React.Component {
             defaultStates[stateCode].visits = element.visits;
           }
         });
+        this.renderInforgraphic();
       })
       .catch(err => console.error(err));
+  }
+
+  renderInforgraphic() {
+    const dataObject = {};
+    for (const key in defaultStates) {
+      const stateName = defaultStates[key].name;
+      const visits = defaultStates[key].visits;
+      dataObject[stateName] = visits;
+    }
   }
 
   render() {
