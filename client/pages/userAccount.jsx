@@ -16,7 +16,9 @@ export default class UserAccount extends React.Component {
       .then(result => {
         result.forEach(element => {
           const stateCode = element.stateCode;
-          defaultStates[stateCode].visits = element.visits;
+          if (defaultStates[stateCode]) {
+            defaultStates[stateCode].visits = element.visits;
+          }
         });
       })
       .catch(err => console.error(err));
