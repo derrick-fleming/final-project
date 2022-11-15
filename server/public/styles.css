@@ -7,6 +7,10 @@ p {
   color: #454d55;
 }
 
+hr {
+  opacity: 50%;
+}
+
 .gray-scale {
   color: #454d55;
 }
@@ -31,6 +35,10 @@ html,
 
 .search-green {
   background-color: #779f7d;
+}
+
+.green {
+  color: #779f7d;
 }
 
 .btn-success {
@@ -147,6 +155,35 @@ html,
   background-color: rgba(0, 0, 0, 0.389);
 }
 
+.star-radio label {
+  -webkit-text-stroke: 2px #454d55;
+  color: #faf4e2;
+  transition: all 0.2s ease-in-out;
+}
+
+.star-radio input:checked ~ label {
+  color: #779f7d;
+  -webkit-text-stroke: 2px #779f7d;
+}
+
+.star-radio input:not(:checked) ~ label:hover,
+.star-radio input:not(:checked) ~ label:hover ~ label {
+  color: #779f7d;
+  -webkit-text-stroke: 2px #779f7d;
+}
+
+.star-radio input[type="radio"] {
+  appearance: none;
+}
+
+input:checked {
+  accent-color: #779f7d;
+}
+
+.text-box {
+  height: 100px;
+}
+
 @media screen and (min-width: 768px) {
   .image-details {
     height: 310px;
@@ -177,6 +214,10 @@ html,
 @media screen and (min-width: 992px) {
   .image-size {
     height: 261px;
+  }
+
+  .text-box {
+    height: 175px;
   }
 
   .card-width {

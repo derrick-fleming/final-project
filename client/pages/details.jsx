@@ -15,18 +15,30 @@ export default class ParkDetails extends React.Component {
     };
     this.goBack = this.goBack.bind(this);
     this.fetchData = this.fetchData.bind(this);
+    this.showRating = this.showRating.bind(this);
   }
 
   goBack() {
     window.history.back();
   }
 
+  showRating() {
+    const park = this.props.search;
+    fetch(`/api/parksCache/${park}`)
+      .then(response => response.json())
+      .then(result => {
+        this.setState({
+          parkRating: result
+        });
+      });
+  }
+
   componentDidMount() {
     this.fetchData();
+    this.showRating();
   }
 
   fetchData() {
-
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
     const action = 'parkCode=';
@@ -68,6 +80,22 @@ export default class ParkDetails extends React.Component {
       return;
     }
     const park = this.state.results;
+    let rating;
+    if (this.state.parkRating.rating === null) {
+      rating = 'N/A';
+    } else {
+      let score = Number(this.state.parkRating.rating);
+      score = Math.round(score);
+      const stars = [1, 2, 3, 4, 5];
+      rating = stars.map((star, index) => {
+        if (index <= score - 1) {
+          return <span key={index} className='fa-solid fa-star green' />;
+        } else {
+          return <span key={index} className='fa-regular fa-star' />;
+        }
+      });
+    }
+
     const { name, wikiImage, description, weatherInfo } = park;
     const address1 = `${park.addresses[0].line1}`;
     const address2 = `${park.addresses[0].city}, ${park.addresses[0].stateCode} ${park.addresses[0].postalCode}`;
@@ -105,20 +133,20 @@ export default class ParkDetails extends React.Component {
               <img className='shadow-sm p-0 rounded image-details mt-1 mb-3' src={wikiImage} alt={name} />
             </Col>
             <Col xs={12} md={6}>
-              <h3 className='px-1 merriweather fw-bold'> Description </h3>
+              <h3 className='px-0 px-1-sm merriweather fw-bold'> Description <span className='fs-6 ps-1 ps-sm-5 ps-md-2 ps-lg-5'>Rating: {rating}</span></h3>
               <p className='p-1 description-text fw-light fs-6'>{description}</p>
             </Col>
           </Row>
           <Row className='justify-content-center mb-4'>
             <Col xs={12} xl={11}>
-              <Accordion className='open-sans large-screen-spacing'>
+              <Accordion className='open-sans large-screen-spacing shadow-sm'>
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>
                     <h6 className='mb-0 merriweather'><span className='fa-solid fa-person-biking pe-2' /> Popular Activities </h6>
                   </Accordion.Header>
                   <Accordion.Body className='large-screen-spacing'>
                     <p className='fst-italic'>Here are some popular activities:</p>
-                    <ul className>
+                    <ul>
                       <Row>
                         {
                       activityList.map(activity => {
@@ -168,6 +196,11 @@ export default class ParkDetails extends React.Component {
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>
+            </Col>
+          </Row>
+          <Row className='justify-content-center mb-2'>
+            <Col xl={11}>
+              <a href={`#reviews?parkCode=${this.state.results.parkCode}`} className='btn btn-success merriweather lh-lg my-2 large-screen-spacing'> <span className='fa-solid fa-pen-to-square pe-2' />Write a Review </a>
             </Col>
           </Row>
         </Container>
