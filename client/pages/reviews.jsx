@@ -172,7 +172,7 @@ export default class ReviewPage extends React.Component {
     return (
       <Container>
         <h2 className='mt-4 merriweather fw-bold'>{name}</h2>
-        <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className='open-sans'>
+        <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className='open-sans gray-scale'>
           <Form.Group className='d-flex'>
             <Col xs={2} md={1}>
               <Form.Label htmlFor='rating-5' className='fs-6 pb-4 m-0'>
@@ -196,7 +196,7 @@ export default class ReviewPage extends React.Component {
             </Col>
           </Form.Group>
           <Row>
-            <Col>
+            <Col sm={12} lg={6}>
               <Form.Group className='mb-3'>
                 <h5 className='mb-0 pb-1'><span className='fa-regular fa-calendar-days pe-2' />Dates Visited*</h5>
                 <hr className='mt-0'/>
@@ -244,40 +244,47 @@ export default class ReviewPage extends React.Component {
                 </Row>
               </Form.Group>
             </Col>
+            <Col sm={12} lg={6}>
+              <Form.Group className='mb-3'>
+                <Form.Label htmlFor='tips' className='mb-0 pb-1 fs-5'>
+                  <span className='fa-solid fa-info-circle pe-2' />Tips*
+                </Form.Label>
+                <hr className='my-0' />
+                <Form.Text className='fs-6 fst-italic fw-light'>
+                  Provide future visitors with tips for a great experience at {this.state.results.name}.
+                </Form.Text>
+                <Form.Control placeholder='Provide tips here' className='text-box mt-3' required id='tips' name='tips' as='textarea' value={this.state.tips} onChange={this.handleInputChange} />
+                <Form.Control.Feedback type="invalid">Write at least one tip</Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className='mb-3'>
+                <Form.Label htmlFor='generalThoughts' className='mb-0 pb-1 fs-5'>
+                  <span className='fa-solid fa-lightbulb pe-2' />General Thoughts
+                </Form.Label>
+                <hr className='my-0' />
+                <Form.Text className='fs-6 fst-italic fw-light'>
+                  Explain your rating or mention other activites someone should know about this park.
+                </Form.Text>
+                <Form.Control id='generalThoughts' name='generalThoughts' as='textarea' className='text-box mt-3' value={this.state.generalThoughts} onChange={this.handleInputChange} placeholder='Write your thoughts here' />
+                <Form.Control.Feedback type="valid">General Thoughts are optional</Form.Control.Feedback>
+              </Form.Group>
+            </Col>
           </Row>
-          <Form.Group className='mb-3'>
-            <Form.Label htmlFor='tips' className='mb-0 pb-1 fs-5'>
-              <span className='fa-solid fa-info-circle pe-2' />Tips*
-            </Form.Label>
-            <hr className='my-0'/>
-            <Form.Text className='fs-6 fst-italic fw-light'>
-              Provide future visitors with tips for a great experience at {this.state.results.name}.
-            </Form.Text>
-            <Form.Control placeholder='Provide tips here' className='text-box mt-3'required id='tips' name='tips' as='textarea' value={this.state.tips} onChange={this.handleInputChange}/>
-            <Form.Control.Feedback type="invalid">Write at least one tip</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className='mb-3'>
-            <Form.Label htmlFor='generalThoughts' className='mb-0 pb-1 fs-5'>
-              <span className='fa-solid fa-lightbulb pe-2' />General Thoughts
-            </Form.Label>
-            <hr className='my-0'/>
-            <Form.Text className='fs-6 fst-italic fw-light'>
-              Explain your rating or mention other activites someone should know about this park.
-            </Form.Text>
-            <Form.Control id='generalThoughts' name='generalThoughts' as='textarea' className='text-box mt-3' value={this.state.generalThoughts} onChange={this.handleInputChange} placeholder='Write your thoughts here'/>
-            <Form.Control.Feedback type="valid">General Thoughts are optional</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className='mb-3'>
-            <Form.Label htmlFor='imageUrl' className='mb-0 pb-1 fs-5'>
-              <span className='fa-solid fa-camera-retro pe-2' />Photos
-            </Form.Label>
-            <hr className='my-0'/>
-            <Form.Text className='fs-6 fst-italic fw-light'>
-              Upload your favorite photos from this park.
-            </Form.Text>
-            <Form.Control id='imageUrl' className='mt-3' name='imageUrl' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
-            <Form.Control.Feedback type="valid">Photo is optional</Form.Control.Feedback>
-          </Form.Group>
+          <Row>
+            <Col xs={12} lg={6}>
+              <Form.Group className='mb-3'>
+                <Form.Label htmlFor='imageUrl' className='mb-0 pb-1 fs-5'>
+                  <span className='fa-solid fa-camera-retro pe-2' />Photos
+                </Form.Label>
+                <hr className='my-0' />
+                <Form.Text className='fs-6 fst-italic fw-light'>
+                  Upload your favorite photos from this park.
+                </Form.Text>
+                <Form.Control id='imageUrl' className='mt-3' name='imageUrl' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
+                <Form.Control.Feedback type="valid">Photo is optional</Form.Control.Feedback>
+              </Form.Group>
+            </Col>
+          </Row>
+
           <Row className='my-2'>
             <Col>
               <Button className='merriweather lh-lg px-4' variant="secondary" onClick={this.handleClose}>

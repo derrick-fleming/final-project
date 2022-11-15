@@ -214,6 +214,10 @@ input:checked {
     height: 261px;
   }
 
+  .text-box {
+    height: 175px;
+  }
+
   .card-width {
     width: 26.188rem;
   }
