@@ -86,7 +86,7 @@ export default class ParkDetails extends React.Component {
       rating = 'N/A';
     } else {
       const score = Number(this.state.parkRating.rating);
-      Math.floor(score);
+      Math.round(score);
       const stars = [1, 2, 3, 4, 5];
       rating = stars.map((star, index) => {
         if (index <= score - 1) {
