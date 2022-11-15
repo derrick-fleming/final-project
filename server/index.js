@@ -28,13 +28,14 @@ app.get('/api/accounts/:accountId', (req, res, next) => {
     select "stateCode",
     count(*) as "visits"
     from "accounts"
-    join "reviews" using ($1)
+    join "reviews" using ("accountId")
     join "parksCache" using ("parkCode")
+    where "accountId" = $1
     group by "stateCode"`;
   const params = [accountId];
   db.query(sql, params)
     .then(result => {
-      const [visits] = result.rows;
+      const visits = result.rows;
       if (!visits) {
         res.status(404).json({
           error: 'Cannot find reviews/states for account'
