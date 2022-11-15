@@ -90,7 +90,18 @@ export default class UserAccount extends React.Component {
               .style('stroke-width', '1px');
 
             toolTip.style('opacity', 0);
-
+          })
+          .on('mousemove', function (event, d) {
+            toolTip
+              .html(`State: ${d.properties.name}
+       Number of visits: ${dataObject[d.properties.name]}`)
+              .style('left', (event.pageX + 10) + 'px')
+              .style('top', (event.pageY - 10) + 'px');
+          })
+          .on('click', function (event, d) {
+            this.setState({
+              desintation: d.properties.name
+            });
           });
       });
 
