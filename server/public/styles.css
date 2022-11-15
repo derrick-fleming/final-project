@@ -184,6 +184,15 @@ input:checked {
   height: 100px;
 }
 
+.tooltip {
+  width: 125px;
+  background-color: #fff;
+  border: 1px solid #454d55;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+}
+
 @media screen and (min-width: 768px) {
   .image-details {
     height: 310px;

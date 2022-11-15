@@ -12,6 +12,7 @@ export default class UserAccount extends React.Component {
       accountId: 1
     };
     this.renderInforgraphic = this.renderInforgraphic.bind(this);
+    this.infographicMap = React.createRef();
   }
 
   componentDidMount() {
@@ -92,16 +93,16 @@ export default class UserAccount extends React.Component {
             toolTip.style('opacity', 0);
           })
           .on('mousemove', function (event, d) {
+            const offsetX = event.layerX > parent.innerWidth * 0.5 ? '-105%' : '5%';
+            const offsetY = event.layerY > parent.innerWidth * 0.5 ? '-105%' : '5%';
+            const offset = `translate(${offsetX}, ${offsetY})`;
+
             toolTip
-              .html(`State: ${d.properties.name}
-       Number of visits: ${dataObject[d.properties.name]}`)
-              .style('left', (event.pageX + 10) + 'px')
-              .style('top', (event.pageY - 10) + 'px');
-          })
-          .on('click', function (event, d) {
-            this.setState({
-              desintation: d.properties.name
-            });
+              .html(`<h6>${d.properties.name}</h6>
+              <h6> Number of visits: <span class="gold">${dataObject[d.properties.name]}</span></h6>`)
+              .style('left', (event.layerX) + 'px')
+              .style('top', (event.layerY) + 'px')
+              .style('transform', offset);
           });
       });
 
@@ -111,54 +112,8 @@ export default class UserAccount extends React.Component {
   render() {
     return (
       <Container>
-        <div id="map" ref={ref => { this.usMap = ref; }}/>
+        <div id="map" ref={this.infographicMap}/>
       </Container>
     );
   }
 }
-
-/*
-svg.selectAll('path')
-  .on('mouseover', function (event, d) {
-    d3.selectAll('.states')
-      .transition()
-      .duration(200)
-      .style('stroke-width', '1px')
-      .style('opacity', 0.8)
-      .style('box-shadow', '1px 1px 0.5rem black');
-
-    d3.select(this)
-      .transition()
-      .duration(200)
-      .style('opacity', 1)
-      .style('stroke-width', '2px')
-      .style('cursor', 'pointer');
-
-    d3.select('.tooltip')
-      .style('opacity', 1);
-
-  })
-  .on('mouseout', function (event) {
-    d3.selectAll('.states')
-      .transition()
-      .duration(200)
-      .style('opacity', 1)
-      .style('stroke-width', '1px');
-
-    toolTip.style('opacity', 0);
-
-  })
-  .on('mousemove', function (event, d) {
-    toolTip
-      .html(`State: ${d.properties.name}
-       Number of visits: ${dataObject[d.properties.name]}`)
-      .style('left', (event.pageX + 10) + 'px')
-      .style('top', (event.pageY - 10) + 'px');
-  })
-  .on('click', function (event, d) {
-    this.setState({
-      desintation: d.properties.name
-    });
-  });
-    });
-*/
