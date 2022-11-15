@@ -64,24 +64,24 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
 
   const paramsSelect = [parkCode];
 
-  const sqlOne = `
+  const parksCacheSql = `
   insert into "parksCache" ("parkCode", "details", "stateCode")
   values ($1, $2, $3) `;
 
-  const sqlTwo = `
+  const reviewSql = `
   insert into "reviews" ("accountId", "parkCode", "rating", "datesVisited", "recommendedActivities", "recommendedVisitors", "tips", "generalThoughts", "imageUrl")
   values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
      `;
-  const paramsOne = [parkCode, parkDetails, stateCode];
-  const paramsTwo = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
+  const parksParams = [parkCode, parkDetails, stateCode];
+  const reviewParams = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
 
   db.query(sqlSelect, paramsSelect)
     .then(result => {
       const park = result.rows[0];
       if (!park) {
-        db.query(sqlOne, paramsOne)
+        db.query(parksCacheSql, parksParams)
           .then(result => {
-            db.query(sqlTwo, paramsTwo)
+            db.query(reviewSql, reviewParams)
               .then(result => {
                 res.status(201).json(result);
               })
@@ -89,7 +89,7 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
           })
           .catch(err => next(err));
       } else {
-        db.query(sqlTwo, paramsTwo)
+        db.query(reviewSql, reviewParams)
           .then(result => {
             res.status(201).json(result);
           })

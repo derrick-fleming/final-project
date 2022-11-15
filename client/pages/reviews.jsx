@@ -25,31 +25,18 @@ export default class ReviewPage extends React.Component {
     };
     this.fileInputRef = React.createRef();
     this.fetchData = this.fetchData.bind(this);
-    this.handleRating = this.handleRating.bind(this);
     this.handleCheckBox = this.handleCheckBox.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClose = this.handleClose.bind(this);
   }
 
   componentDidMount() {
     this.fetchData();
   }
 
-  handleClose() {
-    window.location.hash = `#details?park=${this.props.park}`;
-  }
-
-  handleRating(event) {
-    this.setState({
-      rating: event.target.value
-    });
-  }
-
   handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
+    const value = event.target.value;
+    const name = event.target.name;
     this.setState({
       [name]: value
     });
@@ -134,29 +121,27 @@ export default class ReviewPage extends React.Component {
     link = 'get-parks-results.json';
     fetch(link)
       .then(response => response.json())
-      .then(states => {
+      .then(state => {
         const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
-        const imageFetches = states.data.map(state => {
-          const title = state.fullName.replaceAll(' ', '%20');
-          const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
-          return (
-            fetch(apiEndPoint + '?' + params + '&origin=*')
-              .then(response => response.json())
-              .then(image => {
-                if (image.query.pages[0].thumbnail === undefined) {
-                  state.wikiImage = '/images/mountains.png';
-                } else {
-                  state.wikiImage = image.query.pages[0].thumbnail.source;
-                }
-              })
-              .catch(err => console.error(err))
-          );
-        });
+        const title = state.fullName.replaceAll(' ', '%20');
+        const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
+        const imageFetches = (
+          fetch(apiEndPoint + '?' + params + '&origin=*')
+            .then(response => response.json())
+            .then(image => {
+              if (image.query.pages[0].thumbnail === undefined) {
+                state.wikiImage = '/images/mountains.png';
+              } else {
+                state.wikiImage = image.query.pages[0].thumbnail.source;
+              }
+            })
+            .catch(err => console.error(err))
+        );
         Promise
           .all(imageFetches)
           .then(results => {
             this.setState({
-              results: states.data[0],
+              results: state.data[0],
               isLoading: false
             });
           });
@@ -176,8 +161,8 @@ export default class ReviewPage extends React.Component {
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-pen-to-square pe-2' />Review Form</h2>
         </div>
         <Container className='mb-4'>
-          <h2 className='mt-4 merriweather fw-bold'>{name}</h2>
-          <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className='open-sans gray-scale'>
+          <h2 className='mt-4 merriweather fw-bold large-screen-spacing'>{name}</h2>
+          <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className='large-screen-spacing open-sans gray-scale'>
             <Form.Group className='d-flex'>
               <Col xs={2} md={1}>
                 <Form.Label htmlFor='rating-5' className='fs-6 pb-4 m-0'>
@@ -186,15 +171,15 @@ export default class ReviewPage extends React.Component {
               </Col>
               <Col xs={3}>
                 <div className='star-radio d-flex flex-row-reverse justify-content-end'>
-                  <input required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleRating} />
+                  <input required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleInputChange} />
                   <label htmlFor="rating-5" className='pt-1 fa-solid fa-star'/>
-                  <input className='px-1' id='rating-4' type='radio' name='rating' value='4' onClick={this.handleRating}/>
+                  <input className='px-1' id='rating-4' type='radio' name='rating' value='4' onClick={this.handleInputChange}/>
                   <label htmlFor="rating-4" className='pt-1 fa-solid fa-star d-inline'/>
-                  <input className='px-1' id='rating-3' type='radio' name='rating' value='3' onClick={this.handleRating}/>
+                  <input className='px-1' id='rating-3' type='radio' name='rating' value='3' onClick={this.handleInputChange}/>
                   <label htmlFor="rating-3" className='pt-1 fa-solid fa-star'/>
-                  <input className='px-1' id='rating-2' type='radio' name='rating' value='2' onClick={this.handleRating}/>
+                  <input className='px-1' id='rating-2' type='radio' name='rating' value='2' onClick={this.handleInputChange}/>
                   <label htmlFor="rating-2" className='pt-1 fa-solid fa-star'/>
-                  <input className='px-1' id='rating-1' type='radio' name='rating' value='1' onClick={this.handleRating}/>
+                  <input className='px-1' id='rating-1' type='radio' name='rating' value='1' onClick={this.handleInputChange}/>
                   <label htmlFor="rating-1" className='pt-1 fa-solid fa-star'/>
                   <Form.Control.Feedback type="invalid">Missing rating.</Form.Control.Feedback>
                 </div>
@@ -292,9 +277,9 @@ export default class ReviewPage extends React.Component {
 
             <Row className='my-2'>
               <Col>
-                <Button className='merriweather lh-lg px-4' variant="secondary" onClick={this.handleClose}>
-                  Close
-                </Button>
+                <a className='btn btn-secondary merriweather lh-lg px-4' href={`#details?park=${this.props.park}`}>
+                  Cancel
+                </a>
               </Col>
               <Col className='text-end'>
                 <Button className='merriweather lh-lg px-4' variant="success" type='submit'>

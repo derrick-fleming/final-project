@@ -39,7 +39,6 @@ export default class ParkDetails extends React.Component {
   }
 
   fetchData() {
-
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
     const action = 'parkCode=';
