@@ -7,7 +7,7 @@ const states = [
   { name: 'California', code: 'CA' },
   { name: 'Colorado', code: 'CO' },
   { name: 'Connecticut', code: 'CT' },
-  { name: 'Deleware', code: 'DE' },
+  { name: 'Delaware', code: 'DE' },
   { name: 'District of Columbia', code: 'DC' },
   { name: 'Florida', code: 'FL' },
   { name: 'Guam', code: 'GU' },

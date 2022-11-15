@@ -1,0 +1,52 @@
+const defaultStates = {
+  AL: {
+    name: 'Alabama',
+    visits: 0
+  },
+  AK: {
+    name: 'Alaska',
+    visits: 0
+  },
+  AZ: {
+    name: 'Arizona',
+    visits: 0
+  },
+  AR: {
+    name: 'Arkansas',
+    visits: 0
+  },
+  CA: {
+    name: 'California',
+    visits: 0
+  },
+  CO: {
+    name: 'Colorado',
+    visits: 0
+  },
+  CT: {
+    name: 'Connecticut',
+    visits: 0
+  },
+  DE: {
+    name: 'Delaware',
+    visits: 0
+  },
+  FL: {
+    name: 'Florida',
+    visits: 0
+  },
+  GA: {
+    name: 'Georgia',
+    visits: 0
+  },
+  HI: {
+    name: 'Hawaii',
+    visits: 0
+  },
+  ID: {
+    name: 'Idaho',
+    visits: 0
+  }
+};
+
+module.exports = defaultStates;
