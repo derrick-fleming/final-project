@@ -46,11 +46,10 @@ export default class UserAccount extends React.Component {
       .append('svg')
       .attr('viewBox', '0 0 975 610');
 
-    /* const toolTip = d3.select('#map')
+    const toolTip = d3.select('#map')
       .append('div')
       .style('position', 'absolute')
       .attr('class', 'tooltip');
-    */
 
     d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json')
       .then(us => {
@@ -82,6 +81,16 @@ export default class UserAccount extends React.Component {
             d3.select('.tooltip')
               .style('opacity', 1);
 
+          })
+          .on('mouseout', function (event) {
+            d3.selectAll('.states')
+              .transition()
+              .duration(200)
+              .style('opacity', 1)
+              .style('stroke-width', '1px');
+
+            toolTip.style('opacity', 0);
+
           });
       });
 
@@ -96,3 +105,49 @@ export default class UserAccount extends React.Component {
     );
   }
 }
+
+/*
+svg.selectAll('path')
+  .on('mouseover', function (event, d) {
+    d3.selectAll('.states')
+      .transition()
+      .duration(200)
+      .style('stroke-width', '1px')
+      .style('opacity', 0.8)
+      .style('box-shadow', '1px 1px 0.5rem black');
+
+    d3.select(this)
+      .transition()
+      .duration(200)
+      .style('opacity', 1)
+      .style('stroke-width', '2px')
+      .style('cursor', 'pointer');
+
+    d3.select('.tooltip')
+      .style('opacity', 1);
+
+  })
+  .on('mouseout', function (event) {
+    d3.selectAll('.states')
+      .transition()
+      .duration(200)
+      .style('opacity', 1)
+      .style('stroke-width', '1px');
+
+    toolTip.style('opacity', 0);
+
+  })
+  .on('mousemove', function (event, d) {
+    toolTip
+      .html(`State: ${d.properties.name}
+       Number of visits: ${dataObject[d.properties.name]}`)
+      .style('left', (event.pageX + 10) + 'px')
+      .style('top', (event.pageY - 10) + 'px');
+  })
+  .on('click', function (event, d) {
+    this.setState({
+      desintation: d.properties.name
+    });
+  });
+    });
+*/
