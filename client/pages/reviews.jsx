@@ -155,7 +155,7 @@ export default class ReviewPage extends React.Component {
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-pen-to-square pe-2' />Review Form</h2>
         </div>
         <Container className='mb-4'>
-          <h2 className='mt-4 merriweather fw-bold large-screen-spacing'>{name}</h2>
+          <h2 className='merriweather fw-bold large-screen-spacing'>{name}</h2>
           <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className='large-screen-spacing open-sans gray-scale'>
             <Form.Group className='d-flex'>
               <Col xs={2} md={1}>
@@ -186,12 +186,12 @@ export default class ReviewPage extends React.Component {
                   <hr className='mt-0'/>
                   <div>
                     <Form.Label htmlFor='start-dates' className='pe-2 fw-light'> Start Date: </Form.Label>
-                    <input className='border border-1' required id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
+                    <input className='border' required id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
                   </div>
                   <div>
                     <Form.Label htmlFor='end-dates' className='pe-3 fw-light'> End Date: </Form.Label>
-                    <input className='border border-1' required id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
+                    <input className='border' required id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -216,15 +216,15 @@ export default class ReviewPage extends React.Component {
                   <hr className='mt-0'/>
                   <Row>
                     {
-                visitors.map(visitor => {
-                  return (
-                    <Col xs={6} key={visitor}>
-                      <input type='checkbox' id={visitor} name='visitors' value={visitor} onChange={this.handleCheckBox} />
-                      <label htmlFor={visitor} className='fw-light ps-2 lh-lg'>{visitor}</label>
-                    </Col>
-                  );
-                })
-              }
+                      visitors.map(visitor => {
+                        return (
+                          <Col xs={6} key={visitor}>
+                            <input type='checkbox' id={visitor} name='visitors' value={visitor} onChange={this.handleCheckBox} />
+                            <label htmlFor={visitor} className='fw-light ps-2 lh-lg'>{visitor}</label>
+                          </Col>
+                        );
+                      })
+                    }
                   </Row>
                 </Form.Group>
               </Col>

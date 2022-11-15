@@ -174,12 +174,10 @@ html,
 
 .star-radio input[type="radio"] {
   appearance: none;
-  background-color: none;
 }
 
 input:checked {
   accent-color: #779f7d;
-  color: white;
 }
 
 .text-box {
