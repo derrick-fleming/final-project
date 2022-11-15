@@ -92,6 +92,10 @@ const defaultStates = {
     visits: 0
   },
   MS: {
+    name: 'Mississippi',
+    visits: 0
+  },
+  MA: {
     name: 'Massachusetts',
     visits: 0
   },
