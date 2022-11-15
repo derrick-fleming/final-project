@@ -19,6 +19,32 @@ const jsonMiddleWare = express.json();
 app.use(staticMiddleware);
 app.use(jsonMiddleWare);
 
+app.get('/api/accounts/:accountId', (req, res, next) => {
+  const accountId = req.params.accountId;
+  if (!accountId) {
+    throw new ClientError(400, 'username must be provided');
+  }
+  const sql = `
+    select "stateCode",
+    count(*) as "visits"
+    from "accounts"
+    join "reviews" using ($1)
+    join "parksCache" using ("parkCode")
+    group by "stateCode"`;
+  const params = [accountId];
+  db.query(sql, params)
+    .then(result => {
+      const [visits] = result.rows;
+      if (!visits) {
+        res.status(404).json({
+          error: 'Cannot find reviews/states for account'
+        });
+      }
+      res.status(200).json(visits);
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/parksCache/:parkCode', (req, res, next) => {
   const parkCode = req.params.parkCode;
   if (!parkCode) {
