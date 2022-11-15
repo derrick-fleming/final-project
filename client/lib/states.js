@@ -24,6 +24,7 @@ const states = [
   { name: 'Maryland', code: 'MD' },
   { name: 'Michigan', code: 'MI' },
   { name: 'Minnesota', code: 'MN' },
+  { name: 'Missouri', code: 'MO' },
   { name: 'Massachusetts', code: 'MS' },
   { name: 'Montana', code: 'MT' },
   { name: 'Nebraska', code: 'NE' },

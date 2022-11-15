@@ -47,7 +47,6 @@ export default class ReviewPage extends React.Component {
     const name = event.target.name;
     const array = this.state[name];
     if (target.checked === true) {
-
       this.setState({
         name: array.push(event.target.id)
       });
@@ -105,7 +104,8 @@ export default class ReviewPage extends React.Component {
           tips: '',
           generalThoughts: '',
           startDate: '',
-          endDate: ''
+          endDate: '',
+          validated: false
         });
         this.fileInputRef.current.value = null;
         window.location.hash = `#details?park=${this.props.park}`;
@@ -117,34 +117,28 @@ export default class ReviewPage extends React.Component {
     const search = this.props.park;
     const parkKey = process.env.PARKS_API;
     const action = 'parkCode=';
-    let link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
-    link = 'get-parks-results.json';
+    const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
     fetch(link)
       .then(response => response.json())
-      .then(state => {
+      .then(result => {
         const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
+        const state = result.data[0];
         const title = state.fullName.replaceAll(' ', '%20');
         const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
-        const imageFetches = (
-          fetch(apiEndPoint + '?' + params + '&origin=*')
-            .then(response => response.json())
-            .then(image => {
-              if (image.query.pages[0].thumbnail === undefined) {
-                state.wikiImage = '/images/mountains.png';
-              } else {
-                state.wikiImage = image.query.pages[0].thumbnail.source;
-              }
-            })
-            .catch(err => console.error(err))
-        );
-        Promise
-          .all(imageFetches)
-          .then(results => {
+        fetch(apiEndPoint + '?' + params + '&origin=*')
+          .then(response => response.json())
+          .then(image => {
+            if (image.query.pages[0].thumbnail === undefined) {
+              state.wikiImage = '/images/mountains.png';
+            } else {
+              state.wikiImage = image.query.pages[0].thumbnail.source;
+            }
             this.setState({
-              results: state.data[0],
+              results: state,
               isLoading: false
             });
-          });
+          })
+          .catch(err => console.error(err));
       })
       .catch(err => console.error(err));
   }
@@ -247,8 +241,8 @@ export default class ReviewPage extends React.Component {
                   <Form.Control.Feedback type="invalid">Write at least one tip</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className='mb-3'>
-                  <Form.Label htmlFor='generalThoughts' className='mb-0 pb-1 fs-5'>
-                    <span className='fa-solid fa-lightbulb pe-2' />General Thoughts
+                  <Form.Label className='mb-0 pb-1 fs-5'>
+                    <span htmlFor='generalThoughts'className='fa-solid fa-lightbulb pe-2' />General Thoughts
                   </Form.Label>
                   <hr className='my-0' />
                   <Form.Text className='fs-6 fst-italic fw-light'>
@@ -274,7 +268,6 @@ export default class ReviewPage extends React.Component {
                 </Form.Group>
               </Col>
             </Row>
-
             <Row className='my-2'>
               <Col>
                 <a className='btn btn-secondary merriweather lh-lg px-4' href={`#details?park=${this.props.park}`}>
