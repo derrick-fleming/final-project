@@ -6,6 +6,7 @@ import NavigationBar from './components/navigationBar';
 import SearchBar from './components/searchBar';
 import ParkDetails from './pages/details';
 import ReviewPage from './pages/reviews';
+import UserAccount from './pages/userAccount';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -65,6 +66,13 @@ export default class App extends React.Component {
         <>
           <NavigationBar />
           <ReviewPage park={review}/>
+        </>
+      );
+    } else if (this.state.route.path === 'accounts/user') {
+      return (
+        <>
+          <NavigationBar />
+          <UserAccount />
         </>
       );
     }
