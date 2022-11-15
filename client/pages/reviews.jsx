@@ -74,13 +74,13 @@ export default class ReviewPage extends React.Component {
       imageUrl: this.state.results.wikiImage
     };
     const dates = [this.state.startDate, this.state.endDate];
-    let imageUrl = null;
+    let image = null;
     if (this.fileInputRef.current.files[0]) {
-      imageUrl = this.fileInputRef.current.files[0];
+      image = this.fileInputRef.current.files[0];
     }
     const formData = new FormData();
     formData.append('accountId', 1);
-    formData.append('image', imageUrl);
+    formData.append('image', image);
     formData.append('parkCode', this.props.park);
     formData.append('recommendedActivities', this.state.activities);
     formData.append('recommendedVisitors', this.state.visitors);
@@ -256,14 +256,14 @@ export default class ReviewPage extends React.Component {
             <Row>
               <Col xs={12} lg={6}>
                 <Form.Group className='mb-3'>
-                  <Form.Label htmlFor='imageUrl' className='mb-0 pb-1 fs-5'>
+                  <Form.Label htmlFor='image' className='mb-0 pb-1 fs-5'>
                     <span className='fa-solid fa-camera-retro pe-2' />Photos
                   </Form.Label>
                   <hr className='my-0' />
                   <Form.Text className='fs-6 fst-italic fw-light'>
                     Upload your favorite photos from this park.
                   </Form.Text>
-                  <Form.Control id='imageUrl' className='mt-3' name='imageUrl' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
+                  <Form.Control id='image' className='mt-3' name='image' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
                   <Form.Control.Feedback type="valid">Photo is optional</Form.Control.Feedback>
                 </Form.Group>
               </Col>
