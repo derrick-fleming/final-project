@@ -75,6 +75,7 @@ export default class NavigationBar extends React.Component {
                     Browse Activities
                   </NavDropdown.Item>
                 </NavDropdown>
+                <Nav.Link className='merriweather fs-6' href="#accounts/user">States Tracker</Nav.Link>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
