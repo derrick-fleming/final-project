@@ -170,52 +170,57 @@ export default class ReviewPage extends React.Component {
     }
     const { name } = this.state.results;
     return (
-      <Container>
-        <h2 className='mt-4 merriweather fw-bold'>{name}</h2>
-        <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className='open-sans gray-scale'>
-          <Form.Group className='d-flex'>
-            <Col xs={2} md={1}>
-              <Form.Label htmlFor='rating-5' className='fs-6 pb-4 m-0'>
-                Rating:
-              </Form.Label>
-            </Col>
-            <Col xs={3}>
-              <div className='star-radio d-flex flex-row-reverse justify-content-end'>
-                <input required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleRating} />
-                <label htmlFor="rating-5" className='pt-1 fa-solid fa-star'/>
-                <input className='px-1' id='rating-4' type='radio' name='rating' value='4' onClick={this.handleRating}/>
-                <label htmlFor="rating-4" className='pt-1 fa-solid fa-star d-inline'/>
-                <input className='px-1' id='rating-3' type='radio' name='rating' value='3' onClick={this.handleRating}/>
-                <label htmlFor="rating-3" className='pt-1 fa-solid fa-star'/>
-                <input className='px-1' id='rating-2' type='radio' name='rating' value='2' onClick={this.handleRating}/>
-                <label htmlFor="rating-2" className='pt-1 fa-solid fa-star'/>
-                <input className='px-1' id='rating-1' type='radio' name='rating' value='1' onClick={this.handleRating}/>
-                <label htmlFor="rating-1" className='pt-1 fa-solid fa-star'/>
-                <Form.Control.Feedback type="invalid">Missing rating.</Form.Control.Feedback>
-              </div>
-            </Col>
-          </Form.Group>
-          <Row>
-            <Col sm={12} lg={6}>
-              <Form.Group className='mb-3'>
-                <h5 className='mb-0 pb-1'><span className='fa-regular fa-calendar-days pe-2' />Dates Visited*</h5>
-                <hr className='mt-0'/>
-                <div>
-                  <Form.Label htmlFor='start-dates' className='pe-2 fw-light'> Start Date: </Form.Label>
-                  <input className='border border-1' required id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
-                  <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
+      <>
+        <div className='mb-4 position-relative hero-background text-center'>
+          <img src='images/placeholder-trees.png' alt='Mountain view with lake' className='hero-image' />
+          <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-pen-to-square pe-2' />Review Form</h2>
+        </div>
+        <Container className='mb-4'>
+          <h2 className='mt-4 merriweather fw-bold'>{name}</h2>
+          <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit} className='open-sans gray-scale'>
+            <Form.Group className='d-flex'>
+              <Col xs={2} md={1}>
+                <Form.Label htmlFor='rating-5' className='fs-6 pb-4 m-0'>
+                  Rating:
+                </Form.Label>
+              </Col>
+              <Col xs={3}>
+                <div className='star-radio d-flex flex-row-reverse justify-content-end'>
+                  <input required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleRating} />
+                  <label htmlFor="rating-5" className='pt-1 fa-solid fa-star'/>
+                  <input className='px-1' id='rating-4' type='radio' name='rating' value='4' onClick={this.handleRating}/>
+                  <label htmlFor="rating-4" className='pt-1 fa-solid fa-star d-inline'/>
+                  <input className='px-1' id='rating-3' type='radio' name='rating' value='3' onClick={this.handleRating}/>
+                  <label htmlFor="rating-3" className='pt-1 fa-solid fa-star'/>
+                  <input className='px-1' id='rating-2' type='radio' name='rating' value='2' onClick={this.handleRating}/>
+                  <label htmlFor="rating-2" className='pt-1 fa-solid fa-star'/>
+                  <input className='px-1' id='rating-1' type='radio' name='rating' value='1' onClick={this.handleRating}/>
+                  <label htmlFor="rating-1" className='pt-1 fa-solid fa-star'/>
+                  <Form.Control.Feedback type="invalid">Missing rating.</Form.Control.Feedback>
                 </div>
-                <div>
-                  <Form.Label htmlFor='end-dates' className='pe-3 fw-light'> End Date: </Form.Label>
-                  <input className='border border-1' required id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
-                  <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
-                </div>
-              </Form.Group>
-              <Form.Group className='mb-3'>
-                <h5 className='mb-0 pb-1'><span className="fa-solid fa-person-biking pe-2" />Recommended Activities*</h5>
-                <hr className='mt-0'/>
-                <Row>
-                  {
+              </Col>
+            </Form.Group>
+            <Row>
+              <Col sm={12} lg={6}>
+                <Form.Group className='mb-3'>
+                  <h5 className='mb-0 pb-1'><span className='fa-regular fa-calendar-days pe-2' />Dates Visited*</h5>
+                  <hr className='mt-0'/>
+                  <div>
+                    <Form.Label htmlFor='start-dates' className='pe-2 fw-light'> Start Date: </Form.Label>
+                    <input className='border border-1' required id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
+                    <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
+                  </div>
+                  <div>
+                    <Form.Label htmlFor='end-dates' className='pe-3 fw-light'> End Date: </Form.Label>
+                    <input className='border border-1' required id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
+                    <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
+                  </div>
+                </Form.Group>
+                <Form.Group className='mb-3'>
+                  <h5 className='mb-0 pb-1'><span className="fa-solid fa-person-biking pe-2" />Recommended Activities*</h5>
+                  <hr className='mt-0'/>
+                  <Row>
+                    {
                 activities.map(activity => {
                   return (
                     <Col xs={6} key={activity.name}>
@@ -225,13 +230,13 @@ export default class ReviewPage extends React.Component {
                   );
                 })
               }
-                </Row>
-              </Form.Group>
-              <Form.Group className='mb-3'>
-                <h5 className='mb-0 pb-1'><span className="fa-solid fa-user-group pe-2" />Recommended Visitors*</h5>
-                <hr className='mt-0'/>
-                <Row>
-                  {
+                  </Row>
+                </Form.Group>
+                <Form.Group className='mb-3'>
+                  <h5 className='mb-0 pb-1'><span className="fa-solid fa-user-group pe-2" />Recommended Visitors*</h5>
+                  <hr className='mt-0'/>
+                  <Row>
+                    {
                 visitors.map(visitor => {
                   return (
                     <Col xs={6} key={visitor}>
@@ -241,64 +246,65 @@ export default class ReviewPage extends React.Component {
                   );
                 })
               }
-                </Row>
-              </Form.Group>
-            </Col>
-            <Col sm={12} lg={6}>
-              <Form.Group className='mb-3'>
-                <Form.Label htmlFor='tips' className='mb-0 pb-1 fs-5'>
-                  <span className='fa-solid fa-info-circle pe-2' />Tips*
-                </Form.Label>
-                <hr className='my-0' />
-                <Form.Text className='fs-6 fst-italic fw-light'>
-                  Provide future visitors with tips for a great experience at {this.state.results.name}.
-                </Form.Text>
-                <Form.Control placeholder='Provide tips here' className='text-box mt-3' required id='tips' name='tips' as='textarea' value={this.state.tips} onChange={this.handleInputChange} />
-                <Form.Control.Feedback type="invalid">Write at least one tip</Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className='mb-3'>
-                <Form.Label htmlFor='generalThoughts' className='mb-0 pb-1 fs-5'>
-                  <span className='fa-solid fa-lightbulb pe-2' />General Thoughts
-                </Form.Label>
-                <hr className='my-0' />
-                <Form.Text className='fs-6 fst-italic fw-light'>
-                  Explain your rating or mention other activites someone should know about this park.
-                </Form.Text>
-                <Form.Control id='generalThoughts' name='generalThoughts' as='textarea' className='text-box mt-3' value={this.state.generalThoughts} onChange={this.handleInputChange} placeholder='Write your thoughts here' />
-                <Form.Control.Feedback type="valid">General Thoughts are optional</Form.Control.Feedback>
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} lg={6}>
-              <Form.Group className='mb-3'>
-                <Form.Label htmlFor='imageUrl' className='mb-0 pb-1 fs-5'>
-                  <span className='fa-solid fa-camera-retro pe-2' />Photos
-                </Form.Label>
-                <hr className='my-0' />
-                <Form.Text className='fs-6 fst-italic fw-light'>
-                  Upload your favorite photos from this park.
-                </Form.Text>
-                <Form.Control id='imageUrl' className='mt-3' name='imageUrl' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
-                <Form.Control.Feedback type="valid">Photo is optional</Form.Control.Feedback>
-              </Form.Group>
-            </Col>
-          </Row>
+                  </Row>
+                </Form.Group>
+              </Col>
+              <Col sm={12} lg={6}>
+                <Form.Group className='mb-3'>
+                  <Form.Label htmlFor='tips' className='mb-0 pb-1 fs-5'>
+                    <span className='fa-solid fa-info-circle pe-2' />Tips*
+                  </Form.Label>
+                  <hr className='my-0' />
+                  <Form.Text className='fs-6 fst-italic fw-light'>
+                    Provide future visitors with tips for a great experience at {this.state.results.name}.
+                  </Form.Text>
+                  <Form.Control placeholder='Provide tips here' className='text-box mt-3' required id='tips' name='tips' as='textarea' value={this.state.tips} onChange={this.handleInputChange} />
+                  <Form.Control.Feedback type="invalid">Write at least one tip</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className='mb-3'>
+                  <Form.Label htmlFor='generalThoughts' className='mb-0 pb-1 fs-5'>
+                    <span className='fa-solid fa-lightbulb pe-2' />General Thoughts
+                  </Form.Label>
+                  <hr className='my-0' />
+                  <Form.Text className='fs-6 fst-italic fw-light'>
+                    Explain your rating or mention other activites someone should know about this park.
+                  </Form.Text>
+                  <Form.Control id='generalThoughts' name='generalThoughts' as='textarea' className='text-box mt-3' value={this.state.generalThoughts} onChange={this.handleInputChange} placeholder='Write your thoughts here' />
+                  <Form.Control.Feedback type="valid">General Thoughts are optional</Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} lg={6}>
+                <Form.Group className='mb-3'>
+                  <Form.Label htmlFor='imageUrl' className='mb-0 pb-1 fs-5'>
+                    <span className='fa-solid fa-camera-retro pe-2' />Photos
+                  </Form.Label>
+                  <hr className='my-0' />
+                  <Form.Text className='fs-6 fst-italic fw-light'>
+                    Upload your favorite photos from this park.
+                  </Form.Text>
+                  <Form.Control id='imageUrl' className='mt-3' name='imageUrl' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
+                  <Form.Control.Feedback type="valid">Photo is optional</Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+            </Row>
 
-          <Row className='my-2'>
-            <Col>
-              <Button className='merriweather lh-lg px-4' variant="secondary" onClick={this.handleClose}>
-                Close
-              </Button>
-            </Col>
-            <Col className='text-end'>
-              <Button className='merriweather lh-lg px-4' variant="success" type='submit'>
-                Submit
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-      </Container>
+            <Row className='my-2'>
+              <Col>
+                <Button className='merriweather lh-lg px-4' variant="secondary" onClick={this.handleClose}>
+                  Close
+                </Button>
+              </Col>
+              <Col className='text-end'>
+                <Button className='merriweather lh-lg px-4' variant="success" type='submit'>
+                  Submit
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </Container>
+      </>
     );
   }
 }
