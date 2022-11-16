@@ -21,10 +21,6 @@ app.use(jsonMiddleWare);
 
 app.get('/api/accounts/:accountId', (req, res, next) => {
   const accountId = req.params.accountId;
-  if (!accountId) {
-    throw new ClientError(400, 'username must be provided');
-  }
-
   const total = `select count(*) as "reviews"
   from "reviews"
   where "accountId" = $1
