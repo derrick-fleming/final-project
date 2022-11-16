@@ -129,20 +129,23 @@ export default class UserAccount extends React.Component {
     }
     return (
       <Container>
-        <Row className='mb-4'>
+        <Row className='my-4'>
+          <h2 className='merriweather text-center'>Places you&apos;ve visited</h2>
+          <h5 className='open-sans fst-italic fw-light text-center'>Double click a state to see your reviews</h5>
           <div id="map" ref={this.infographicMap} />
         </Row>
         <Row className='justify-content-end'>
           <Col xs={8}>
-            <table className='text-center border bg-white rounded'>
+            <table className='text-center bg-white rounded'>
               <thead>
                 <tr>
-                  <th colSpan="10" className='merriweather lh-lg pt-2 fs-6 fw-light'> Total Parks Visited
+                  <th colSpan="12" className='merriweather lh-lg pt-2 fs-6 fw-light'> Total Parks Visited
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr className='scale'>
+                  <td />
                   <td className='zero' />
                   <td className='one' />
                   <td className='two' />
@@ -153,8 +156,10 @@ export default class UserAccount extends React.Component {
                   <td className='seven' />
                   <td className='eight' />
                   <td className='nine' />
+                  <td />
                 </tr>
                 <tr className='scale open-sans fw-light'>
+                  <td />
                   <td>0</td>
                   <td />
                   <td />
@@ -165,17 +170,18 @@ export default class UserAccount extends React.Component {
                   <td />
                   <td />
                   <td>15+</td>
+                  <td />
                 </tr>
               </tbody>
             </table>
           </Col>
         </Row>
         <Row>
-          <Col>
-            <h2 className='merriweather'>Your Statistics</h2>
-            <h5 className='open-sans fw-light'>Total number of parks visited: <span className='fw-bold'>{this.state.total}</span></h5>
-            <h5 className='open-sans fw-light'>Most visited state&apos;s parks: <span className='fw-bold'>{mostVisited}</span></h5>
-            <h5 className='open-sans fw-light'>Number of states left to visit: <span className='fw-bold'>{statesNeeded}</span></h5>
+          <Col className='mt-4'>
+            <h4 className='merriweather'>Your Statistics</h4>
+            <h6 className='open-sans fw-light lh-lg'>Total number of parks visited: <span className='fw-bold'>{this.state.total}</span></h6>
+            <h6 className='open-sans fw-light lh-lg'>Most visited state&apos;s parks: <span className='fw-bold'>{mostVisited}</span></h6>
+            <h6 className='open-sans fw-light lh-lg'>Number of states left to visit: <span className='fw-bold'>{statesNeeded}</span></h6>
           </Col>
         </Row>
 
