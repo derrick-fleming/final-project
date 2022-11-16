@@ -7,6 +7,7 @@ import SearchBar from './components/searchBar';
 import ParkDetails from './pages/details';
 import ReviewPage from './pages/reviews';
 import UserAccount from './pages/userAccount';
+import AppContext from './lib/app-context';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -24,59 +25,51 @@ export default class App extends React.Component {
     });
   }
 
-  render() {
-    if (this.state.route.path === '' || this.state.route.path === 'home') {
+  renderPage() {
+    const { path } = this.state.route;
+    if (path === '' || path === 'home') {
       const browse = this.state.route.params.get('browse');
-      return (
-        <>
-          <NavigationBar />
-          <Home browse={browse}/>
-        </>
-      );
+      return <Home browse={browse} />;
     }
-    if (this.state.route.path === 'search-results') {
+    if (path === 'search-results') {
       const search = this.state.route.params.get('search');
       const page = this.state.route.params.get('page');
       return (
         <>
-          <NavigationBar />
           <SearchBar />
-          <SearchResults search={search} action='search' page={page}/>
-        </>
-      );
-    } else if (this.state.route.path === 'state-results') {
-      const search = this.state.route.params.get('search');
-      return (
-        <>
-          <NavigationBar />
-          <SearchResults search={search} action='states' />
-        </>
-      );
-    } else if (this.state.route.path === 'details') {
-      const park = this.state.route.params.get('park');
-      return (
-        <>
-          <NavigationBar />
-          <ParkDetails search={park} />
-        </>
-      );
-    } else if (this.state.route.path === 'reviews') {
-      const review = this.state.route.params.get('parkCode');
-      return (
-        <>
-          <NavigationBar />
-          <ReviewPage park={review}/>
-        </>
-      );
-    } else if (this.state.route.path === 'accounts/user') {
-      return (
-        <>
-          <NavigationBar />
-          <UserAccount />
+          <SearchResults search={search} action='search' page={page} />
         </>
       );
     }
-
+    if (path === 'state-results') {
+      const search = this.state.route.params.get('search');
+      return <SearchResults search={search} action='states' />;
+    }
+    if (path === 'details') {
+      const park = this.state.route.params.get('park');
+      return <ParkDetails search={park} />;
+    }
+    if (path === 'reviews') {
+      const review = this.state.route.params.get('parkCode');
+      return <ReviewPage park={review} />;
+    }
+    if (path === 'accounts/user') {
+      return <UserAccount />;
+    }
   }
 
+  render() {
+    const contextValue = '';
+    return (
+      <AppContext.Provider value={contextValue}>
+        <>
+          <NavigationBar />
+          {
+            this.renderPage()
+          }
+        </>
+      </AppContext.Provider>
+    );
+
+  }
 }
