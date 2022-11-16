@@ -11,7 +11,8 @@ export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      accountId: 1
+      accountId: 1,
+      isLoading: true
     };
     this.renderInforgraphic = this.renderInforgraphic.bind(this);
     this.infographicMap = React.createRef();
@@ -22,13 +23,17 @@ export default class UserAccount extends React.Component {
     fetch(`/api/accounts/${accountId}`)
       .then(response => response.json())
       .then(result => {
-        result.forEach(element => {
+        result[0].forEach(element => {
           const stateCode = element.stateCode;
           if (defaultStates[stateCode]) {
             defaultStates[stateCode].visits = element.visits;
           }
         });
         this.renderInforgraphic();
+        this.setState({
+          results: result[0],
+          total: result[1][0].reviews
+        });
       })
       .catch(err => console.error(err));
   }
@@ -109,9 +114,19 @@ export default class UserAccount extends React.Component {
       });
 
     return svg.node();
+
   }
 
   render() {
+    let mostVisited;
+    let statesNeeded;
+    if (this.state.results) {
+      const sqlData = this.state.results;
+      const total = sqlData.length;
+      const stateCode = sqlData[0].stateCode;
+      mostVisited = Object.values(defaultStates[stateCode].name);
+      statesNeeded = 50 - total;
+    }
     return (
       <Container>
         <Row className='mb-4'>
@@ -122,12 +137,12 @@ export default class UserAccount extends React.Component {
             <table className='text-center border bg-white rounded'>
               <thead>
                 <tr>
-                  <th className='merriweather mb-0 fs-6 fw-light'> Total Parks Visited
+                  <th colSpan="10" className='merriweather lh-lg pt-2 fs-6 fw-light'> Total Parks Visited
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <trow className='scale'>
+                <tr className='scale'>
                   <td className='zero' />
                   <td className='one' />
                   <td className='two' />
@@ -138,8 +153,8 @@ export default class UserAccount extends React.Component {
                   <td className='seven' />
                   <td className='eight' />
                   <td className='nine' />
-                </trow>
-                <trow className='scale open-sans fw-light'>
+                </tr>
+                <tr className='scale open-sans fw-light'>
                   <td>0</td>
                   <td />
                   <td />
@@ -150,9 +165,17 @@ export default class UserAccount extends React.Component {
                   <td />
                   <td />
                   <td>15+</td>
-                </trow>
+                </tr>
               </tbody>
             </table>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <h2 className='merriweather'>Your Statistics</h2>
+            <h5 className='open-sans fw-light'>Total number of parks visited: <span className='fw-bold'>{this.state.total}</span></h5>
+            <h5 className='open-sans fw-light'>Most visited state&apos;s parks: <span className='fw-bold'>{mostVisited}</span></h5>
+            <h5 className='open-sans fw-light'>Number of states left to visit: <span className='fw-bold'>{statesNeeded}</span></h5>
           </Col>
         </Row>
 

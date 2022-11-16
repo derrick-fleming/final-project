@@ -24,6 +24,12 @@ app.get('/api/accounts/:accountId', (req, res, next) => {
   if (!accountId) {
     throw new ClientError(400, 'username must be provided');
   }
+
+  const total = `select count(*) as "reviews"
+  from "reviews"
+  where "accountId" = $1
+  group by "accountId"`;
+
   const sql = `
     select "stateCode",
     count(*) as "visits"
@@ -31,7 +37,9 @@ app.get('/api/accounts/:accountId', (req, res, next) => {
     join "reviews" using ("accountId")
     join "parksCache" using ("parkCode")
     where "accountId" = $1
-    group by "stateCode"`;
+    group by "stateCode"
+    order by "visits" desc`;
+
   const params = [accountId];
   db.query(sql, params)
     .then(result => {
@@ -41,7 +49,17 @@ app.get('/api/accounts/:accountId', (req, res, next) => {
           error: 'Cannot find reviews/states for account'
         });
       }
-      res.status(200).json(visits);
+      db.query(total, params)
+        .then(response => {
+          if (!response) {
+            res.status(404).json({
+              error: 'Cannot find reviews for account'
+            });
+          }
+          const amount = response.rows;
+          res.status(200).json([visits, amount]);
+        })
+        .catch(err => next(err));
     })
     .catch(err => next(err));
 });
