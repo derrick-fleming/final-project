@@ -128,64 +128,69 @@ export default class UserAccount extends React.Component {
       statesNeeded = 50 - total;
     }
     return (
-      <Container>
-        <Row className='my-4'>
-          <h2 className='merriweather text-center'>Places you&apos;ve visited</h2>
-          <h5 className='open-sans fst-italic fw-light text-center'>Double click a state to see your reviews</h5>
-          <div id="map" ref={this.infographicMap} />
-        </Row>
-        <Row className='justify-content-end'>
-          <Col xs={8}>
-            <table className='text-center bg-white rounded'>
-              <thead>
-                <tr>
-                  <th colSpan="12" className='merriweather lh-lg pt-2 fs-6 fw-light'> Total Parks Visited
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className='scale'>
-                  <td />
-                  <td className='zero' />
-                  <td className='one' />
-                  <td className='two' />
-                  <td className='three' />
-                  <td className='four' />
-                  <td className='five' />
-                  <td className='six' />
-                  <td className='seven' />
-                  <td className='eight' />
-                  <td className='nine' />
-                  <td />
-                </tr>
-                <tr className='scale open-sans fw-light'>
-                  <td />
-                  <td>0</td>
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td>15+</td>
-                  <td />
-                </tr>
-              </tbody>
-            </table>
-          </Col>
-        </Row>
-        <Row>
-          <Col className='mt-4'>
-            <h4 className='merriweather'>Your Statistics</h4>
-            <h6 className='open-sans fw-light lh-lg'>Total number of parks visited: <span className='fw-bold'>{this.state.total}</span></h6>
-            <h6 className='open-sans fw-light lh-lg'>Most visited state&apos;s parks: <span className='fw-bold'>{mostVisited}</span></h6>
-            <h6 className='open-sans fw-light lh-lg'>Number of states left to visit: <span className='fw-bold'>{statesNeeded}</span></h6>
-          </Col>
-        </Row>
-
-      </Container>
+      <>
+        <div className='mb-4 position-relative hero-background text-center'>
+          <img src='images/joshua-tree.png' alt='Mountain view with lake' className='hero-image' />
+          <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-map pe-2' />States Tracker</h2>
+        </div>
+        <Container>
+          <Row className='my-4'>
+            <h2 className='merriweather text-center'>Places you&apos;ve visited</h2>
+            <h5 className='open-sans fst-italic fw-light text-center'>Double click a state to see your reviews</h5>
+            <div id="map" ref={this.infographicMap} />
+          </Row>
+          <Row className='justify-content-end'>
+            <Col xs={8}>
+              <table className='text-center bg-white rounded'>
+                <thead>
+                  <tr>
+                    <th colSpan="12" className='merriweather lh-lg pt-2 fs-6 fw-light'> Total Parks Visited
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className='scale'>
+                    <td />
+                    <td className='zero' />
+                    <td className='one' />
+                    <td className='two' />
+                    <td className='three' />
+                    <td className='four' />
+                    <td className='five' />
+                    <td className='six' />
+                    <td className='seven' />
+                    <td className='eight' />
+                    <td className='nine' />
+                    <td />
+                  </tr>
+                  <tr className='scale open-sans fw-light'>
+                    <td />
+                    <td>0</td>
+                    <td />
+                    <td />
+                    <td />
+                    <td />
+                    <td />
+                    <td />
+                    <td />
+                    <td />
+                    <td>15+</td>
+                    <td />
+                  </tr>
+                </tbody>
+              </table>
+            </Col>
+          </Row>
+          <Row>
+            <Col className='mt-4'>
+              <h4 className='merriweather'>Your Statistics</h4>
+              <h6 className='open-sans fw-light lh-lg'>Total number of parks visited: <span className='fw-bold'>{this.state.total}</span></h6>
+              <h6 className='open-sans fw-light lh-lg'>Most visited state&apos;s parks: <span className='fw-bold'>{mostVisited}</span></h6>
+              <h6 className='open-sans fw-light lh-lg'>Number of states left to visit: <span className='fw-bold'>{statesNeeded}</span></h6>
+            </Col>
+          </Row>
+        </Container>
+      </>
     );
   }
 }
