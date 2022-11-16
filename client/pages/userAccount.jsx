@@ -134,13 +134,17 @@ export default class UserAccount extends React.Component {
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-map pe-2' />States Tracker</h2>
         </div>
         <Container>
-          <Row className='my-4'>
-            <h2 className='merriweather text-center'>Places you&apos;ve visited</h2>
-            <h5 className='open-sans fst-italic fw-light text-center'>Double click a state to see your reviews</h5>
-            <div id="map" ref={this.infographicMap} />
+          <Row className='my-4 justify-content-center'>
+            <Col xs={12}>
+              <h2 className='merriweather text-center'>Places you&apos;ve visited</h2>
+              <h5 className='open-sans fst-italic fw-light text-center'>Hover over a state to see your number of visits</h5>
+            </Col>
+            <Col lg={9}>
+              <div id="map" ref={this.infographicMap} />
+            </Col>
           </Row>
           <Row className='justify-content-end'>
-            <Col xs={8}>
+            <Col xs={7} md={4} lg={4}>
               <table className='text-center bg-white rounded'>
                 <thead>
                   <tr>
@@ -181,8 +185,8 @@ export default class UserAccount extends React.Component {
               </table>
             </Col>
           </Row>
-          <Row>
-            <Col className='mt-4'>
+          <Row className='justify-content-center'>
+            <Col lg={9} className='my-4'>
               <h4 className='merriweather'>Your Statistics</h4>
               <h6 className='open-sans fw-light lh-lg'>Total number of parks visited: <span className='fw-bold'>{this.state.total}</span></h6>
               <h6 className='open-sans fw-light lh-lg'>Most visited state&apos;s parks: <span className='fw-bold'>{mostVisited}</span></h6>

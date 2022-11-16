@@ -48,12 +48,8 @@ html,
 }
 
 .nav-icon {
-  color: #c1d3c5;
-  transition: color 0.25s ease-in-out;
-}
-
-.nav-icon:hover {
   color: #fff;
+  transition: color 0.25s ease-in-out;
 }
 
 .btn-success:hover {
@@ -134,6 +130,10 @@ html,
 
 .description-text {
   line-height: 1.8;
+}
+
+.navbar-dark {
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 .accordion {
