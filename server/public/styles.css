@@ -193,6 +193,55 @@ input:checked {
   font-weight: 500;
 }
 
+.legend-linear {
+  height: 100px;
+}
+
+.scale > td {
+  height: 10px;
+  width: 20px;
+}
+
+.zero {
+  background-color: #f7fcf5;
+}
+
+.one {
+  background-color: #e6f5e1;
+}
+
+.two {
+  background-color: #cdebc7;
+}
+
+.three {
+  background-color: #addea7;
+}
+
+.four {
+  background-color: #88cd87;
+}
+
+.five {
+  background-color: #5db96b;
+}
+
+.six {
+  background-color: #38a055;
+}
+
+.seven {
+  background-color: #1b843f;
+}
+
+.eight {
+  background-color: #04672b;
+}
+
+.nine {
+  background-color: #00441b;
+}
+
 @media screen and (min-width: 768px) {
   .image-details {
     height: 310px;

@@ -2,6 +2,8 @@ import React from 'react';
 import defaultStates from '../lib/defaultStateCount';
 import * as topojson from 'topojson-client';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const d3 = window.d3;
 
@@ -70,7 +72,7 @@ export default class UserAccount extends React.Component {
               .duration(200)
               .style('stroke-width', '1px')
               .style('opacity', 0.8)
-              .style('box-shadow', '1px 1px 0.5rem black');
+              .style('box-shadow', '2px 2px 0.5rem black');
 
             d3.select(this)
               .transition()
@@ -112,7 +114,48 @@ export default class UserAccount extends React.Component {
   render() {
     return (
       <Container>
-        <div id="map" ref={this.infographicMap}/>
+        <Row className='mb-4'>
+          <div id="map" ref={this.infographicMap} />
+        </Row>
+        <Row className='justify-content-end'>
+          <Col xs={8}>
+            <table className='text-center border bg-white rounded'>
+              <thead>
+                <tr>
+                  <th className='merriweather mb-0 fs-6 fw-light'> Total Parks Visited
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <trow className='scale'>
+                  <td className='zero' />
+                  <td className='one' />
+                  <td className='two' />
+                  <td className='three' />
+                  <td className='four' />
+                  <td className='five' />
+                  <td className='six' />
+                  <td className='seven' />
+                  <td className='eight' />
+                  <td className='nine' />
+                </trow>
+                <trow className='scale open-sans fw-light'>
+                  <td>0</td>
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td>15+</td>
+                </trow>
+              </tbody>
+            </table>
+          </Col>
+        </Row>
+
       </Container>
     );
   }
