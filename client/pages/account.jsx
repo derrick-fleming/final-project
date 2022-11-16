@@ -24,7 +24,20 @@ export default class AuthPage extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Form />
+            <Form>
+              <Form.Group controlId="username">
+                <Form.Label>
+                  Username
+                </Form.Label>
+                <Form.Control name="username" type="text" placeholder="Enter username"/>
+              </Form.Group>
+              <Form.Group controlId="password">
+                <Form.Label>
+                  Password
+                </Form.Label>
+                <Form.Control name="password" type="password" placeholder="Enter password" />
+              </Form.Group>
+            </Form>
           </Row>
         </Container>
       </>
