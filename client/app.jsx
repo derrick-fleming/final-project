@@ -8,6 +8,7 @@ import ParkDetails from './pages/details';
 import ReviewPage from './pages/reviews';
 import UserAccount from './pages/userAccount';
 import AppContext from './lib/app-context';
+import AuthPage from './pages/account';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -57,10 +58,14 @@ export default class App extends React.Component {
     if (path === 'accounts/user') {
       return <UserAccount />;
     }
+    if (path === 'sign-in' || path === 'sign-up') {
+      return <AuthPage action={path} />;
+    }
   }
 
   render() {
-    const contextValue = this.state.user;
+    const { user, route } = this.state;
+    const contextValue = { user, route };
     return (
       <AppContext.Provider value={contextValue}>
         <>

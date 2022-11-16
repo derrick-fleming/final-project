@@ -3,12 +3,17 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+// import Button from 'react-bootstrap/Button';
 
 export default class AuthPage extends React.Component {
   render() {
     let passwordDescription = '';
+    let anchorText = 'Register an account';
+    let link = '#sign-up';
     if (this.props.action === 'sign-up') {
       passwordDescription = 'Password must be at least 8 characters and contain a number, an uppercase letter, and a unique character: @$!_&*';
+      anchorText = 'Sign in';
+      link = '#sign-in';
     }
     return (
       <>
@@ -44,6 +49,9 @@ export default class AuthPage extends React.Component {
                   {passwordDescription}
                 </Form.Text>
               </Form.Group>
+              <a href={link}>
+                {anchorText}
+              </a>
             </Form>
           </Row>
         </Container>
