@@ -58,11 +58,11 @@ export default class UserAccount extends React.Component {
       .range(d3.schemeGreens[9]);
 
     const path = d3.geoPath();
-    const svg = d3.select('#map')
+    const svg = d3.select(this.infographicMap.current)
       .append('svg')
       .attr('viewBox', '0 0 975 610');
 
-    const toolTip = d3.select('#map')
+    const toolTip = d3.select(this.infographicMap.current)
       .append('div')
       .style('position', 'absolute')
       .attr('class', 'tooltip');
