@@ -36,7 +36,7 @@ export default class AuthPage extends React.Component {
     if (!trimmed) return 'A password is required';
     if (trimmed.length < 8) return 'Password must be at least 8 characters and include a capital letter, a digit, and a special character: !@#$%^&*()';
     if (specialCharacters.test(trimmed) && uppercaseCharacters.test(trimmed) && digit.test(trimmed)) {
-      return '';
+      return null;
     } else {
       return 'Password needs: a capital letter, a digit, and a special character: !@#$%^&*()';
     }
@@ -62,9 +62,11 @@ export default class AuthPage extends React.Component {
   render() {
     let anchorText = 'Register an account';
     let link = '#sign-up';
+    let username = 'Username';
     if (this.props.action === 'sign-up') {
       anchorText = 'Sign in';
       link = '#sign-in';
+      username = 'Create a username';
     }
     return (
       <>
@@ -83,31 +85,37 @@ export default class AuthPage extends React.Component {
               </h5>
             </Col>
           </Row>
-          <Row>
+          <Row className='m-4'>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="username">
-                <Form.Label>
-                  Username
+                <Form.Label className='merriweather fs-5'>
+                  {username}
                 </Form.Label>
-                <Form.Control required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
+                <Form.Control required name="username" type="text" placeholder="Enter username" className='mb-4' onChange={this.handleInputChange}/>
                 <Form.Control.Feedback type="invalid">Username required</Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="password">
-                <Form.Label>
+                <Form.Label className='merriweather fs-5 mt-2'>
                   Password
                 </Form.Label>
                 <Form.Control required name="password" type="password" placeholder="Enter password" onChange={this.handleInputChange}/>
                 <Form.Control.Feedback type="invalid" />
-                <Form.Text>
+                <Form.Text className='text-danger'>
                   {this.state.error}
                 </Form.Text>
               </Form.Group>
-              <a href={link}>
-                {anchorText}
-              </a>
-              <Button type='submit' className='btn-success'>
-                Sign Up
-              </Button>
+              <Row className='mt-4'>
+                <Col>
+                  <a className='btn merriweather go-back text-decoration-none fs-6 lh-lg' href={link}>
+                    {anchorText}
+                  </a>
+                </Col>
+                <Col className='text-end'>
+                  <Button type='submit' className='merriweather btn-success lh-lg px-4'>
+                    Sign Up
+                  </Button>
+                </Col>
+              </Row>
             </Form>
           </Row>
         </Container>
