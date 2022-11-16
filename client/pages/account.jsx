@@ -19,13 +19,21 @@ export default class AuthPage extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.stopPropagation();
-      this.setState({
-        validated: true
-      });
+    if (this.state.error !== null) {
+      return;
     }
+    const username = this.state.username;
+    const password = this.state.password;
+    const account = { username, password };
+    const { action } = this.props;
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(account)
+    };
+    fetch(`/api/auth/${action}`, req);
   }
 
   validate(value) {
