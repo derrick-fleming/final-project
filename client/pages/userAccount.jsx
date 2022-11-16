@@ -21,6 +21,9 @@ export default class UserAccount extends React.Component {
   }
 
   componentDidMount() {
+    if (!this.context) {
+      return;
+    }
     const { accountId } = this.state;
     fetch(`/api/accounts/${accountId}`)
       .then(response => response.json())

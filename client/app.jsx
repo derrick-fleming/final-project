@@ -14,7 +14,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       route: parseRoute(window.location.hash),
-      user: 1
+      user: null
     };
   }
 
