@@ -48,12 +48,8 @@ html,
 }
 
 .nav-icon {
-  color: #c1d3c5;
-  transition: color 0.25s ease-in-out;
-}
-
-.nav-icon:hover {
   color: #fff;
+  transition: color 0.25s ease-in-out;
 }
 
 .btn-success:hover {
@@ -136,6 +132,10 @@ html,
   line-height: 1.8;
 }
 
+.navbar-dark {
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 .accordion {
   --bs-accordion-active-color: #000;
   --bs-accordion-active-bg: #cbdfcc;
@@ -182,6 +182,64 @@ input:checked {
 
 .text-box {
   height: 100px;
+}
+
+.tooltip {
+  width: 135px;
+  background-color: #fff;
+  border: 1px solid #454d55;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.legend-linear {
+  height: 100px;
+}
+
+.scale > td {
+  height: 10px;
+  width: 20px;
+}
+
+.zero {
+  background-color: #f7fcf5;
+}
+
+.one {
+  background-color: #e6f5e1;
+}
+
+.two {
+  background-color: #cdebc7;
+}
+
+.three {
+  background-color: #addea7;
+}
+
+.four {
+  background-color: #88cd87;
+}
+
+.five {
+  background-color: #5db96b;
+}
+
+.six {
+  background-color: #38a055;
+}
+
+.seven {
+  background-color: #1b843f;
+}
+
+.eight {
+  background-color: #04672b;
+}
+
+.nine {
+  background-color: #00441b;
 }
 
 @media screen and (min-width: 768px) {

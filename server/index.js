@@ -19,6 +19,37 @@ const jsonMiddleWare = express.json();
 app.use(staticMiddleware);
 app.use(jsonMiddleWare);
 
+app.get('/api/accounts/:accountId', (req, res, next) => {
+  const accountId = req.params.accountId;
+  const total = `select count(*) as "reviews"
+  from "reviews"
+  where "accountId" = $1
+  group by "accountId"`;
+
+  const sql = `
+    select "stateCode",
+    count(*) as "visits"
+    from "accounts"
+    join "reviews" using ("accountId")
+    join "parksCache" using ("parkCode")
+    where "accountId" = $1
+    group by "stateCode"
+    order by "visits" desc`;
+
+  const params = [accountId];
+  db.query(sql, params)
+    .then(result => {
+      const visits = result.rows;
+      db.query(total, params)
+        .then(response => {
+          const amount = response.rows;
+          res.status(200).json([visits, amount]);
+        })
+        .catch(err => next(err));
+    })
+    .catch(err => next(err));
+});
+
 app.get('/api/parksCache/:parkCode', (req, res, next) => {
   const parkCode = req.params.parkCode;
   if (!parkCode) {
