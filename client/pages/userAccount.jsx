@@ -4,8 +4,7 @@ import * as topojson from 'topojson-client';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
-const d3 = window.d3;
+import * as d3 from 'd3';
 
 export default class UserAccount extends React.Component {
   constructor(props) {
