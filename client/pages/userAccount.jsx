@@ -133,7 +133,7 @@ export default class UserAccount extends React.Component {
   render() {
     const user = this.context;
     if (!user) {
-      return <AuthPage />;
+      return <AuthPage action='sign-up' />;
     }
     let mostVisited = 'N/A';
     let statesNeeded = 'N/A';
