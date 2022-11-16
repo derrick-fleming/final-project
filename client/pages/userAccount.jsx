@@ -4,6 +4,7 @@ import * as topojson from 'topojson-client';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import escape from 'escape-html';
 import * as d3 from 'd3';
 
 export default class UserAccount extends React.Component {
@@ -112,8 +113,8 @@ export default class UserAccount extends React.Component {
             const offset = `translate(${offsetX}, ${offsetY})`;
 
             toolTip
-              .html(`<h6 class='open-sans mb-0 mt-2'>${d.properties.name}</h6>
-              <p class='open-sans fw-light'> Number of visits: <span class='fw-bold'>${dataObject[d.properties.name]}</span></p>`)
+              .html(`<h6 class='open-sans mb-0 mt-2'>${escape(d.properties.name)}</h6>
+              <p class='open-sans fw-light'> Number of visits: <span class='fw-bold'>${escape(dataObject[d.properties.name])}</span></p>`)
               .style('left', (event.layerX) + 'px')
               .style('top', (event.layerY) + 'px')
               .style('transform', offset);
