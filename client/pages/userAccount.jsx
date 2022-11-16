@@ -11,7 +11,7 @@ export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      accountId: 1,
+      accountId: 2,
       isLoading: true
     };
     this.renderInforgraphic = this.renderInforgraphic.bind(this);
@@ -23,17 +23,25 @@ export default class UserAccount extends React.Component {
     fetch(`/api/accounts/${accountId}`)
       .then(response => response.json())
       .then(result => {
-        result[0].forEach(element => {
-          const stateCode = element.stateCode;
-          if (defaultStates[stateCode]) {
-            defaultStates[stateCode].visits = element.visits;
-          }
-        });
-        this.renderInforgraphic();
-        this.setState({
-          results: result[0],
-          total: result[1][0].reviews
-        });
+        if (result[0].length !== 0) {
+          result[0].forEach(element => {
+            const stateCode = element.stateCode;
+            if (defaultStates[stateCode]) {
+              defaultStates[stateCode].visits = element.visits;
+            }
+          });
+          this.renderInforgraphic();
+          this.setState({
+            results: result[0],
+            total: result[1][0].reviews
+          });
+        } else {
+          this.renderInforgraphic();
+          this.setState({
+            results: null,
+            total: 'N/A'
+          });
+        }
       })
       .catch(err => console.error(err));
   }
@@ -46,7 +54,7 @@ export default class UserAccount extends React.Component {
       dataObject[stateName] = Number(visits);
     }
     const color = d3.scaleQuantize()
-      .domain([1, 12])
+      .domain([1, 15])
       .range(d3.schemeGreens[9]);
 
     const path = d3.geoPath();
@@ -105,8 +113,8 @@ export default class UserAccount extends React.Component {
             const offset = `translate(${offsetX}, ${offsetY})`;
 
             toolTip
-              .html(`<h6>${d.properties.name}</h6>
-              <h6> Number of visits: <span class="gold">${dataObject[d.properties.name]}</span></h6>`)
+              .html(`<h6 class='open-sans mb-0 mt-2  '>${d.properties.name}</h6>
+              <p class='open-sans fw-light'> Number of visits: <span class='fw-bold'>${dataObject[d.properties.name]}</span></p>`)
               .style('left', (event.layerX) + 'px')
               .style('top', (event.layerY) + 'px')
               .style('transform', offset);
@@ -118,14 +126,16 @@ export default class UserAccount extends React.Component {
   }
 
   render() {
-    let mostVisited;
-    let statesNeeded;
+    let mostVisited = 'N/A';
+    let statesNeeded = 'N/A';
     if (this.state.results) {
       const sqlData = this.state.results;
       const total = sqlData.length;
-      const stateCode = sqlData[0].stateCode;
-      mostVisited = Object.values(defaultStates[stateCode].name);
       statesNeeded = 50 - total;
+      if (sqlData.length > 0) {
+        const stateCode = sqlData[0].stateCode;
+        mostVisited = Object.values(defaultStates[stateCode].name);
+      }
     }
     return (
       <>
@@ -144,7 +154,7 @@ export default class UserAccount extends React.Component {
             </Col>
           </Row>
           <Row className='justify-content-end'>
-            <Col xs={7} md={4} lg={4}>
+            <Col xs={7} md={4} lg={5} xl={4}>
               <table className='text-center bg-white rounded'>
                 <thead>
                   <tr>
