@@ -13,7 +13,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash)
+      route: parseRoute(window.location.hash),
+      user: 1
     };
   }
 
@@ -59,7 +60,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const contextValue = '';
+    const contextValue = this.state.user;
     return (
       <AppContext.Provider value={contextValue}>
         <>

@@ -6,6 +6,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import escape from 'escape-html';
 import * as d3 from 'd3';
+import AppContext from '../lib/app-context';
+import AuthPage from './account';
 
 export default class UserAccount extends React.Component {
   constructor(props) {
@@ -126,6 +128,10 @@ export default class UserAccount extends React.Component {
   }
 
   render() {
+    const user = this.context;
+    if (!user) {
+      return <AuthPage />;
+    }
     let mostVisited = 'N/A';
     let statesNeeded = 'N/A';
     if (this.state.results) {
@@ -137,6 +143,7 @@ export default class UserAccount extends React.Component {
         mostVisited = Object.values(defaultStates[stateCode].name);
       }
     }
+
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
@@ -207,3 +214,5 @@ export default class UserAccount extends React.Component {
     );
   }
 }
+
+UserAccount.contextType = AppContext;
