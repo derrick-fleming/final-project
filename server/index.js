@@ -46,11 +46,6 @@ app.get('/api/accounts/:accountId', (req, res, next) => {
       const visits = result.rows;
       db.query(total, params)
         .then(response => {
-          if (!response) {
-            res.status(404).json({
-              error: 'Cannot find reviews for account'
-            });
-          }
           const amount = response.rows;
           res.status(200).json([visits, amount]);
         })
