@@ -11,7 +11,7 @@ export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      accountId: 2,
+      accountId: 1,
       isLoading: true
     };
     this.renderInforgraphic = this.renderInforgraphic.bind(this);
@@ -113,7 +113,7 @@ export default class UserAccount extends React.Component {
             const offset = `translate(${offsetX}, ${offsetY})`;
 
             toolTip
-              .html(`<h6 class='open-sans mb-0 mt-2  '>${d.properties.name}</h6>
+              .html(`<h6 class='open-sans mb-0 mt-2'>${d.properties.name}</h6>
               <p class='open-sans fw-light'> Number of visits: <span class='fw-bold'>${dataObject[d.properties.name]}</span></p>`)
               .style('left', (event.layerX) + 'px')
               .style('top', (event.layerY) + 'px')
@@ -147,7 +147,6 @@ export default class UserAccount extends React.Component {
           <Row className='my-4 justify-content-center'>
             <Col xs={12}>
               <h2 className='merriweather text-center'>Places you&apos;ve visited</h2>
-              <h5 className='open-sans fst-italic fw-light text-center'>Hover over a state to see your number of visits</h5>
             </Col>
             <Col lg={9}>
               <div id="map" ref={this.infographicMap} />
@@ -155,7 +154,7 @@ export default class UserAccount extends React.Component {
           </Row>
           <Row className='justify-content-end'>
             <Col xs={7} md={4} lg={5} xl={4}>
-              <table className='text-center bg-white rounded'>
+              <table className='text-center bg-light rounded'>
                 <thead>
                   <tr>
                     <th colSpan="12" className='merriweather lh-lg pt-2 fs-6 fw-light'> Total Parks Visited
