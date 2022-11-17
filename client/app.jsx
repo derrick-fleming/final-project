@@ -8,7 +8,7 @@ import ParkDetails from './pages/details';
 import ReviewPage from './pages/reviews';
 import UserAccount from './pages/userAccount';
 import AppContext from './lib/app-context';
-import AuthPage from './pages/account';
+import AuthPage from './pages/auth-page';
 
 export default class App extends React.Component {
   constructor(props) {
