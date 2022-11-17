@@ -24,9 +24,6 @@ app.use(jsonMiddleWare);
 
 app.get('/api/parksCache/:parkCode', (req, res, next) => {
   const parkCode = req.params.parkCode;
-  if (!parkCode) {
-    throw new ClientError(400, 'Park Code must be provided');
-  }
   const sql = `
     select avg("rating") as "rating"
     from "parksCache"
