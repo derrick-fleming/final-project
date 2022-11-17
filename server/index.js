@@ -91,6 +91,9 @@ app.post('/api/auth/sign-in', (req, res, next) => {
       if (!user) {
         throw new ClientError(401, 'invalid login');
       }
+      const { hashedPassword } = user;
+      return argon2
+        .verify(hashedPassword, password);
     });
 });
 
