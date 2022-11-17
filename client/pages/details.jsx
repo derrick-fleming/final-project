@@ -5,6 +5,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Col from 'react-bootstrap/Col';
 import SinglePointMap from '../components/oneLocationMap';
 import activities from '../lib/details';
+import AppContext from '../lib/app-context';
 
 export default class ParkDetails extends React.Component {
   constructor(props) {
@@ -208,3 +209,5 @@ export default class ParkDetails extends React.Component {
     );
   }
 }
+
+ParkDetails.contextType = AppContext;

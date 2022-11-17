@@ -12,7 +12,7 @@ export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      accountId: 1,
+      accountId: this.props.user.accountId,
       isLoading: true
     };
     this.renderInforgraphic = this.renderInforgraphic.bind(this);
@@ -20,12 +20,18 @@ export default class UserAccount extends React.Component {
   }
 
   componentDidMount() {
-    const { user } = this.context;
-    if (!user) {
+    const { accountId } = this.state;
+    if (!accountId) {
       return;
     }
-    const { accountId } = this.state;
-    fetch(`/api/accounts/${accountId}`)
+    const token = window.localStorage.getItem('park-reviews-jwt');
+    const request = {
+      method: 'GET',
+      headers: {
+        'X-Access-Token': token
+      }
+    };
+    fetch(`/api/accounts/${accountId}`, request)
       .then(response => response.json())
       .then(result => {
         if (result[0].length !== 0) {
@@ -131,8 +137,7 @@ export default class UserAccount extends React.Component {
   }
 
   render() {
-    const { user } = this.context;
-    if (!user) {
+    if (this.state.accountId === null) {
       window.location.hash = '#sign-in';
       return;
     }
