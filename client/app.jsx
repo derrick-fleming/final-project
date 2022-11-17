@@ -9,14 +9,23 @@ import ReviewPage from './pages/reviews';
 import UserAccount from './pages/userAccount';
 import AppContext from './lib/app-context';
 import AuthPage from './pages/auth-page';
+import jwtDecode from 'jwt-decode';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       route: parseRoute(window.location.hash),
-      user: null
+      user: null,
+      isAuthorizing: true
     };
+    this.handleSignIn = this.handleSignIn.bind(this);
+  }
+
+  handleSignIn(result) {
+    const { user, token } = result;
+    window.localStorage.setItem('park-reviews-jwt', token);
+    this.setState({ user });
   }
 
   componentDidMount() {
@@ -25,6 +34,9 @@ export default class App extends React.Component {
         route: parseRoute(window.location.hash)
       });
     });
+    const token = window.localStorage.getItem('park-reviews-jwt');
+    const user = token ? jwtDecode(token) : null;
+    this.setState({ user, isAuthorizing: false });
   }
 
   renderPage() {
@@ -56,16 +68,18 @@ export default class App extends React.Component {
       return <ReviewPage park={review} />;
     }
     if (path === 'accounts/user') {
-      return <UserAccount />;
+      return <UserAccount user={this.state.user}/>;
     }
     if (path === 'sign-in' || path === 'sign-up') {
-      return <AuthPage action={path} />;
+      return <AuthPage action={path} onSignIn={this.handleSignIn}/>;
     }
   }
 
   render() {
+    if (this.state.isAuthorizing) return null;
+    const { handleSignIn } = this;
     const { user, route } = this.state;
-    const contextValue = { user, route };
+    const contextValue = { user, route, handleSignIn };
     return (
       <AppContext.Provider value={contextValue}>
         <>

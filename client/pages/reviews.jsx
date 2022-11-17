@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import activities from '../lib/activities';
 import Button from 'react-bootstrap/Button';
+import AppContext from '../lib/app-context';
 
 const visitors = ['Everyone', 'History Buffs', 'Families', 'Casual Travelers', 'Teens & Adults', 'Outdoor Enthusiast', 'Nature Lovers'];
 
@@ -79,7 +80,7 @@ export default class ReviewPage extends React.Component {
       image = this.fileInputRef.current.files[0];
     }
     const formData = new FormData();
-    formData.append('accountId', 1);
+    formData.append('accountId', this.context.user.accountId);
     formData.append('image', image);
     formData.append('parkCode', this.props.park);
     formData.append('recommendedActivities', this.state.activities);
@@ -90,8 +91,12 @@ export default class ReviewPage extends React.Component {
     formData.append('datesVisited', dates);
     formData.append('stateCode', this.state.results.addresses[0].stateCode);
     formData.append('parkDetails', JSON.stringify(parkDetails));
+    const token = window.localStorage.getItem('park-reviews-jwt');
     fetch('/api/reviews', {
       method: 'POST',
+      headers: {
+        'X-Access-Token': token
+      },
       body: formData
     })
       .then(response => response.json())
@@ -286,3 +291,5 @@ export default class ReviewPage extends React.Component {
     );
   }
 }
+
+ReviewPage.contextType = AppContext;

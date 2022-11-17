@@ -5,6 +5,9 @@ import Accordion from 'react-bootstrap/Accordion';
 import Col from 'react-bootstrap/Col';
 import SinglePointMap from '../components/oneLocationMap';
 import activities from '../lib/details';
+import AppContext from '../lib/app-context';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 export default class ParkDetails extends React.Component {
   constructor(props) {
@@ -16,6 +19,8 @@ export default class ParkDetails extends React.Component {
     this.goBack = this.goBack.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.showRating = this.showRating.bind(this);
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   goBack() {
@@ -31,6 +36,22 @@ export default class ParkDetails extends React.Component {
           parkRating: result
         });
       });
+  }
+
+  handleShow(event) {
+    if (!this.context.user) {
+      this.setState({
+        show: true
+      });
+    } else {
+      window.location.hash = `#reviews?parkCode=${this.state.results.parkCode}`;
+    }
+  }
+
+  handleClose(event) {
+    this.setState({
+      show: false
+    });
   }
 
   componentDidMount() {
@@ -200,11 +221,29 @@ export default class ParkDetails extends React.Component {
           </Row>
           <Row className='justify-content-center mb-2'>
             <Col xl={11}>
-              <a href={`#reviews?parkCode=${this.state.results.parkCode}`} className='btn btn-success merriweather lh-lg my-2 large-screen-spacing'> <span className='fa-solid fa-pen-to-square pe-2' />Write a Review </a>
+              <Button onClick={this.handleShow} className='btn-success merriweather lh-lg my-2 large-screen-spacing'> <span className='fa-solid fa-pen-to-square pe-2' />Write a Review </Button>
             </Col>
           </Row>
         </Container>
+        <Modal centered show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title className='merriweather gray-scale w-100 text-center ms-4'>Account Needed</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='open-sans fs-5 fw-light pt-4 gray-scale text-center'>Sign in or create an account to leave reviews on state parks and to keep track of the parks you&apos;ve visited.</Modal.Body>
+          <Modal.Footer>
+            <Col>
+              <Button variant="secondary" onClick={this.handleClose} className='merriweather lh-lg px-4'>
+                Close
+              </Button>
+            </Col>
+            <Col className='text-end'>
+              <a className='merriweather btn btn-success lh-lg px-4' href='#sign-in' > Sign In</a>
+            </Col>
+          </Modal.Footer>
+        </Modal>
       </>
     );
   }
 }
+
+ParkDetails.contextType = AppContext;

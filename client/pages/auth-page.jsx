@@ -9,8 +9,8 @@ export default class AuthPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      duplicate: false,
-      error: this.validate('')
+      duplicate: '',
+      error: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -19,7 +19,7 @@ export default class AuthPage extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.state.error !== null) {
+    if (this.state.error !== null && this.props.action === 'sign-up') {
       return;
     }
     const username = this.state.username;
@@ -35,17 +35,28 @@ export default class AuthPage extends React.Component {
     };
     fetch(`/api/auth/${action}`, req)
       .then(res => {
+        if (res.status === 401) {
+          this.setState({
+            duplicate: 'Invalid login',
+            error: 'Invalid login'
+          });
+        }
+        if (res.status === 409) {
+          this.setState({
+            duplicate: 'Username has already been taken'
+          });
+        }
         return res.json();
       })
       .then(result => {
         if (result.error) {
-          this.setState({
-            duplicate: true
-          });
           return;
         }
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
+        } else if (result.user && result.token) {
+          this.props.onSignIn(result);
+          window.location.hash = 'accounts/user';
         }
       })
       .catch(err => console.error(err));
@@ -68,7 +79,7 @@ export default class AuthPage extends React.Component {
   handleInputChange(event) {
     const value = event.target.value;
     const name = event.target.name;
-    if (name === 'password') {
+    if (name === 'password' && this.props.action === 'sign-up') {
       const error = this.validate(value);
       this.setState({
         [name]: value,
@@ -76,21 +87,21 @@ export default class AuthPage extends React.Component {
       });
     } else {
       this.setState({
-        [name]: value
+        [name]: value,
+        duplicate: '',
+        error: ''
       });
     }
 
   }
 
   render() {
-    const duplicateUser = this.state.duplicate === true
-      ? 'Username has already been taken'
-      : '';
     let anchorText = 'Register';
     let link = '#sign-up';
     let username = 'Username';
     let heroImage = 'images/arches.png';
     let heroText = 'Sign In';
+    let buttonText = 'Sign In';
     let openingText = (
       <>
         <h5 className='fw-light'>
@@ -110,6 +121,7 @@ export default class AuthPage extends React.Component {
       username = 'Create a username';
       heroImage = 'images/beach.png';
       heroText = 'Create an Account';
+      buttonText = 'Sign Up';
       openingText = (
         <h5 className='fw-light'>
           Create an account to write reviews,
@@ -137,7 +149,7 @@ export default class AuthPage extends React.Component {
                     {username}
                   </Form.Label>
                   <Form.Control autoComplete="username" required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
-                  <Form.Text className="open-sans text-danger">{duplicateUser}</Form.Text>
+                  <Form.Text className="open-sans text-danger">{this.state.duplicate}</Form.Text>
                 </Form.Group>
                 <Form.Group controlId="password">
                   <Form.Label className='merriweather fs-5 mt-5'>
@@ -157,7 +169,7 @@ export default class AuthPage extends React.Component {
                   </Col>
                   <Col className='text-end'>
                     <Button type='submit' className='merriweather btn-success lh-lg px-4'>
-                      Sign Up
+                      {buttonText}
                     </Button>
                   </Col>
                 </Row>

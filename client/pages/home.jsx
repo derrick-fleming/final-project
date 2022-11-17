@@ -141,7 +141,7 @@ export default class Home extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title className='merriweather gray-scale'>{modalTitle}</Modal.Title>
           </Modal.Header>
-          <Modal.Body className='openSans fs-6 pt-4 gray-scale'>{modalBody}
+          <Modal.Body className='open-sans fs-6 pt-4 gray-scale'>{modalBody}
             <Form className='pt-2' onSubmit={this.handleSubmit}>
               <Form.Select arialabel="Default select example" onChange={this.handleChange} value={this.state.value}>
                 <option>{firstOption}</option>

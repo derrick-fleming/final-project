@@ -6,13 +6,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import escape from 'escape-html';
 import * as d3 from 'd3';
-import AppContext from '../lib/app-context';
 
 export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      accountId: 1,
+      user: this.props.user,
       isLoading: true
     };
     this.renderInforgraphic = this.renderInforgraphic.bind(this);
@@ -20,12 +19,19 @@ export default class UserAccount extends React.Component {
   }
 
   componentDidMount() {
-    const { user } = this.context;
+    const { user } = this.state;
     if (!user) {
       return;
     }
-    const { accountId } = this.state;
-    fetch(`/api/accounts/${accountId}`)
+    const accountId = user.accountId;
+    const token = window.localStorage.getItem('park-reviews-jwt');
+    const request = {
+      method: 'GET',
+      headers: {
+        'X-Access-Token': token
+      }
+    };
+    fetch(`/api/accounts/${accountId}`, request)
       .then(response => response.json())
       .then(result => {
         if (result[0].length !== 0) {
@@ -131,8 +137,7 @@ export default class UserAccount extends React.Component {
   }
 
   render() {
-    const { user } = this.context;
-    if (!user) {
+    if (!this.state.user) {
       window.location.hash = '#sign-in';
       return;
     }
@@ -218,5 +223,3 @@ export default class UserAccount extends React.Component {
     );
   }
 }
-
-UserAccount.contextType = AppContext;
