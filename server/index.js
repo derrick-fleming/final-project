@@ -5,6 +5,7 @@ const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const errorMiddleware = require('./error-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
+const argon2 = require('argon2');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -18,6 +19,34 @@ const jsonMiddleWare = express.json();
 
 app.use(staticMiddleware);
 app.use(jsonMiddleWare);
+
+app.post('/api/auth/sign-up', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
+
+  argon2
+    .hash(password)
+    .then(hashedPassword => {
+      const sql = `
+      insert into "accounts" ("username", "hashedPassword")
+      values ($1, $2)
+      on conflict ("username")
+      do nothing
+      returning "accountId", "username", "joinedAt"`;
+      const params = [username, hashedPassword];
+      return db.query(sql, params);
+    })
+    .then(result => {
+      if (!result.rows[0]) {
+        throw new ClientError(409, 'username is already in use');
+      }
+      const [user] = result.rows;
+      res.status(201).json(user);
+    })
+    .catch(err => next(err));
+});
 
 app.get('/api/accounts/:accountId', (req, res, next) => {
   const accountId = req.params.accountId;
