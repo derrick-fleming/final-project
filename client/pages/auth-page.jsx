@@ -9,7 +9,7 @@ export default class AuthPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      duplicate: false,
+      duplicate: '',
       error: this.validate('')
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,13 +37,13 @@ export default class AuthPage extends React.Component {
       .then(res => {
         if (res.status === 401) {
           this.setState({
-            duplicate: true,
+            duplicate: 'Invalid login',
             error: 'Invalid login'
           });
         }
         if (res.status === 409) {
           this.setState({
-            duplicate: true
+            duplicate: 'Username has already been taken'
           });
         }
         return res.json();
@@ -88,7 +88,7 @@ export default class AuthPage extends React.Component {
     } else {
       this.setState({
         [name]: value,
-        duplicate: false,
+        duplicate: '',
         error: ''
       });
     }
@@ -96,13 +96,6 @@ export default class AuthPage extends React.Component {
   }
 
   render() {
-    let duplicateUser = '';
-    if (this.props.action === 'sign-up' && this.state.duplicate === true) {
-      duplicateUser = 'Username has already been taken';
-    }
-    if (this.props.action === 'sign-in' && this.state.duplicate === true) {
-      duplicateUser = 'Invalid login';
-    }
     let anchorText = 'Register';
     let link = '#sign-up';
     let username = 'Username';
@@ -156,7 +149,7 @@ export default class AuthPage extends React.Component {
                     {username}
                   </Form.Label>
                   <Form.Control autoComplete="username" required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
-                  <Form.Text className="open-sans text-danger">{duplicateUser}</Form.Text>
+                  <Form.Text className="open-sans text-danger">{this.state.duplicate}</Form.Text>
                 </Form.Group>
                 <Form.Group controlId="password">
                   <Form.Label className='merriweather fs-5 mt-5'>

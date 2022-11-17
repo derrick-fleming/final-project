@@ -137,7 +137,7 @@ export default class UserAccount extends React.Component {
   }
 
   render() {
-    if (!this.state.accountId) {
+    if (!this.state.user) {
       window.location.hash = '#sign-in';
       return;
     }
