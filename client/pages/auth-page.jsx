@@ -48,6 +48,7 @@ export default class AuthPage extends React.Component {
           window.location.hash = 'sign-in';
         } else if (result.user && result.token) {
           this.props.onSignIn(result);
+          window.location.hash = 'accounts/user';
         }
       })
       .catch(err => console.error(err));
@@ -93,6 +94,7 @@ export default class AuthPage extends React.Component {
     let username = 'Username';
     let heroImage = 'images/arches.png';
     let heroText = 'Sign In';
+    let buttonText = 'Sign In';
     let openingText = (
       <>
         <h5 className='fw-light'>
@@ -112,6 +114,7 @@ export default class AuthPage extends React.Component {
       username = 'Create a username';
       heroImage = 'images/beach.png';
       heroText = 'Create an Account';
+      buttonText = 'Sign Up';
       openingText = (
         <h5 className='fw-light'>
           Create an account to write reviews,
@@ -159,7 +162,7 @@ export default class AuthPage extends React.Component {
                   </Col>
                   <Col className='text-end'>
                     <Button type='submit' className='merriweather btn-success lh-lg px-4'>
-                      Sign Up
+                      {buttonText}
                     </Button>
                   </Col>
                 </Row>
