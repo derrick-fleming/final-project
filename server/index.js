@@ -5,6 +5,8 @@ const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const errorMiddleware = require('./error-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
+// const jwt = require('jsonwebtoken');
+// const authorizationMiddleware = require('./authorization-middleware');
 const argon2 = require('argon2');
 
 const db = new pg.Pool({
@@ -19,6 +21,30 @@ const jsonMiddleWare = express.json();
 
 app.use(staticMiddleware);
 app.use(jsonMiddleWare);
+
+app.get('/api/parksCache/:parkCode', (req, res, next) => {
+  const parkCode = req.params.parkCode;
+  if (!parkCode) {
+    throw new ClientError(400, 'Park Code must be provided');
+  }
+  const sql = `
+    select avg("rating") as "rating"
+    from "parksCache"
+    join "reviews" using ("parkCode")
+    where "parkCode" = $1`;
+  const params = [parkCode];
+  db.query(sql, params)
+    .then(result => {
+      const [rating] = result.rows;
+      if (!rating) {
+        res.status(404).json({
+          error: `Cannot find park with "parkCode" ${parkCode}`
+        });
+      }
+      res.status(200).json(rating);
+    })
+    .catch(err => next(err));
+});
 
 app.post('/api/auth/sign-up', (req, res, next) => {
   const { username, password } = req.body;
@@ -48,6 +74,13 @@ app.post('/api/auth/sign-up', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/auth/sign-in', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(401, 'invalid login');
+  }
+});
+
 app.get('/api/accounts/:accountId', (req, res, next) => {
   const accountId = req.params.accountId;
   const total = `select count(*) as "reviews"
@@ -75,30 +108,6 @@ app.get('/api/accounts/:accountId', (req, res, next) => {
           res.status(200).json([visits, amount]);
         })
         .catch(err => next(err));
-    })
-    .catch(err => next(err));
-});
-
-app.get('/api/parksCache/:parkCode', (req, res, next) => {
-  const parkCode = req.params.parkCode;
-  if (!parkCode) {
-    throw new ClientError(400, 'Park Code must be provided');
-  }
-  const sql = `
-    select avg("rating") as "rating"
-    from "parksCache"
-    join "reviews" using ("parkCode")
-    where "parkCode" = $1`;
-  const params = [parkCode];
-  db.query(sql, params)
-    .then(result => {
-      const [rating] = result.rows;
-      if (!rating) {
-        res.status(404).json({
-          error: `Cannot find park with "parkCode" ${parkCode}`
-        });
-      }
-      res.status(200).json(rating);
     })
     .catch(err => next(err));
 });
