@@ -19,6 +19,13 @@ export default class App extends React.Component {
       user: null,
       isAuthorizing: true
     };
+    this.handleSignIn = this.handleSignIn.bind(this);
+  }
+
+  handleSignIn(result) {
+    const { user, token } = result;
+    window.localStorage.setItem('park-reviews-jwt', token);
+    this.setState({ user });
   }
 
   componentDidMount() {
@@ -70,9 +77,9 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.isAuthorizing) return null;
-
+    const { handleSignIn } = this;
     const { user, route } = this.state;
-    const contextValue = { user, route };
+    const contextValue = { user, route, handleSignIn };
     return (
       <AppContext.Provider value={contextValue}>
         <>
