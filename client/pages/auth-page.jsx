@@ -40,15 +40,18 @@ export default class AuthPage extends React.Component {
             duplicate: true,
             error: 'Invalid login'
           });
-          if (res.status === 409) {
-            this.setState({
-              duplicate: true
-            });
-          }
+        }
+        if (res.status === 409) {
+          this.setState({
+            duplicate: true
+          });
         }
         return res.json();
       })
       .then(result => {
+        if (result.error) {
+          return;
+        }
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
         } else if (result.user && result.token) {
@@ -93,9 +96,10 @@ export default class AuthPage extends React.Component {
   }
 
   render() {
-    let duplicateUser = this.state.duplicate === true
-      ? 'Username has already been taken'
-      : '';
+    let duplicateUser = '';
+    if (this.props.action === 'sign-up' && this.state.duplicate === true) {
+      duplicateUser = 'Username has already been taken';
+    }
     if (this.props.action === 'sign-in' && this.state.duplicate === true) {
       duplicateUser = 'Invalid login';
     }
