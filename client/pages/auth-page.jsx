@@ -126,7 +126,7 @@ export default class AuthPage extends React.Component {
         </div>
         <Container>
           <Row className='justify-content-center'>
-            <Col xs={10}className='open-sans text-center'>
+            <Col xs={10} md={9} className='open-sans text-center'>
               {openingText}
             </Col>
           </Row>
