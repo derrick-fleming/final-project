@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col';
 import SinglePointMap from '../components/oneLocationMap';
 import activities from '../lib/details';
 import AppContext from '../lib/app-context';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 export default class ParkDetails extends React.Component {
   constructor(props) {
@@ -17,6 +19,8 @@ export default class ParkDetails extends React.Component {
     this.goBack = this.goBack.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.showRating = this.showRating.bind(this);
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   goBack() {
@@ -32,6 +36,22 @@ export default class ParkDetails extends React.Component {
           parkRating: result
         });
       });
+  }
+
+  handleShow(event) {
+    if (!this.context.user) {
+      this.setState({
+        show: true
+      });
+    } else {
+      window.location.hash = `#reviews?parkCode=${this.state.results.parkCode}`;
+    }
+  }
+
+  handleClose(event) {
+    this.setState({
+      show: false
+    });
   }
 
   componentDidMount() {
@@ -205,6 +225,18 @@ export default class ParkDetails extends React.Component {
             </Col>
           </Row>
         </Container>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Close
+            </Button>
+            <a className='btn btn-success' href='#sign-in' > Sign In</a>;
+          </Modal.Footer>
+        </Modal>
       </>
     );
   }
