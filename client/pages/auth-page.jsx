@@ -83,10 +83,9 @@ export default class AuthPage extends React.Component {
   }
 
   render() {
-    let duplicateUser = '';
-    if (this.state.duplicate === true) {
-      duplicateUser = 'Username has already been taken';
-    }
+    const duplicateUser = this.state.duplicate === true
+      ? 'Username has already been taken'
+      : '';
     let anchorText = 'Register';
     let link = '#sign-up';
     let username = 'Username';
@@ -137,14 +136,14 @@ export default class AuthPage extends React.Component {
                   <Form.Label className='merriweather fs-5'>
                     {username}
                   </Form.Label>
-                  <Form.Control required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
+                  <Form.Control autoComplete="username" required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
                   <Form.Text className="open-sans text-danger">{duplicateUser}</Form.Text>
                 </Form.Group>
                 <Form.Group controlId="password">
                   <Form.Label className='merriweather fs-5 mt-5'>
                     Password
                   </Form.Label>
-                  <Form.Control required name="password" type="password" placeholder="Enter password" onChange={this.handleInputChange}/>
+                  <Form.Control autoComplete="current-password" required name="password" type="password" placeholder="Enter password" onChange={this.handleInputChange}/>
                   <Form.Control.Feedback type="invalid" />
                   <Form.Text className='open-sans text-danger'>
                     {this.state.error}
