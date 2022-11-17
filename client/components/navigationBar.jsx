@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Nav from 'react-bootstrap/Nav';
+import AppContext from '../lib/app-context';
 
 export default class NavigationBar extends React.Component {
   constructor(props) {
@@ -40,7 +41,11 @@ export default class NavigationBar extends React.Component {
   }
 
   render() {
-
+    let accountText = 'States Tracker';
+    const { user } = this.context;
+    if (!user) {
+      accountText = 'Log In / Register';
+    }
     const expand = 'md';
     let iconClass = 'fa-magnifying-glass';
     let buttonClass = 'search-hide';
@@ -49,7 +54,7 @@ export default class NavigationBar extends React.Component {
       buttonClass = 'd-flex';
     }
     return (
-      <Navbar variant="dark" expand={expand} className="p-0 mb-0 search-green">
+      <Navbar collapseOnSelect variant="dark" expand={expand} className="p-0 mb-0 search-green">
         <Container fluid='xl' className="flex-nowrap">
           <a className="pe-5 text-white nav-title fs-1" href="#home">Parks</a>
           <Navbar.Offcanvas
@@ -76,7 +81,7 @@ export default class NavigationBar extends React.Component {
                   </NavDropdown.Item>
                 </NavDropdown>
                 <hr />
-                <Nav.Link className='merriweather fs-6' href="#accounts/user">States Tracker</Nav.Link>
+                <Nav.Link className='merriweather fs-6' href="#accounts/user">{accountText}</Nav.Link>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
@@ -104,3 +109,5 @@ export default class NavigationBar extends React.Component {
   }
 
 }
+
+NavigationBar.contextType = AppContext;
