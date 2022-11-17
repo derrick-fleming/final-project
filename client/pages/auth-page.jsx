@@ -35,15 +35,20 @@ export default class AuthPage extends React.Component {
     };
     fetch(`/api/auth/${action}`, req)
       .then(res => {
+        if (res.status === 401) {
+          this.setState({
+            duplicate: true,
+            error: 'Invalid login'
+          });
+          if (res.status === 409) {
+            this.setState({
+              duplicate: true
+            });
+          }
+        }
         return res.json();
       })
       .then(result => {
-        if (result.error) {
-          this.setState({
-            duplicate: true
-          });
-          return;
-        }
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
         } else if (result.user && result.token) {
@@ -71,7 +76,7 @@ export default class AuthPage extends React.Component {
   handleInputChange(event) {
     const value = event.target.value;
     const name = event.target.name;
-    if (name === 'password') {
+    if (name === 'password' && this.props.action === 'sign-up') {
       const error = this.validate(value);
       this.setState({
         [name]: value,
@@ -79,16 +84,21 @@ export default class AuthPage extends React.Component {
       });
     } else {
       this.setState({
-        [name]: value
+        [name]: value,
+        duplicate: false,
+        error: ''
       });
     }
 
   }
 
   render() {
-    const duplicateUser = this.state.duplicate === true
+    let duplicateUser = this.state.duplicate === true
       ? 'Username has already been taken'
       : '';
+    if (this.props.action === 'sign-in' && this.state.duplicate === true) {
+      duplicateUser = 'Invalid login';
+    }
     let anchorText = 'Register';
     let link = '#sign-up';
     let username = 'Username';
