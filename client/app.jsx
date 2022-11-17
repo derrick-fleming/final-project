@@ -71,7 +71,7 @@ export default class App extends React.Component {
       return <UserAccount />;
     }
     if (path === 'sign-in' || path === 'sign-up') {
-      return <AuthPage action={path} />;
+      return <AuthPage action={path} onSignIn={this.handleSignIn}/>;
     }
   }
 

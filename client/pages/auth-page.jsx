@@ -19,7 +19,7 @@ export default class AuthPage extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.state.error !== null) {
+    if (this.state.error !== null && this.props.action === 'sign-up') {
       return;
     }
     const username = this.state.username;
@@ -46,6 +46,8 @@ export default class AuthPage extends React.Component {
         }
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
+        } else if (result.user && result.token) {
+          this.props.onSignIn(result);
         }
       })
       .catch(err => console.error(err));
