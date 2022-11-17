@@ -39,7 +39,8 @@ export default class AuthPage extends React.Component {
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
         }
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   validate(value) {
