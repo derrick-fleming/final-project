@@ -34,7 +34,9 @@ export default class AuthPage extends React.Component {
       body: JSON.stringify(account)
     };
     fetch(`/api/auth/${action}`, req)
-      .then(res => res.json())
+      .then(res => {
+        return res.json();
+      })
       .then(result => {
         if (result.error) {
           this.setState({
@@ -134,16 +136,16 @@ export default class AuthPage extends React.Component {
                 <Form.Label className='merriweather fs-5'>
                   {username}
                 </Form.Label>
-                <Form.Control required name="username" type="text" placeholder="Enter username" className='mb-4' onChange={this.handleInputChange}/>
-                <Form.Text className="text-danger">{duplicateUser}</Form.Text>
+                <Form.Control required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
+                <Form.Text className="open-sans text-danger">{duplicateUser}</Form.Text>
               </Form.Group>
               <Form.Group controlId="password">
-                <Form.Label className='merriweather fs-5 mt-2'>
+                <Form.Label className='merriweather fs-5 mt-5'>
                   Password
                 </Form.Label>
                 <Form.Control required name="password" type="password" placeholder="Enter password" onChange={this.handleInputChange}/>
                 <Form.Control.Feedback type="invalid" />
-                <Form.Text className='text-danger'>
+                <Form.Text className='open-sans text-danger'>
                   {this.state.error}
                 </Form.Text>
               </Form.Group>

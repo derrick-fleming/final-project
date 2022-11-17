@@ -25,17 +25,23 @@ app.post('/api/auth/sign-up', (req, res, next) => {
   if (!username || !password) {
     throw new ClientError(400, 'username and password are required fields');
   }
+
   argon2
     .hash(password)
     .then(hashedPassword => {
       const sql = `
       insert into "accounts" ("username", "hashedPassword")
       values ($1, $2)
+      on conflict ("username")
+      do nothing
       returning "accountId", "username", "joinedAt"`;
       const params = [username, hashedPassword];
       return db.query(sql, params);
     })
     .then(result => {
+      if (!result.rows[0]) {
+        throw new ClientError(409, 'username is already in use');
+      }
       const [user] = result.rows;
       res.status(201).json(user);
     })
