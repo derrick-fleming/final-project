@@ -90,8 +90,12 @@ export default class ReviewPage extends React.Component {
     formData.append('datesVisited', dates);
     formData.append('stateCode', this.state.results.addresses[0].stateCode);
     formData.append('parkDetails', JSON.stringify(parkDetails));
+    const token = window.localStorage.getItem('park-reviews-jwt');
     fetch('/api/reviews', {
       method: 'POST',
+      headers: {
+        'X-Access-Token': token
+      },
       body: formData
     })
       .then(response => response.json())

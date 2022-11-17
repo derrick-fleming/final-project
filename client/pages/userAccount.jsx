@@ -6,7 +6,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import escape from 'escape-html';
 import * as d3 from 'd3';
-import AppContext from '../lib/app-context';
 
 export default class UserAccount extends React.Component {
   constructor(props) {
@@ -223,5 +222,3 @@ export default class UserAccount extends React.Component {
     );
   }
 }
-
-UserAccount.contextType = AppContext;
