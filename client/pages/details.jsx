@@ -221,20 +221,24 @@ export default class ParkDetails extends React.Component {
           </Row>
           <Row className='justify-content-center mb-2'>
             <Col xl={11}>
-              <a href={`#reviews?parkCode=${this.state.results.parkCode}`} className='btn btn-success merriweather lh-lg my-2 large-screen-spacing'> <span className='fa-solid fa-pen-to-square pe-2' />Write a Review </a>
+              <Button onClick={this.handleShow} className='btn-success merriweather lh-lg my-2 large-screen-spacing'> <span className='fa-solid fa-pen-to-square pe-2' />Write a Review </Button>
             </Col>
           </Row>
         </Container>
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal centered show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title className='merriweather gray-scale w-100 text-center ms-4'>Account Needed</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, reading this text in a modal!</Modal.Body>
+          <Modal.Body className='open-sans fs-5 fw-light pt-4 gray-scale text-center'>Sign in or create an account to leave reviews on state parks and to keep track of the parks you&apos;ve visited.</Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-              Close
-            </Button>
-            <a className='btn btn-success' href='#sign-in' > Sign In</a>;
+            <Col>
+              <Button variant="secondary" onClick={this.handleClose} className='merriweather lh-lg px-4'>
+                Close
+              </Button>
+            </Col>
+            <Col className='text-end'>
+              <a className='merriweather btn btn-success lh-lg px-4' href='#sign-in' > Sign In</a>
+            </Col>
           </Modal.Footer>
         </Modal>
       </>
