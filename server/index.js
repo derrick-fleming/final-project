@@ -93,7 +93,12 @@ app.post('/api/auth/sign-in', (req, res, next) => {
       }
       const { hashedPassword } = user;
       return argon2
-        .verify(hashedPassword, password);
+        .verify(hashedPassword, password)
+        .then(isMatching => {
+          if (!isMatching) {
+            throw new ClientError(401, 'invalid login');
+          }
+        });
     });
 });
 
