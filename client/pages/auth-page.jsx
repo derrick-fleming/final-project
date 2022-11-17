@@ -10,7 +10,7 @@ export default class AuthPage extends React.Component {
     super(props);
     this.state = {
       duplicate: '',
-      error: this.validate('')
+      error: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
