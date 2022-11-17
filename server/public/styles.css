@@ -144,7 +144,8 @@ html,
   --bs-accordion-btn-focus-box-shadow: #4c6550;
 }
 
-.hero-image {
+.hero-image,
+.account-hero-image {
   height: 165px;
   width: 100%;
   object-fit: cover;
@@ -286,12 +287,18 @@ input:checked {
     margin: 0 4rem;
   }
 
-  .hero-image {
+  .hero-image,
+  .account-hero-image {
     width: 90%;
+  }
+
+  .account-hero-image {
+    height: 225px;
   }
 }
 
 @media screen and (min-width: 1200px) {
+  .account-hero-image,
   .hero-image {
     width: 1152px;
   }

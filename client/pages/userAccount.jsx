@@ -20,7 +20,8 @@ export default class UserAccount extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.context) {
+    const { user } = this.context;
+    if (!user) {
       return;
     }
     const { accountId } = this.state;

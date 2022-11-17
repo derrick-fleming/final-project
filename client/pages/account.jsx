@@ -97,7 +97,7 @@ export default class AuthPage extends React.Component {
         <h5 className='fw-light'>
           Sign in to access your reviews, ratings, and state tracker.
         </h5>
-        <h5 className='fw-light fst-italic mb-0 mt-3'>
+        <h5 className='fw-light fst-italic mb-0 mt-4'>
           Don&apos;t have an account?
         </h5>
         <h5 className='fw-light'>
@@ -121,7 +121,7 @@ export default class AuthPage extends React.Component {
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src={heroImage} alt='Mountain view with lake' className='hero-image' />
+          <img src={heroImage} alt='Mountain view with lake' className='account-hero-image' />
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>{heroText}</h2>
         </div>
         <Container>
@@ -130,38 +130,40 @@ export default class AuthPage extends React.Component {
               {openingText}
             </Col>
           </Row>
-          <Row className='m-4'>
-            <Form onSubmit={this.handleSubmit}>
-              <Form.Group controlId="username">
-                <Form.Label className='merriweather fs-5'>
-                  {username}
-                </Form.Label>
-                <Form.Control required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
-                <Form.Text className="open-sans text-danger">{duplicateUser}</Form.Text>
-              </Form.Group>
-              <Form.Group controlId="password">
-                <Form.Label className='merriweather fs-5 mt-5'>
-                  Password
-                </Form.Label>
-                <Form.Control required name="password" type="password" placeholder="Enter password" onChange={this.handleInputChange}/>
-                <Form.Control.Feedback type="invalid" />
-                <Form.Text className='open-sans text-danger'>
-                  {this.state.error}
-                </Form.Text>
-              </Form.Group>
-              <Row className='mt-4'>
-                <Col>
-                  <a className='btn merriweather go-back text-decoration-none fs-6' href={link}>
-                    {anchorText}
-                  </a>
-                </Col>
-                <Col className='text-end'>
-                  <Button type='submit' className='merriweather btn-success lh-lg px-4'>
-                    Sign Up
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
+          <Row className='m-4 justify-content-center'>
+            <Col xs={12} md={9}>
+              <Form onSubmit={this.handleSubmit}>
+                <Form.Group controlId="username">
+                  <Form.Label className='merriweather fs-5'>
+                    {username}
+                  </Form.Label>
+                  <Form.Control required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
+                  <Form.Text className="open-sans text-danger">{duplicateUser}</Form.Text>
+                </Form.Group>
+                <Form.Group controlId="password">
+                  <Form.Label className='merriweather fs-5 mt-5'>
+                    Password
+                  </Form.Label>
+                  <Form.Control required name="password" type="password" placeholder="Enter password" onChange={this.handleInputChange}/>
+                  <Form.Control.Feedback type="invalid" />
+                  <Form.Text className='open-sans text-danger'>
+                    {this.state.error}
+                  </Form.Text>
+                </Form.Group>
+                <Row className='mt-4'>
+                  <Col>
+                    <a className='btn merriweather go-back text-decoration-none fs-6' href={link}>
+                      {anchorText}
+                    </a>
+                  </Col>
+                  <Col className='text-end'>
+                    <Button type='submit' className='merriweather btn-success lh-lg px-4'>
+                      Sign Up
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
+            </Col>
           </Row>
         </Container>
       </>
