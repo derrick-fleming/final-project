@@ -9,6 +9,7 @@ import ReviewPage from './pages/reviews';
 import UserAccount from './pages/userAccount';
 import AppContext from './lib/app-context';
 import AuthPage from './pages/auth-page';
+import jwtDecode from 'jwt-decode';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -26,6 +27,9 @@ export default class App extends React.Component {
         route: parseRoute(window.location.hash)
       });
     });
+    const token = window.localStorage.getItem('park-reviews-jwt');
+    const user = token ? jwtDecode(token) : null;
+    this.setState({ user, isAuthorizing: false });
   }
 
   renderPage() {
