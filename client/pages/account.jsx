@@ -9,7 +9,7 @@ export default class AuthPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      validated: false,
+      duplicate: false,
       error: this.validate('')
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,6 +36,12 @@ export default class AuthPage extends React.Component {
     fetch(`/api/auth/${action}`, req)
       .then(res => res.json())
       .then(result => {
+        if (result.error) {
+          this.setState({
+            duplicate: true
+          });
+          return;
+        }
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
         }
@@ -75,29 +81,51 @@ export default class AuthPage extends React.Component {
   }
 
   render() {
-    let anchorText = 'Register an account';
+    let duplicateUser = '';
+    if (this.state.duplicate === true) {
+      duplicateUser = 'Username has already been taken';
+    }
+    let anchorText = 'Register';
     let link = '#sign-up';
     let username = 'Username';
+    let heroImage = 'images/arches.png';
+    let heroText = 'Sign In';
+    let openingText = (
+      <>
+        <h5 className='fw-light'>
+          Sign in to access your reviews, ratings, and state tracker.
+        </h5>
+        <h5 className='fw-light fst-italic mb-0 mt-3'>
+          Don&apos;t have an account?
+        </h5>
+        <h5 className='fw-light'>
+          Click &apos;Register&apos; to create one.
+        </h5>
+      </>
+    );
     if (this.props.action === 'sign-up') {
       anchorText = 'Sign in';
       link = '#sign-in';
       username = 'Create a username';
+      heroImage = 'images/beach.png';
+      heroText = 'Create an Account';
+      openingText = (
+        <h5 className='fw-light'>
+          Create an account to write reviews,
+          rate different parks, and keep track of all the places you&apos;ve visited.
+        </h5>
+      );
     }
     return (
       <>
-        <div />
+        <div className='mb-4 position-relative hero-background text-center'>
+          <img src={heroImage} alt='Mountain view with lake' className='hero-image' />
+          <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>{heroText}</h2>
+        </div>
         <Container>
-          <Row>
-            <Col className='open-sans text-center'>
-              <h5 className='fw-light'>
-                Sign in to access your reviews, ratings, and state tracker.
-              </h5>
-              <h5 className='fw-light fst-italic'>
-                Don&apos;t have an account?
-              </h5>
-              <h5 className='fw-light'>
-                Click &apos;Register&apos; to create one.
-              </h5>
+          <Row className='justify-content-center'>
+            <Col xs={10}className='open-sans text-center'>
+              {openingText}
             </Col>
           </Row>
           <Row className='m-4'>
@@ -107,7 +135,7 @@ export default class AuthPage extends React.Component {
                   {username}
                 </Form.Label>
                 <Form.Control required name="username" type="text" placeholder="Enter username" className='mb-4' onChange={this.handleInputChange}/>
-                <Form.Control.Feedback type="invalid">Username required</Form.Control.Feedback>
+                <Form.Text className="text-danger">{duplicateUser}</Form.Text>
               </Form.Group>
               <Form.Group controlId="password">
                 <Form.Label className='merriweather fs-5 mt-2'>
@@ -121,7 +149,7 @@ export default class AuthPage extends React.Component {
               </Form.Group>
               <Row className='mt-4'>
                 <Col>
-                  <a className='btn merriweather go-back text-decoration-none fs-6 lh-lg' href={link}>
+                  <a className='btn merriweather go-back text-decoration-none fs-6' href={link}>
                     {anchorText}
                   </a>
                 </Col>
