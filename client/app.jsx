@@ -15,7 +15,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       route: parseRoute(window.location.hash),
-      user: null
+      user: null,
+      isAuthorizing: true
     };
   }
 
@@ -64,6 +65,8 @@ export default class App extends React.Component {
   }
 
   render() {
+    if (this.state.isAuthorizing) return null;
+
     const { user, route } = this.state;
     const contextValue = { user, route };
     return (
