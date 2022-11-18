@@ -93,6 +93,9 @@ export default class UserAccount extends React.Component {
         svg.selectAll('path')
           .on('dblclick', function (event, d) {
             const name = d.properties.name;
+            if (dataObject[name] === 0) {
+              return;
+            }
             const state = states.find(state => state.name === name);
             const stateCode = state.code;
             window.location.hash = `#account/reviews?${stateCode}`;
