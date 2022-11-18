@@ -107,11 +107,13 @@ export default class Home extends React.Component {
 
     return (
       <>
-        <div>
-          <img src='images/mountain-scene.png' alt='Mountain view with lake' className='hero-image' />
-          <h2 className='merriweather fw-bold text-white'>Explore, review, and keep track of your visits to
-            U.S. National Parks</h2>
-          <SearchBar />
+        <div className='mb-4 position-relative hero-background text-center'>
+          <img src='images/mountain-scene.png' alt='Mountain view with lake' className='home-hero-image' />
+          <div className='position-absolute top-size text-center'>
+            <h2 className='merriweather fw-bold text-white mb-0'>Explore, review, and keep track of your visits to
+              U.S. National Parks</h2>
+            <SearchBar />
+          </div>
         </div>
         <Container>
           <Row className='justify-content-center open-sans'>

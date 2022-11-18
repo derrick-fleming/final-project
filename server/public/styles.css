@@ -42,7 +42,7 @@ html,
 }
 
 .btn-success {
-  background-color: #2e7d3280;
+  background-color: #779f7d;
   color: #ffff;
   border: none;
 }
@@ -149,7 +149,20 @@ html,
   height: 165px;
   width: 100%;
   object-fit: cover;
-  filter: brightness(55%) contrast(100%) saturate(100%);
+  filter: brightness(55%);
+}
+
+.home-hero-image {
+  height: 316px;
+  width: 100%;
+  object-fit: cover;
+  filter: brightness(45%);
+}
+
+.top-size {
+  top: 25%;
+  left: 5%;
+  right: 5%;
 }
 
 .hero-background {

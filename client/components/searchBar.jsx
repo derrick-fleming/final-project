@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import AppContext from '../lib/app-context';
 
 export default class SearchBar extends React.Component {
   constructor(props) {
@@ -28,10 +29,17 @@ export default class SearchBar extends React.Component {
   }
 
   render() {
+    let searchText = (
+      <h4 className='merriweather lh-base fw-light'>Search for a park or browse through different states or activities.</h4>
+    );
+    if (this.context.route.path === '' || this.context.route.path === 'home') {
+      searchText = null;
+    }
+
     return (
       <Container fluid='xl' className='p-4'>
         <Row className='mb-4'>
-          <h4 className='merriweather lh-base fw-light'>Search for a park or browse through different states or activities.</h4>
+          {searchText}
         </Row>
         <Row>
           <Form className='d-flex' onSubmit={this.handleSubmit}>
@@ -42,10 +50,12 @@ export default class SearchBar extends React.Component {
               aria-label="Search"
               onChange={this.handleChange}
             />
-            <Button variant="success" className="merriweather" onClick={this.handleSubmit}>Search</Button>
+            <Button className="merriweather btn-success search-green" onClick={this.handleSubmit}>Search</Button>
           </Form>
         </Row>
       </Container>
     );
   }
 }
+
+SearchBar.contextType = AppContext;
