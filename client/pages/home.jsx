@@ -107,15 +107,26 @@ export default class Home extends React.Component {
 
     return (
       <>
-        <div className='mb-4 position-relative hero-background text-center'>
-          <img src='images/mountain-scene.png' alt='Mountain view with lake' className='home-hero-image' />
-          <div className='position-absolute top-size text-center'>
-            <h2 className='merriweather fw-bold text-white mb-0'>Explore, review, and keep track of your visits to
+        <div className='mb-2 position-relative hero-background text-center'>
+          <img src='images/mountain-scene.png' alt='Mountain view' className='home-hero-image' />
+          <div className='position-absolute top-50 start-50 translate-middle home-top'>
+            <h2 className='merriweather fw-bold text-white mb-0'>Explore, review, and track your visits to <br />
               U.S. National Parks</h2>
-            <SearchBar />
+            <Row className='justify-content-center'>
+              <Col md={8}>
+                <SearchBar />
+              </Col>
+            </Row>
           </div>
         </div>
         <Container>
+          <Row className='m-3 justify-content-center'>
+            <Col md={12} className='border-1 border-secondary border-top border-bottom p-4'>
+              <h4 className='merriweather fw-light lh-base text-center'>
+                Search for a specific location or browse through different states and activities.
+              </h4>
+            </Col>
+          </Row>
           <Row className='justify-content-center open-sans'>
             <Col md={6}>
               <Card className='mb-4 shadow-sm home-card'>

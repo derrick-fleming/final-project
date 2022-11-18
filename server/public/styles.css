@@ -159,14 +159,12 @@ html,
   filter: brightness(45%);
 }
 
-.top-size {
-  top: 25%;
-  left: 5%;
-  right: 5%;
-}
-
 .hero-background {
   background-color: rgba(0, 0, 0, 0.389);
+}
+
+.home-top {
+  width: 90%;
 }
 
 .star-radio label {
@@ -301,7 +299,8 @@ input:checked {
   }
 
   .hero-image,
-  .account-hero-image {
+  .account-hero-image,
+  .home-hero-image {
     width: 90%;
   }
 
