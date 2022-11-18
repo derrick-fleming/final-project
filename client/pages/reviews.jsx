@@ -70,6 +70,10 @@ export default class ReviewPage extends React.Component {
       return;
     }
 
+    if (this.state.activities.length === 0 || this.state.visitors.length === 0) {
+      return;
+    }
+
     const parkDetails = {
       name: this.state.results.name,
       imageUrl: this.state.results.wikiImage
@@ -80,7 +84,6 @@ export default class ReviewPage extends React.Component {
       image = this.fileInputRef.current.files[0];
     }
     const formData = new FormData();
-    formData.append('accountId', this.context.user.accountId);
     formData.append('image', image);
     formData.append('parkCode', this.props.park);
     formData.append('recommendedActivities', this.state.activities);
@@ -101,17 +104,6 @@ export default class ReviewPage extends React.Component {
     })
       .then(response => response.json())
       .then(result => {
-        this.setState({
-          results: [],
-          rating: '',
-          activities: [],
-          visitors: [],
-          tips: '',
-          generalThoughts: '',
-          startDate: '',
-          endDate: '',
-          validated: false
-        });
         this.fileInputRef.current.value = null;
         window.location.hash = `#details?park=${this.props.park}`;
       })

@@ -137,10 +137,8 @@ app.get('/api/accounts/:accountId', (req, res, next) => {
 });
 
 app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
-  const { accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, parkDetails, stateCode } = req.body;
-  if (!accountId) {
-    throw new ClientError(400, 'User account required to post review');
-  }
+  const { parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, parkDetails, stateCode } = req.body;
+  const { accountId } = req.user;
   if (!rating | !datesVisited | !recommendedActivities | !recommendedVisitors | !tips) {
     throw new ClientError(400, 'Required information missing: rating, dates, activities, visitors, or tips');
   }
