@@ -35,7 +35,6 @@ export default class SearchBar extends React.Component {
     if (this.context.route.path === '' || this.context.route.path === 'home') {
       searchText = null;
     }
-
     return (
       <Container fluid='xl' className='p-4'>
         <Row className='mb-4'>
@@ -45,12 +44,12 @@ export default class SearchBar extends React.Component {
           <Form className='d-flex' onSubmit={this.handleSubmit}>
             <Form.Control
               type="search"
-              placeholder="Search"
+              placeholder="Search for a park"
               className="me-2"
               aria-label="Search"
               onChange={this.handleChange}
             />
-            <Button className="merriweather btn-success search-green" onClick={this.handleSubmit}>Search</Button>
+            <Button className="merriweather btn-success " onClick={this.handleSubmit}>Search</Button>
           </Form>
         </Row>
       </Container>
