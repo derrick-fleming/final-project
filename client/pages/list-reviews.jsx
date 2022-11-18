@@ -5,13 +5,39 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
+import Image from 'react-bootstrap/Image';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 export default class UserReviews extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: null
+      result: null,
+      imageUrl: null
     };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
+
+  handleClick(event) {
+    this.setState({
+      imageUrl: event.target.src,
+      show: true
+    });
+  }
+
+  handleShow(event) {
+    this.setState({
+      show: true
+    });
+  }
+
+  handleClose(event) {
+    this.setState({
+      show: false
+    });
   }
 
   componentDidMount() {
@@ -44,7 +70,7 @@ export default class UserReviews extends React.Component {
       const parkName = review.details.name;
       const parkImage = review.details.imageUrl;
       const generalThoughts = review.generalThoughts === '' ? 'None Listed' : review.generalThoughts;
-      const imageUrl = review.imageUrl === null ? 'No images provided' : <img src={review.imageUrl} alt='User Image' />;
+      const imageUrl = review.imageUrl === null ? 'No images provided' : <Button onClick={this.handleClick}><Image fluid src={review.imageUrl} alt='User Image'/></Button>;
       return (
         <Card key={parkName}>
           <Card.Img variant="top" src={parkImage} alt={parkName} />
@@ -115,7 +141,7 @@ export default class UserReviews extends React.Component {
                     <h6><span className='fa-solid fa-lightbulb pe-2' />General Thoughts</h6>
                     <p className='fw-light'>{generalThoughts}</p>
                   </Row>
-                  <Row>
+                  <Row id='photo'>
                     <Col xs={12}>
                       <h6><span className='fa-solid fa-camera-retro pe-2' />Photos</h6>
                     </Col>
@@ -132,13 +158,25 @@ export default class UserReviews extends React.Component {
 
     });
     return (
-      <Container>
-        <Row>
-          <Col>
-            {reviewCards}
-          </Col>
-        </Row>
-      </Container>
+      <>
+        <Container>
+          <Row>
+            <Col>
+              {reviewCards}
+            </Col>
+          </Row>
+        </Container>
+        <Modal centered show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Image
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Image fluid src={this.state.imageUrl} alt='Larger user image' />
+          </Modal.Body>
+        </Modal>
+      </>
     )
     ;
   }
