@@ -1,10 +1,15 @@
 import React from 'react';
 import AppContext from '../lib/app-context';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 export default class UserReviews extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      result: null
+    };
   }
 
   componentDidMount() {
@@ -25,7 +30,19 @@ export default class UserReviews extends React.Component {
   }
 
   render() {
-    return <div />;
+    if (!this.state.result) {
+      return;
+    }
+    return (
+      <Container>
+        <Row>
+          <Col>
+            <div />
+          </Col>
+        </Row>
+      </Container>
+    )
+    ;
   }
 }
 
