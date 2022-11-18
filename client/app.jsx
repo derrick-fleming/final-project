@@ -10,6 +10,7 @@ import UserAccount from './pages/userAccount';
 import AppContext from './lib/app-context';
 import AuthPage from './pages/auth-page';
 import jwtDecode from 'jwt-decode';
+import UserReviews from './pages/list-reviews';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -72,6 +73,10 @@ export default class App extends React.Component {
     }
     if (path === 'sign-in' || path === 'sign-up') {
       return <AuthPage action={path} onSignIn={this.handleSignIn}/>;
+    }
+    if (path === 'accounts/reviews') {
+      const state = this.state.route.params.get('state');
+      return <UserReviews state={state} />;
     }
   }
 
