@@ -193,14 +193,14 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
 });
 
 app.get('/api/reviews/:stateCode', (req, res, next) => {
-  const { userId } = req.user;
+  const { accountId } = req.user;
   const stateCode = req.params.stateCode;
   const sql = `
     select *
     from "reviews"
     join "parksCache" using ("parkCode")
     where "stateCode" = $1 and "accountId" = $2`;
-  const params = [stateCode, userId];
+  const params = [stateCode, accountId];
   db.query(sql, params)
     .then(result => {
       const reviews = result.rows;
