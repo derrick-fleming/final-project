@@ -64,24 +64,40 @@ export default class UserReviews extends React.Component {
     }
 
     const reviewCards = reviews.map(review => {
-      const { rating, recommendedActivities, recommendedVisitors, tips } = review;
+      const { recommendedActivities, recommendedVisitors, tips } = review;
+      const datesVisited = review.datesVisited.split(',');
+      const startDate = datesVisited[0].split('[')[1].split('-').splice(1, 2).join('/');
+      let endDate = datesVisited[1].split(')')[0].split('-').splice(1, 2).join('/');
+      const year = datesVisited[1].split(')')[0].split('-').splice(0, 1);
+      endDate = `${endDate}/${year}`;
       const activities = recommendedActivities.split(',');
       const visitors = recommendedVisitors.split(',');
       const parkName = review.details.name;
       const parkImage = review.details.imageUrl;
       const generalThoughts = review.generalThoughts === '' ? 'None Listed' : review.generalThoughts;
       const imageUrl = review.imageUrl === null ? 'No images provided' : <Button onClick={this.handleClick}><Image fluid src={review.imageUrl} alt='User Image'/></Button>;
+      const stars = [1, 2, 3, 4, 5];
+      const rating = stars.map((star, index) => {
+        if (index <= review.rating) {
+          return <span key={index} className='fa-solid fa-star green ps-1' />;
+        } else {
+          return <span key={index} className='fa-regular fa-star ps-1' />;
+        }
+      });
       return (
-        <Card key={parkName}>
-          <Card.Img variant="top" src={parkImage} alt={parkName} />
-          <Card.Body>
-            <Card.Title>{parkName}</Card.Title>
-            <Card.Text>
-              {rating}
-            </Card.Text>
-          </Card.Body>
-          <Card.Body>
-            <Accordion>
+        <Col key={parkName} className='my-4'>
+          <Card className='open-sans shadow-sm'>
+            <Card.Img variant="top" className='image-size' src={parkImage} alt={parkName} />
+            <Card.Body className='border border-bottom-2'>
+              <Card.Title className='merriweather fw-Semibold mb-1 fs-2'>{parkName}</Card.Title>
+              <Card.Text className='mb-1'>
+                Rating: {rating}
+              </Card.Text>
+              <Card.Text className='pt-0'>
+                Dates Visited: {startDate} - {endDate}
+              </Card.Text>
+            </Card.Body>
+            <Accordion className='borders shadow-sm'>
               <Accordion.Item eventKey="0">
                 <Accordion.Header>
                   <span className='fa-solid fa-book' />Read Review
@@ -152,8 +168,8 @@ export default class UserReviews extends React.Component {
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
-          </Card.Body>
-        </Card>
+          </Card>
+        </Col>
       );
 
     });
