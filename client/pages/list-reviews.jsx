@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-// import Accordion from 'react-bootstrap/Accordion';
+import Accordion from 'react-bootstrap/Accordion';
 
 export default class UserReviews extends React.Component {
   constructor(props) {
@@ -36,8 +36,10 @@ export default class UserReviews extends React.Component {
     if (!this.state.result) {
       return;
     }
+
     const reviewCards = reviews.map(review => {
-      const { rating } = review;
+      const { rating, recommendedActivities } = review;
+      const activities = recommendedActivities.split(',');
       const parkName = review.details.name;
       const parkImage = review.details.imageUrl;
       return (
@@ -48,6 +50,39 @@ export default class UserReviews extends React.Component {
             <Card.Text>
               {rating}
             </Card.Text>
+          </Card.Body>
+          <Card.Body>
+            <Accordion>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>
+                  <span className='fa-solid fa-book' />Read Review
+                </Accordion.Header>
+                <Accordion.Body>
+                  <Row>
+                    <Col xs={12}>
+                      <h6>
+                        <span className='fa-solid fa-person-biking' />Suggested Activities
+                      </h6>
+                    </Col>
+                    <Col>
+                      <ul>
+                        <Row>
+                          {
+                            activities.map(activity => {
+                              return (
+                                <Col key={activity} xs={6} >
+                                  <li className='fw-light'>{activity}</li>
+                                </Col>
+                              );
+                            })
+                          }
+                        </Row>
+                      </ul>
+                    </Col>
+                  </Row>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
           </Card.Body>
         </Card>
       );
