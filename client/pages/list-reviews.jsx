@@ -38,8 +38,9 @@ export default class UserReviews extends React.Component {
     }
 
     const reviewCards = reviews.map(review => {
-      const { rating, recommendedActivities } = review;
+      const { rating, recommendedActivities, recommendedVisitors } = review;
       const activities = recommendedActivities.split(',');
+      const visitors = recommendedVisitors.split(',');
       const parkName = review.details.name;
       const parkImage = review.details.imageUrl;
       return (
@@ -58,7 +59,7 @@ export default class UserReviews extends React.Component {
                   <span className='fa-solid fa-book' />Read Review
                 </Accordion.Header>
                 <Accordion.Body>
-                  <Row>
+                  <Row id='activities'>
                     <Col xs={12}>
                       <h6>
                         <span className='fa-solid fa-person-biking' />Suggested Activities
@@ -72,6 +73,28 @@ export default class UserReviews extends React.Component {
                               return (
                                 <Col key={activity} xs={6} >
                                   <li className='fw-light'>{activity}</li>
+                                </Col>
+                              );
+                            })
+                          }
+                        </Row>
+                      </ul>
+                    </Col>
+                  </Row>
+                  <Row id='visitors'>
+                    <Col xs={12}>
+                      <h6>
+                        <span className='fa-solid fa-user-group' />Recommended Visitors
+                      </h6>
+                    </Col>
+                    <Col>
+                      <ul>
+                        <Row>
+                          {
+                            visitors.map(visitor => {
+                              return (
+                                <Col key={visitor} xs={6} >
+                                  <li className='fw-light'>{visitor}</li>
                                 </Col>
                               );
                             })
