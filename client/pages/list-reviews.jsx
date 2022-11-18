@@ -3,6 +3,8 @@ import AppContext from '../lib/app-context';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+// import Accordion from 'react-bootstrap/Accordion';
 
 export default class UserReviews extends React.Component {
   constructor(props) {
@@ -30,14 +32,32 @@ export default class UserReviews extends React.Component {
   }
 
   render() {
+    const reviews = this.state.result;
     if (!this.state.result) {
       return;
     }
+    const reviewCards = reviews.map(review => {
+      const { rating } = review;
+      const parkName = review.details.name;
+      const parkImage = review.details.imageUrl;
+      return (
+        <Card key={parkName}>
+          <Card.Img variant="top" src={parkImage} alt={parkName} />
+          <Card.Body>
+            <Card.Title>{parkName}</Card.Title>
+            <Card.Text>
+              {rating}
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      );
+
+    });
     return (
       <Container>
         <Row>
           <Col>
-            <div />
+            {reviewCards}
           </Col>
         </Row>
       </Container>
