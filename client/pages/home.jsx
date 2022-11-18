@@ -109,6 +109,8 @@ export default class Home extends React.Component {
       <>
         <div>
           <img src='images/mountain-scene.png' alt='Mountain view with lake' className='hero-image' />
+          <h2 className='merriweather fw-bold text-white'>Explore, review, and keep track of your visits to
+            U.S. National Parks</h2>
           <SearchBar />
         </div>
         <Container>
