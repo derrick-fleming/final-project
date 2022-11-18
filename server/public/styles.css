@@ -42,7 +42,7 @@ html,
 }
 
 .btn-success {
-  background-color: #2e7d3280;
+  background-color: #779f7d;
   color: #ffff;
   border: none;
 }
@@ -149,11 +149,22 @@ html,
   height: 165px;
   width: 100%;
   object-fit: cover;
-  filter: brightness(55%) contrast(100%) saturate(100%);
+  filter: brightness(55%);
+}
+
+.home-hero-image {
+  height: 316px;
+  width: 100%;
+  object-fit: cover;
+  filter: brightness(45%);
 }
 
 .hero-background {
   background-color: rgba(0, 0, 0, 0.389);
+}
+
+.home-top {
+  width: 90%;
 }
 
 .star-radio label {
@@ -294,6 +305,10 @@ input:checked {
 
   .account-hero-image {
     height: 225px;
+  }
+
+  .home-hero-image {
+    height: 400px;
   }
 }
 
