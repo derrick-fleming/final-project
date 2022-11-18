@@ -201,7 +201,12 @@ app.get('/api/reviews/:stateCode', (req, res, next) => {
     join "parksCache" using ("parkCode")
     where "stateCode" = $1 and "accountId" = $2`;
   const params = [stateCode, userId];
-  db.query(sql, params);
+  db.query(sql, params)
+    .then(result => {
+      const reviews = result.rows;
+      res.status(200).json(reviews);
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
