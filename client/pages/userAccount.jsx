@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import escape from 'escape-html';
 import * as d3 from 'd3';
+import states from '../lib/states';
 
 export default class UserAccount extends React.Component {
   constructor(props) {
@@ -90,6 +91,12 @@ export default class UserAccount extends React.Component {
           .style('stroke', '#636363');
 
         svg.selectAll('path')
+          .on('dblclick', function (event, d) {
+            const name = d.properties.name;
+            const state = states.find(state => state.name === name);
+            const stateCode = state.code;
+            window.location.hash = `#account/reviews?${stateCode}`;
+          })
           .on('mouseover', function (event, d) {
             d3.selectAll('.states')
               .transition()
