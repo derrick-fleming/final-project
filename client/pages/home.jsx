@@ -107,7 +107,9 @@ export default class Home extends React.Component {
 
     return (
       <>
-        <SearchBar />
+        <div>
+          <SearchBar />
+        </div>
         <Container>
           <Row className='justify-content-center open-sans'>
             <Col md={6}>
