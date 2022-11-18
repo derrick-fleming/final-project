@@ -15,7 +15,13 @@ export default class UserReviews extends React.Component {
         'X-Access-Token': token
       }
     };
-    fetch(`api/reviews/${state}`, header);
+    fetch(`api/reviews/${state}`, header)
+      .then(response => response.json())
+      .then(result => {
+        this.setState({
+          result
+        });
+      });
   }
 
   render() {
