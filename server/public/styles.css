@@ -299,13 +299,16 @@ input:checked {
   }
 
   .hero-image,
-  .account-hero-image,
-  .home-hero-image {
+  .account-hero-image {
     width: 90%;
   }
 
   .account-hero-image {
     height: 225px;
+  }
+
+  .home-hero-image {
+    height: 400px;
   }
 }
 

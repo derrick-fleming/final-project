@@ -110,8 +110,8 @@ export default class Home extends React.Component {
         <div className='position-relative hero-background text-center'>
           <img src='images/mountain-scene.png' alt='Mountain view' className='home-hero-image' />
           <div className='position-absolute top-50 start-50 translate-middle home-top'>
-            <h2 className='merriweather fw-bold text-white mb-0'>Explore, review, and track your visits to <br />
-              U.S. National Parks</h2>
+            <h1 className='merriweather fw-bold text-white mb-0'>Explore, review, and track your visits to <br />
+              U.S. National Parks</h1>
             <Row className='justify-content-center'>
               <Col md={9}>
                 <SearchBar />
@@ -123,7 +123,7 @@ export default class Home extends React.Component {
           <Row className='m-3'>
             <Col className='border-secondary border-top border-bottom p-4'>
               <h4 className='merriweather fw-light lh-base text-center'>
-                Search for a specific location or browse through different states and activities.
+                Search for a specific location or browse through different states and activities below.
               </h4>
             </Col>
           </Row>
