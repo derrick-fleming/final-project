@@ -98,7 +98,7 @@ export default class UserAccount extends React.Component {
             }
             const state = states.find(state => state.name === name);
             const stateCode = state.code;
-            window.location.hash = `#account/reviews?${stateCode}`;
+            window.location.hash = `#accounts/reviews?${stateCode}`;
           })
           .on('mouseover', function (event, d) {
             d3.selectAll('.states')
