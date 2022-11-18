@@ -38,7 +38,7 @@ export default class UserReviews extends React.Component {
     }
 
     const reviewCards = reviews.map(review => {
-      const { rating, recommendedActivities, recommendedVisitors } = review;
+      const { rating, recommendedActivities, recommendedVisitors, tips } = review;
       const activities = recommendedActivities.split(',');
       const visitors = recommendedVisitors.split(',');
       const parkName = review.details.name;
@@ -62,7 +62,7 @@ export default class UserReviews extends React.Component {
                   <Row id='activities'>
                     <Col xs={12}>
                       <h6>
-                        <span className='fa-solid fa-person-biking' />Suggested Activities
+                        <span className='fa-solid fa-person-biking' />Recommended Activities
                       </h6>
                     </Col>
                     <Col>
@@ -102,6 +102,14 @@ export default class UserReviews extends React.Component {
                         </Row>
                       </ul>
                     </Col>
+                  </Row>
+                  <Row>
+                    <h6>
+                      <span className='fa-solid fa-info-circle pe-2' /> Tips
+                    </h6>
+                    <p className='fw-light'>
+                      {tips}
+                    </p>
                   </Row>
                 </Accordion.Body>
               </Accordion.Item>
