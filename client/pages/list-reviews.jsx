@@ -43,6 +43,7 @@ export default class UserReviews extends React.Component {
       const visitors = recommendedVisitors.split(',');
       const parkName = review.details.name;
       const parkImage = review.details.imageUrl;
+      const generalThoughts = review.generalThoughts === '' ? 'None Listed' : review.generalThoughts;
       return (
         <Card key={parkName}>
           <Card.Img variant="top" src={parkImage} alt={parkName} />
@@ -103,13 +104,15 @@ export default class UserReviews extends React.Component {
                       </ul>
                     </Col>
                   </Row>
-                  <Row>
+                  <Row id='tips'>
                     <h6>
                       <span className='fa-solid fa-info-circle pe-2' /> Tips
                     </h6>
-                    <p className='fw-light'>
-                      {tips}
-                    </p>
+                    <p className='fw-light'>{tips}</p>
+                  </Row>
+                  <Row id='generalThoughts'>
+                    <h6><span className='fa-solid fa-lightbulb pe-2' />General Thoughts</h6>
+                    <p className='fw-light'>{generalThoughts}</p>
                   </Row>
                 </Accordion.Body>
               </Accordion.Item>
