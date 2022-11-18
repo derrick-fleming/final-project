@@ -108,6 +108,7 @@ export default class Home extends React.Component {
     return (
       <>
         <div>
+          <img src='images/mountain-scene.png' alt='Mountain view with lake' className='hero-image' />
           <SearchBar />
         </div>
         <Container>
