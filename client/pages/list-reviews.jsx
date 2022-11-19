@@ -74,7 +74,7 @@ export default class UserReviews extends React.Component {
         }
       });
       return (
-        <Col key={parkName} className='my-4' xs={12} lg={6}>
+        <Col key={parkName} className='my-2' xs={12} lg={6}>
           <Card className='open-sans shadow-sm'>
             <Card.Img variant="top" className='image-size' src={parkImage} alt={parkName} />
             <Card.Body className='border border-bottom-2'>
