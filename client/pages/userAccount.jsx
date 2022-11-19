@@ -188,12 +188,15 @@ export default class UserAccount extends React.Component {
       <>
         <div className='mb-4 position-relative hero-background text-center'>
           <img src='images/joshua-tree.png' alt='Mountain view with lake' className='hero-image' />
-          <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-map pe-2' />States Tracker</h2>
+          <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>
+            <span className='fa-solid fa-map pe-2' />Account Information
+          </h2>
         </div>
         <Container>
           <Row className='my-4 justify-content-center'>
             <Col xs={12}>
-              <h2 className='merriweather text-center'>Places you&apos;ve visited</h2>
+              <h2 className='merriweather text-center'>Park Tracker</h2>
+              <h5 className='merriweather fst-italic text-center fw-light'>Double click a state you&apos;ve visited to see your reviews </h5>
             </Col>
             <Col lg={9}>
               <div id="map" ref={this.infographicMap} />
