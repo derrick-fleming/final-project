@@ -69,7 +69,7 @@ export default class App extends React.Component {
       return <ReviewPage park={review} />;
     }
     if (path === 'accounts/user') {
-      return <UserAccount user={this.state.user}/>;
+      return <UserAccount />;
     }
     if (path === 'sign-in' || path === 'sign-up') {
       return <AuthPage action={path} onSignIn={this.handleSignIn}/>;

@@ -7,13 +7,13 @@ import Col from 'react-bootstrap/Col';
 import escape from 'escape-html';
 import * as d3 from 'd3';
 import states from '../lib/states';
+import AppContext from '../lib/app-context';
 
 export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: this.props.user,
-      isLoading: true,
       name: null
     };
     this.renderInforgraphic = this.renderInforgraphic.bind(this);
@@ -35,8 +35,7 @@ export default class UserAccount extends React.Component {
   }
 
   componentDidMount() {
-    const { user } = this.state;
-    if (!user) {
+    if (!this.context.user) {
       return;
     }
     const token = window.localStorage.getItem('park-reviews-jwt');
@@ -167,7 +166,7 @@ export default class UserAccount extends React.Component {
   }
 
   render() {
-    if (!this.state.user) {
+    if (!this.context.user) {
       window.location.hash = '#sign-in';
       return;
     }
@@ -251,3 +250,5 @@ export default class UserAccount extends React.Component {
     );
   }
 }
+
+UserAccount.contextType = AppContext;
