@@ -76,7 +76,7 @@ export default class UserReviews extends React.Component {
       const parkName = review.details.name;
       const parkImage = review.details.imageUrl;
       const generalThoughts = review.generalThoughts === '' ? 'None Listed' : review.generalThoughts;
-      const imageUrl = review.imageUrl === null ? 'No images provided' : <Button className='btn-link' onClick={this.handleClick}><Image thumbnail className='thumbnail shadow-sm' src={review.imageUrl} alt='User Image'/></Button>;
+      const image = review.imageUrl === null ? 'No images provided' : <Button variant="link" onClick={this.handleClick}><Image thumbnail className='thumbnail shadow-sm' src={review.imageUrl} alt='User Image'/></Button>;
       const stars = [1, 2, 3, 4, 5];
       const rating = stars.map((star, index) => {
         if (index <= review.rating) {
@@ -94,12 +94,16 @@ export default class UserReviews extends React.Component {
               <Card.Text className='mb-1'>
                 Rating: {rating}
               </Card.Text>
-              <Card.Text className='pt-0'>
+              <Card.Text>
                 Dates Visited: {startDate} - {endDate}
               </Card.Text>
             </Card.Body>
-            <Accordion className='borders shadow-sm'>
-              <Accordion.Item eventKey="0">
+            <Accordion className='shadow-sm'>
+              <Accordion.Item eventKey="0" style={{
+                'border-top-left-radius': 0,
+                'border-top-right-radius': 0,
+                '--bs-accordion-inner-border-radius': 0
+              }}>
                 <Accordion.Header className='merriweather'>
                   <span className='pe-2 fa-solid fa-book gray-scale' />Read Review
                 </Accordion.Header>
@@ -109,15 +113,13 @@ export default class UserReviews extends React.Component {
                       <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'>
                         <span className='pe-2 fa-solid fa-person-biking' />Recommended Activities
                       </h6>
-                    </Col>
-                    <Col>
-                      <ul className='list-style'>
+                      <ul className='list-style ps-4'>
                         <Row>
                           {
                             activities.map(activity => {
                               return (
                                 <Col key={activity} xs={6} >
-                                  <li className='fw-light fh-lg'>{activity}</li>
+                                  <li className='fw-light lh-lg'>{activity}</li>
                                 </Col>
                               );
                             })
@@ -131,15 +133,13 @@ export default class UserReviews extends React.Component {
                       <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'>
                         <span className='fa-solid fa-user-group pe-2' />Recommended Visitors
                       </h6>
-                    </Col>
-                    <Col xs={12}>
-                      <ul className='list-style'>
+                      <ul className='list-style ps-4'>
                         <Row>
                           {
                             visitors.map(visitor => {
                               return (
                                 <Col key={visitor} xs={6} >
-                                  <li className='fw-light fh-lg'>{visitor}</li>
+                                  <li className='fw-light lh-lg'>{visitor}</li>
                                 </Col>
                               );
                             })
@@ -153,21 +153,21 @@ export default class UserReviews extends React.Component {
                       <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'>
                         <span className='fa-solid fa-info-circle pe-2' /> Tips
                       </h6>
-                      <p className='fw-light'>{tips}</p>
+                      <p className='fw-light ps-4'>{tips}</p>
                     </Col>
                   </Row>
                   <Row id='generalThoughts'>
                     <Col>
                       <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'><span className='fa-solid fa-lightbulb pe-2' />General Thoughts</h6>
-                      <p className='fw-light'>{generalThoughts}</p>
+                      <p className='fw-light ps-4'>{generalThoughts}</p>
                     </Col>
                   </Row>
                   <Row id='photo'>
                     <Col xs={12}>
                       <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'><span className='fa-solid fa-camera-retro pe-2' />Photos</h6>
                     </Col>
-                    <Col className='fw-light'>
-                      {imageUrl}
+                    <Col className='ps-4 fw-light'>
+                      {image}
                     </Col>
                   </Row>
                 </Accordion.Body>
@@ -191,8 +191,12 @@ export default class UserReviews extends React.Component {
           </h2>
         </div>
         <Container>
-          <Row>
-            {reviewCards}
+          <Row className='justify-content-center'>
+            <Col xl={10} md={11} lg={12}>
+              <Row>
+                {reviewCards}
+              </Row>
+            </Col>
           </Row>
         </Container>
         <Modal centered show={this.state.show} onHide={this.handleClose}>
