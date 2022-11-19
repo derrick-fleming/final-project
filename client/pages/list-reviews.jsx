@@ -20,6 +20,7 @@ export default class UserReviews extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.renderReviews = this.renderReviews.bind(this);
   }
 
   handleClick(event) {
@@ -41,29 +42,8 @@ export default class UserReviews extends React.Component {
     });
   }
 
-  componentDidMount() {
-    const state = this.props.state;
-    const token = window.localStorage.getItem('park-reviews-jwt');
-    const header = {
-      headers: {
-        'X-Access-Token': token
-      }
-    };
-    fetch(`api/reviews/${state}`, header)
-      .then(response => response.json())
-      .then(result => {
-        this.setState({
-          result
-        });
-      });
-  }
-
-  render() {
+  renderReviews() {
     const reviews = this.state.result;
-    if (!this.state.result) {
-      return;
-    }
-
     const reviewCards = reviews.map(review => {
       const { recommendedActivities, recommendedVisitors, tips } = review;
       const datesVisited = review.datesVisited.split(',');
@@ -76,7 +56,7 @@ export default class UserReviews extends React.Component {
       const parkName = review.details.name;
       const parkImage = review.details.imageUrl;
       const generalThoughts = review.generalThoughts === '' ? 'None Listed' : review.generalThoughts;
-      const image = review.imageUrl === null ? 'No images provided' : <Button variant="link" onClick={this.handleClick}><Image thumbnail className='thumbnail shadow-sm' src={review.imageUrl} alt='User Image'/></Button>;
+      const image = review.imageUrl === null ? 'No images provided' : <Button variant="link" onClick={this.handleClick}><Image thumbnail className='thumbnail shadow-sm' src={review.imageUrl} alt='User Image' /></Button>;
       const stars = [1, 2, 3, 4, 5];
       const rating = stars.map((star, index) => {
         if (index <= review.rating) {
@@ -178,6 +158,31 @@ export default class UserReviews extends React.Component {
       );
 
     });
+    return reviewCards;
+  }
+
+  componentDidMount() {
+    const state = this.props.state;
+    const token = window.localStorage.getItem('park-reviews-jwt');
+    const header = {
+      headers: {
+        'X-Access-Token': token
+      }
+    };
+    fetch(`api/reviews/${state}`, header)
+      .then(response => response.json())
+      .then(result => {
+        this.setState({
+          result
+        });
+      });
+  }
+
+  render() {
+    if (!this.state.result) {
+      return;
+    }
+
     const state = states.find(state => state.code === this.props.state);
     const stateName = state.name;
     return (
@@ -194,7 +199,7 @@ export default class UserReviews extends React.Component {
           <Row className='justify-content-center'>
             <Col xl={10} md={11} lg={12}>
               <Row>
-                {reviewCards}
+                {this.renderReviews()}
               </Row>
             </Col>
           </Row>
