@@ -8,6 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Image from 'react-bootstrap/Image';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import states from '../lib/states';
 
 export default class UserReviews extends React.Component {
   constructor(props) {
@@ -85,7 +86,7 @@ export default class UserReviews extends React.Component {
         }
       });
       return (
-        <Col key={parkName} className='my-4'>
+        <Col key={parkName} className='my-4' xs={12} lg={6}>
           <Card className='open-sans shadow-sm'>
             <Card.Img variant="top" className='image-size' src={parkImage} alt={parkName} />
             <Card.Body className='border border-bottom-2'>
@@ -105,18 +106,18 @@ export default class UserReviews extends React.Component {
                 <Accordion.Body>
                   <Row id='activities'>
                     <Col xs={12}>
-                      <h6 className='border-bottom border-dark mb-2 pb-1'>
+                      <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'>
                         <span className='pe-2 fa-solid fa-person-biking' />Recommended Activities
                       </h6>
                     </Col>
                     <Col>
-                      <ul>
+                      <ul className='list-style'>
                         <Row>
                           {
                             activities.map(activity => {
                               return (
                                 <Col key={activity} xs={6} >
-                                  <li className='fw-light'>{activity}</li>
+                                  <li className='fw-light fh-lg'>{activity}</li>
                                 </Col>
                               );
                             })
@@ -127,18 +128,18 @@ export default class UserReviews extends React.Component {
                   </Row>
                   <Row id='visitors'>
                     <Col xs={12}>
-                      <h6 className='border-bottom border-dark mb-2 pb-1'>
+                      <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'>
                         <span className='fa-solid fa-user-group pe-2' />Recommended Visitors
                       </h6>
                     </Col>
                     <Col xs={12}>
-                      <ul>
+                      <ul className='list-style'>
                         <Row>
                           {
                             visitors.map(visitor => {
                               return (
                                 <Col key={visitor} xs={6} >
-                                  <li className='fw-light'>{visitor}</li>
+                                  <li className='fw-light fh-lg'>{visitor}</li>
                                 </Col>
                               );
                             })
@@ -149,7 +150,7 @@ export default class UserReviews extends React.Component {
                   </Row>
                   <Row id='tips'>
                     <Col>
-                      <h6 className='border-bottom border-dark mb-2 pb-1'>
+                      <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'>
                         <span className='fa-solid fa-info-circle pe-2' /> Tips
                       </h6>
                       <p className='fw-light'>{tips}</p>
@@ -157,13 +158,13 @@ export default class UserReviews extends React.Component {
                   </Row>
                   <Row id='generalThoughts'>
                     <Col>
-                      <h6 className='border-bottom border-dark mb-2 pb-1'><span className='fa-solid fa-lightbulb pe-2' />General Thoughts</h6>
+                      <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'><span className='fa-solid fa-lightbulb pe-2' />General Thoughts</h6>
                       <p className='fw-light'>{generalThoughts}</p>
                     </Col>
                   </Row>
                   <Row id='photo'>
                     <Col xs={12}>
-                      <h6 className='border-bottom border-dark mb-2 pb-1'><span className='fa-solid fa-camera-retro pe-2' />Photos</h6>
+                      <h6 className='border-bottom border-dark mb-2 pb-1 merriweather fw-bold'><span className='fa-solid fa-camera-retro pe-2' />Photos</h6>
                     </Col>
                     <Col className='fw-light'>
                       {imageUrl}
@@ -177,13 +178,21 @@ export default class UserReviews extends React.Component {
       );
 
     });
+    const state = states.find(state => state.code === this.props.state);
+    const stateName = state.name;
     return (
       <>
+        <div className='mb-4 position-relative hero-background text-center'>
+          <img src='images/mountain-scene.png' alt='Mountain view' className='hero-image' />
+          <h2 className='merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>
+            Your Reviews:
+            <br />
+            {stateName}
+          </h2>
+        </div>
         <Container>
           <Row>
-            <Col>
-              {reviewCards}
-            </Col>
+            {reviewCards}
           </Row>
         </Container>
         <Modal centered show={this.state.show} onHide={this.handleClose}>
