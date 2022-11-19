@@ -13,10 +13,25 @@ export default class UserAccount extends React.Component {
     super(props);
     this.state = {
       user: this.props.user,
-      isLoading: true
+      isLoading: true,
+      name: null
     };
     this.renderInforgraphic = this.renderInforgraphic.bind(this);
+    this.checkClick = this.checkClick.bind(this);
     this.infographicMap = React.createRef();
+  }
+
+  checkClick(event, d) {
+    const name = d.properties.name;
+    if (this.state.name === name) {
+      const state = states.find(state => state.name === name);
+      const stateCode = state.code;
+      window.location.hash = `#accounts/reviews?state=${stateCode}`;
+    } else {
+      this.setState({
+        state: name
+      });
+    }
   }
 
   componentDidMount() {
@@ -91,14 +106,20 @@ export default class UserAccount extends React.Component {
           .style('stroke', '#636363');
 
         svg.selectAll('path')
-          .on('dblclick', function (event, d) {
+          .on('click', (event, d) => {
             const name = d.properties.name;
             if (dataObject[name] === 0) {
               return;
             }
-            const state = states.find(state => state.name === name);
-            const stateCode = state.code;
-            window.location.hash = `#accounts/reviews?state=${stateCode}`;
+            if (this.state.name === name) {
+              const state = states.find(state => state.name === name);
+              const stateCode = state.code;
+              window.location.hash = `#accounts/reviews?state=${stateCode}`;
+            } else {
+              this.setState({
+                name
+              });
+            }
           })
           .on('mouseover', function (event, d) {
             d3.selectAll('.states')
