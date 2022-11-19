@@ -75,7 +75,7 @@ export default class UserReviews extends React.Component {
       const parkName = review.details.name;
       const parkImage = review.details.imageUrl;
       const generalThoughts = review.generalThoughts === '' ? 'None Listed' : review.generalThoughts;
-      const imageUrl = review.imageUrl === null ? 'No images provided' : <Button onClick={this.handleClick}><Image fluid src={review.imageUrl} alt='User Image'/></Button>;
+      const imageUrl = review.imageUrl === null ? 'No images provided' : <Button className='btn-link' onClick={this.handleClick}><Image thumbnail className='thumbnail shadow-sm' src={review.imageUrl} alt='User Image'/></Button>;
       const stars = [1, 2, 3, 4, 5];
       const rating = stars.map((star, index) => {
         if (index <= review.rating) {
@@ -99,14 +99,14 @@ export default class UserReviews extends React.Component {
             </Card.Body>
             <Accordion className='borders shadow-sm'>
               <Accordion.Item eventKey="0">
-                <Accordion.Header>
-                  <span className='fa-solid fa-book' />Read Review
+                <Accordion.Header className='merriweather'>
+                  <span className='pe-2 fa-solid fa-book gray-scale' />Read Review
                 </Accordion.Header>
                 <Accordion.Body>
                   <Row id='activities'>
                     <Col xs={12}>
-                      <h6>
-                        <span className='fa-solid fa-person-biking' />Recommended Activities
+                      <h6 className='border-bottom border-dark mb-2 pb-1'>
+                        <span className='pe-2 fa-solid fa-person-biking' />Recommended Activities
                       </h6>
                     </Col>
                     <Col>
@@ -127,11 +127,11 @@ export default class UserReviews extends React.Component {
                   </Row>
                   <Row id='visitors'>
                     <Col xs={12}>
-                      <h6>
-                        <span className='fa-solid fa-user-group' />Recommended Visitors
+                      <h6 className='border-bottom border-dark mb-2 pb-1'>
+                        <span className='fa-solid fa-user-group pe-2' />Recommended Visitors
                       </h6>
                     </Col>
-                    <Col>
+                    <Col xs={12}>
                       <ul>
                         <Row>
                           {
@@ -148,18 +148,22 @@ export default class UserReviews extends React.Component {
                     </Col>
                   </Row>
                   <Row id='tips'>
-                    <h6>
-                      <span className='fa-solid fa-info-circle pe-2' /> Tips
-                    </h6>
-                    <p className='fw-light'>{tips}</p>
+                    <Col>
+                      <h6 className='border-bottom border-dark mb-2 pb-1'>
+                        <span className='fa-solid fa-info-circle pe-2' /> Tips
+                      </h6>
+                      <p className='fw-light'>{tips}</p>
+                    </Col>
                   </Row>
                   <Row id='generalThoughts'>
-                    <h6><span className='fa-solid fa-lightbulb pe-2' />General Thoughts</h6>
-                    <p className='fw-light'>{generalThoughts}</p>
+                    <Col>
+                      <h6 className='border-bottom border-dark mb-2 pb-1'><span className='fa-solid fa-lightbulb pe-2' />General Thoughts</h6>
+                      <p className='fw-light'>{generalThoughts}</p>
+                    </Col>
                   </Row>
                   <Row id='photo'>
                     <Col xs={12}>
-                      <h6><span className='fa-solid fa-camera-retro pe-2' />Photos</h6>
+                      <h6 className='border-bottom border-dark mb-2 pb-1'><span className='fa-solid fa-camera-retro pe-2' />Photos</h6>
                     </Col>
                     <Col className='fw-light'>
                       {imageUrl}
@@ -183,14 +187,13 @@ export default class UserReviews extends React.Component {
           </Row>
         </Container>
         <Modal centered show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              Image
-            </Modal.Title>
+          <Modal.Header closeButton className='light-box'>
+            <Modal.Title />
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className='light-box'>
             <Image fluid src={this.state.imageUrl} alt='Larger user image' />
           </Modal.Body>
+          <Modal.Footer className='light-box' />
         </Modal>
       </>
     )
