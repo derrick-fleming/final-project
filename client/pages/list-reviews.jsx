@@ -193,8 +193,8 @@ export default class UserReviews extends React.Component {
     if (this.state.result.length === 0) {
       return (
         <>
-          <h3>Sorry, 0 Reviews found. </h3>
-          <h3>Review parks by browswing or searching for different parks!</h3>
+          <h3 className='m-5 merriweather text-center'>Sorry, 0 reviews found. </h3>
+          <h3 className='merriweather text-center'>Review parks by browsing or searching for different parks!</h3>
         </>
       );
     }
