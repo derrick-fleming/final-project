@@ -39,7 +39,6 @@ export default class UserAccount extends React.Component {
     if (!user) {
       return;
     }
-    const accountId = user.accountId;
     const token = window.localStorage.getItem('park-reviews-jwt');
     const request = {
       method: 'GET',
@@ -47,7 +46,7 @@ export default class UserAccount extends React.Component {
         'X-Access-Token': token
       }
     };
-    fetch(`/api/accounts/${accountId}`, request)
+    fetch('/api/accounts/', request)
       .then(response => response.json())
       .then(result => {
         if (result[0].length !== 0) {
@@ -172,16 +171,11 @@ export default class UserAccount extends React.Component {
       window.location.hash = '#sign-in';
       return;
     }
+    const statesNeeded = this.state.results ? 50 - this.state.results.length : 'N/A';
     let mostVisited = 'N/A';
-    let statesNeeded = 'N/A';
-    if (this.state.results) {
-      const sqlData = this.state.results;
-      const total = sqlData.length;
-      statesNeeded = 50 - total;
-      if (sqlData.length > 0) {
-        const stateCode = sqlData[0].stateCode;
-        mostVisited = Object.values(defaultStates[stateCode].name);
-      }
+    if (this.state.results && this.state.results > 0) {
+      const stateCode = this.state.results[0].stateCode;
+      mostVisited = Object.values(defaultStates[stateCode].name);
     }
 
     return (

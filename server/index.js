@@ -105,18 +105,17 @@ app.post('/api/auth/sign-in', (req, res, next) => {
 
 app.use(authorizationMiddleware);
 
-app.get('/api/accounts/:accountId', (req, res, next) => {
-  const accountId = req.params.accountId;
-  const total = `select count(*) as "reviews"
-  from "reviews"
-  where "accountId" = $1
-  group by "accountId"`;
+app.get('/api/accounts/', (req, res, next) => {
+  const { accountId } = req.user;
+  const total = `
+    select count(*) as "reviews"
+    from "reviews"
+    where "accountId" = $1`;
 
   const sql = `
     select "stateCode",
     count(*) as "visits"
-    from "accounts"
-    join "reviews" using ("accountId")
+    from "reviews"
     join "parksCache" using ("parkCode")
     where "accountId" = $1
     group by "stateCode"
