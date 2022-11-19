@@ -48,15 +48,23 @@ export default class UserReviews extends React.Component {
       const { recommendedActivities, recommendedVisitors, tips } = review;
       const datesVisited = review.datesVisited.split(',');
       const startDate = datesVisited[0].split('[')[1].split('-').splice(1, 2).join('/');
-      let endDate = datesVisited[1].split(')')[0].split('-').splice(1, 2).join('/');
-      const year = datesVisited[1].split(')')[0].split('-').splice(0, 1);
-      endDate = `${endDate}/${year}`;
+      let endDate = datesVisited[1].split(')')[0].split('-');
+      endDate = `${endDate[2]}/${endDate[3]}/${endDate[1]}`;
       const activities = recommendedActivities.split(',');
       const visitors = recommendedVisitors.split(',');
       const parkName = review.details.name;
       const parkImage = review.details.imageUrl;
       const generalThoughts = review.generalThoughts === '' ? 'None Listed' : review.generalThoughts;
-      const image = review.imageUrl === null ? 'No images provided' : <Button variant="link" onClick={this.handleClick}><Image thumbnail className='thumbnail shadow-sm' src={review.imageUrl} alt='User Image' /></Button>;
+      let image;
+      if (review.imageUrl === null) {
+        image = 'No images provided';
+      } else {
+        image = (
+          <Button variant="link" onClick={this.handleClick}>
+            <Image thumbnail className='thumbnail shadow-sm' src={review.imageUrl} alt='User Image' />
+          </Button>
+        );
+      }
       const stars = [1, 2, 3, 4, 5];
       const rating = stars.map((star, index) => {
         if (index <= review.rating) {
@@ -181,6 +189,14 @@ export default class UserReviews extends React.Component {
   render() {
     if (!this.state.result) {
       return;
+    }
+    if (this.state.result.length === 0) {
+      return (
+        <>
+          <h3>Sorry, 0 Reviews found. </h3>
+          <h3>Review parks by browswing or searching for different parks!</h3>
+        </>
+      );
     }
 
     const state = states.find(state => state.code === this.props.state);
