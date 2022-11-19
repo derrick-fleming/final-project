@@ -49,7 +49,7 @@ export default class UserReviews extends React.Component {
       const datesVisited = review.datesVisited.split(',');
       const startDate = datesVisited[0].split('[')[1].split('-').splice(1, 2).join('/');
       let endDate = datesVisited[1].split(')')[0].split('-');
-      endDate = `${endDate[2]}/${endDate[3]}/${endDate[1]}`;
+      endDate = `${endDate[1]}/${endDate[2]}/${endDate[0]}`;
       const activities = recommendedActivities.split(',');
       const visitors = recommendedVisitors.split(',');
       const parkName = review.details.name;
@@ -67,7 +67,7 @@ export default class UserReviews extends React.Component {
       }
       const stars = [1, 2, 3, 4, 5];
       const rating = stars.map((star, index) => {
-        if (index <= review.rating) {
+        if ((index + 1) <= review.rating) {
           return <span key={index} className='fa-solid fa-star green ps-1' />;
         } else {
           return <span key={index} className='fa-regular fa-star ps-1' />;
@@ -88,8 +88,8 @@ export default class UserReviews extends React.Component {
             </Card.Body>
             <Accordion className='shadow-sm'>
               <Accordion.Item eventKey="0" style={{
-                'border-top-left-radius': 0,
-                'border-top-right-radius': 0,
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
                 '--bs-accordion-inner-border-radius': 0
               }}>
                 <Accordion.Header className='merriweather'>
