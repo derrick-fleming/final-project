@@ -84,7 +84,7 @@ export default class UserReviews extends React.Component {
                   <Card.Title className='merriweather fw-Semibold mb-1 fs-2'>{parkName}</Card.Title>
                 </Col>
                 <Col className='text-end'>
-                  <Dropdown xs={4}>
+                  <Dropdown align='end' xs={4}>
                     <Dropdown.Toggle variant='no-link' id='edit-drop'>
                       <span className='fa-solid fa-ellipsis grayscale' />
                     </Dropdown.Toggle>
