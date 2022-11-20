@@ -79,15 +79,22 @@ export default class UserReviews extends React.Component {
           <Card className='open-sans shadow-sm'>
             <Card.Img variant="top" className='image-size' src={parkImage} alt={parkName} />
             <Card.Body className='border border-bottom-2'>
-              <Dropdown>
-                <Dropdown.Toggle variant='no-link' id='edit-drop'>
-                  <span className='fa-solid fa-ellipsis' />
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item href=''>Edit Review</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-              <Card.Title className='merriweather fw-Semibold mb-1 fs-2'>{parkName}</Card.Title>
+              <Row>
+                <Col xs={8}>
+                  <Card.Title className='merriweather fw-Semibold mb-1 fs-2'>{parkName}</Card.Title>
+                </Col>
+                <Col className='text-end'>
+                  <Dropdown xs={4}>
+                    <Dropdown.Toggle variant='no-link' id='edit-drop'>
+                      <span className='fa-solid fa-ellipsis grayscale' />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item href=''>Edit Review</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Col>
+              </Row>
+
               <Card.Text className='mb-1'>
                 Rating: {rating}
               </Card.Text>
