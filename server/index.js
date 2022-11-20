@@ -213,3 +213,18 @@ app.use(errorMiddleware);
 app.listen(process.env.PORT, () => {
   process.stdout.write(`\n\napp listening on port ${process.env.PORT}\n\n`);
 });
+
+app.get('api/reviews/:parkCode', (req, res, next) => {
+  const { accountId } = req.user;
+  const parkCode = req.params.parkCode;
+  const sql = `
+    select *
+    from "reviews"
+    where "accountId" = $1 and "parkCode" = $2`;
+  const params = [accountId, parkCode];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(err => next(err));
+});
