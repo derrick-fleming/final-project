@@ -224,6 +224,32 @@ app.get('/api/edit/:parkCode', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.put('/api/edit/reviews', (req, res, next) => {
+  const { accountId } = req.user;
+  const { parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts } = req.body;
+  if (!rating | !datesVisited | !recommendedActivities | !recommendedVisitors | !tips) {
+    throw new ClientError(400, 'Required information missing: rating, dates, activities, visitors, or tips');
+  }
+  const dates = `[${datesVisited}]`;
+  let url = null;
+  if (req.file !== undefined) {
+    url = `/images/${req.file.filename}`;
+  }
+
+  const sql = `
+  update "reviews"
+  set "rating" = $3,
+      "datesVisited" = $4,
+      "recommendedActivities" = $5,
+      "recommendedVisitors = $6,
+      "tips" = $7,
+      "generalThoughts" = $8,
+      "imageUrl" = $9"
+  where "parkCode" = $2 and "accountId" = $1`;
+  const params = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
+  db.query(sql, params);
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
