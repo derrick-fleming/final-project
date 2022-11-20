@@ -208,13 +208,7 @@ app.get('/api/reviews/:stateCode', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.use(errorMiddleware);
-
-app.listen(process.env.PORT, () => {
-  process.stdout.write(`\n\napp listening on port ${process.env.PORT}\n\n`);
-});
-
-app.get('api/reviews/:parkCode', (req, res, next) => {
+app.get('/api/edit/:parkCode', (req, res, next) => {
   const { accountId } = req.user;
   const parkCode = req.params.parkCode;
   const sql = `
@@ -224,7 +218,14 @@ app.get('api/reviews/:parkCode', (req, res, next) => {
   const params = [accountId, parkCode];
   db.query(sql, params)
     .then(result => {
-      res.status(200).json(result);
+      const [park] = result.rows;
+      res.status(200).json(park);
     })
     .catch(err => next(err));
+});
+
+app.use(errorMiddleware);
+
+app.listen(process.env.PORT, () => {
+  process.stdout.write(`\n\napp listening on port ${process.env.PORT}\n\n`);
 });
