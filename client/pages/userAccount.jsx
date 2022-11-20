@@ -1,29 +1,28 @@
 import React from 'react';
-import defaultStates from '../lib/defaultStateCount';
+import defaultStates from '../lib/default-state-count';
 import * as topojson from 'topojson-client';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import escape from 'escape-html';
 import * as d3 from 'd3';
+import states from '../lib/states';
+import AppContext from '../lib/app-context';
 
 export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: this.props.user,
-      isLoading: true
+      name: null
     };
-    this.renderInforgraphic = this.renderInforgraphic.bind(this);
+    this.renderInfographic = this.renderInfographic.bind(this);
     this.infographicMap = React.createRef();
   }
 
   componentDidMount() {
-    const { user } = this.state;
-    if (!user) {
+    if (!this.context.user) {
       return;
     }
-    const accountId = user.accountId;
     const token = window.localStorage.getItem('park-reviews-jwt');
     const request = {
       method: 'GET',
@@ -31,7 +30,7 @@ export default class UserAccount extends React.Component {
         'X-Access-Token': token
       }
     };
-    fetch(`/api/accounts/${accountId}`, request)
+    fetch('/api/accounts/', request)
       .then(response => response.json())
       .then(result => {
         if (result[0].length !== 0) {
@@ -41,13 +40,13 @@ export default class UserAccount extends React.Component {
               defaultStates[stateCode].visits = element.visits;
             }
           });
-          this.renderInforgraphic();
+          this.renderInfographic();
           this.setState({
             results: result[0],
             total: result[1][0].reviews
           });
         } else {
-          this.renderInforgraphic();
+          this.renderInfographic();
           this.setState({
             results: null,
             total: 'N/A'
@@ -57,7 +56,7 @@ export default class UserAccount extends React.Component {
       .catch(err => console.error(err));
   }
 
-  renderInforgraphic() {
+  renderInfographic() {
     const dataObject = {};
     for (const key in defaultStates) {
       const stateName = defaultStates[key].name;
@@ -65,7 +64,7 @@ export default class UserAccount extends React.Component {
       dataObject[stateName] = Number(visits);
     }
     const color = d3.scaleQuantize()
-      .domain([1, 15])
+      .domain([0, 9])
       .range(d3.schemeGreens[9]);
 
     const path = d3.geoPath();
@@ -90,6 +89,21 @@ export default class UserAccount extends React.Component {
           .style('stroke', '#636363');
 
         svg.selectAll('path')
+          .on('click', (event, d) => {
+            const name = d.properties.name;
+            if (dataObject[name] === 0) {
+              return;
+            }
+            if (this.state.name === name) {
+              const state = states.find(state => state.name === name);
+              const stateCode = state.code;
+              window.location.hash = `#accounts/reviews?state=${stateCode}`;
+            } else {
+              this.setState({
+                name
+              });
+            }
+          })
           .on('mouseover', function (event, d) {
             d3.selectAll('.states')
               .transition()
@@ -137,32 +151,30 @@ export default class UserAccount extends React.Component {
   }
 
   render() {
-    if (!this.state.user) {
+    if (!this.context.user) {
       window.location.hash = '#sign-in';
       return;
     }
+    const statesNeeded = this.state.results ? 50 - this.state.results.length : 'N/A';
     let mostVisited = 'N/A';
-    let statesNeeded = 'N/A';
-    if (this.state.results) {
-      const sqlData = this.state.results;
-      const total = sqlData.length;
-      statesNeeded = 50 - total;
-      if (sqlData.length > 0) {
-        const stateCode = sqlData[0].stateCode;
-        mostVisited = Object.values(defaultStates[stateCode].name);
-      }
+    if (this.state.results && this.state.results.length > 0) {
+      const stateCode = this.state.results[0].stateCode;
+      mostVisited = Object.values(defaultStates[stateCode].name);
     }
 
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
           <img src='images/joshua-tree.png' alt='Mountain view with lake' className='hero-image' />
-          <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-map pe-2' />States Tracker</h2>
+          <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>
+            <span className='fa-solid fa-map pe-2' />Account Information
+          </h2>
         </div>
         <Container>
           <Row className='my-4 justify-content-center'>
             <Col xs={12}>
-              <h2 className='merriweather text-center'>Places you&apos;ve visited</h2>
+              <h2 className='merriweather text-center'>Park Tracker</h2>
+              <h5 className='merriweather fst-italic text-center fw-light'>Double click a state you&apos;ve visited to see your reviews </h5>
             </Col>
             <Col lg={9}>
               <div id="map" ref={this.infographicMap} />
@@ -203,7 +215,7 @@ export default class UserAccount extends React.Component {
                     <td />
                     <td />
                     <td />
-                    <td>15+</td>
+                    <td>9</td>
                     <td />
                   </tr>
                 </tbody>
@@ -223,3 +235,5 @@ export default class UserAccount extends React.Component {
     );
   }
 }
+
+UserAccount.contextType = AppContext;

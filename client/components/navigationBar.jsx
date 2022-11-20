@@ -41,7 +41,7 @@ export default class NavigationBar extends React.Component {
   }
 
   render() {
-    let accountText = 'States Tracker';
+    let accountText = 'My Account';
     const { user } = this.context;
     if (!user) {
       accountText = 'Log In / Register';

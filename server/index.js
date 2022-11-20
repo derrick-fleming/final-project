@@ -105,18 +105,13 @@ app.post('/api/auth/sign-in', (req, res, next) => {
 
 app.use(authorizationMiddleware);
 
-app.get('/api/accounts/:accountId', (req, res, next) => {
-  const accountId = req.params.accountId;
-  const total = `select count(*) as "reviews"
-  from "reviews"
-  where "accountId" = $1
-  group by "accountId"`;
+app.get('/api/accounts/', (req, res, next) => {
+  const { accountId } = req.user;
 
   const sql = `
     select "stateCode",
     count(*) as "visits"
-    from "accounts"
-    join "reviews" using ("accountId")
+    from "reviews"
     join "parksCache" using ("parkCode")
     where "accountId" = $1
     group by "stateCode"
@@ -126,6 +121,12 @@ app.get('/api/accounts/:accountId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       const visits = result.rows;
+
+      const total = `
+        select count(*) as "reviews"
+        from "reviews"
+        where "accountId" = $1`;
+
       db.query(total, params)
         .then(response => {
           const amount = response.rows;
@@ -137,10 +138,8 @@ app.get('/api/accounts/:accountId', (req, res, next) => {
 });
 
 app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
-  const { accountId, parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, parkDetails, stateCode } = req.body;
-  if (!accountId) {
-    throw new ClientError(400, 'User account required to post review');
-  }
+  const { parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, parkDetails, stateCode } = req.body;
+  const { accountId } = req.user;
   if (!rating | !datesVisited | !recommendedActivities | !recommendedVisitors | !tips) {
     throw new ClientError(400, 'Required information missing: rating, dates, activities, visitors, or tips');
   }
@@ -188,6 +187,23 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
           })
           .catch(err => next(err));
       }
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/reviews/:stateCode', (req, res, next) => {
+  const { accountId } = req.user;
+  const stateCode = req.params.stateCode;
+  const sql = `
+    select *
+    from "reviews"
+    join "parksCache" using ("parkCode")
+    where "stateCode" = $1 and "accountId" = $2`;
+  const params = [stateCode, accountId];
+  db.query(sql, params)
+    .then(result => {
+      const reviews = result.rows;
+      res.status(200).json(reviews);
     })
     .catch(err => next(err));
 });
