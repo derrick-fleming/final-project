@@ -178,6 +178,19 @@ export default class ReviewPage extends React.Component {
       return <div />;
     }
     const { name } = this.state.results;
+    const stars = [5, 4, 3, 2, 1];
+    const rating = stars.map(star => {
+      let starInput = <input required id={`rating-${star}`} className='px-1' type='radio' name='rating' value={`${star}`} onClick={this.handleInputChange} />;
+      if (this.state.rating === star) {
+        starInput = <input defaultChecked='true' required id={`rating-${star}`} className='px-1' type='radio' name='rating' value={`${star}`} onClick={this.handleInputChange} />;
+      }
+      return (
+        <>
+          {starInput}
+          <label htmlFor={`rating-${star}`} className='pt-1 fa-solid fa-star' />
+        </>
+      );
+    });
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
@@ -195,16 +208,7 @@ export default class ReviewPage extends React.Component {
               </Col>
               <Col xs={3}>
                 <div className='star-radio d-flex flex-row-reverse justify-content-end'>
-                  <input required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleInputChange} />
-                  <label htmlFor="rating-5" className='pt-1 fa-solid fa-star'/>
-                  <input className='px-1' id='rating-4' type='radio' name='rating' value='4' onClick={this.handleInputChange}/>
-                  <label htmlFor="rating-4" className='pt-1 fa-solid fa-star d-inline'/>
-                  <input className='px-1' id='rating-3' type='radio' name='rating' value='3' onClick={this.handleInputChange}/>
-                  <label htmlFor="rating-3" className='pt-1 fa-solid fa-star'/>
-                  <input className='px-1' id='rating-2' type='radio' name='rating' value='2' onClick={this.handleInputChange}/>
-                  <label htmlFor="rating-2" className='pt-1 fa-solid fa-star'/>
-                  <input className='px-1' id='rating-1' type='radio' name='rating' value='1' onClick={this.handleInputChange}/>
-                  <label htmlFor="rating-1" className='pt-1 fa-solid fa-star'/>
+                  {rating}
                   <Form.Control.Feedback type="invalid">Missing rating.</Form.Control.Feedback>
                 </div>
               </Col>
@@ -216,12 +220,12 @@ export default class ReviewPage extends React.Component {
                   <hr className='mt-0'/>
                   <div>
                     <Form.Label htmlFor='start-dates' className='pe-2 fw-light'> Start Date: </Form.Label>
-                    <input className='border' required id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
+                    <input value={this.state.startDate}className='border' required id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
                   </div>
                   <div>
                     <Form.Label htmlFor='end-dates' className='pe-3 fw-light'> End Date: </Form.Label>
-                    <input className='border' required id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
+                    <input value={this.state.endDate} className='border' required id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
                   </div>
                 </Form.Group>
@@ -231,9 +235,13 @@ export default class ReviewPage extends React.Component {
                   <Row>
                     {
                 activities.map(activity => {
+                  let activityOption = <input type='checkbox' id={activity.name} name='activities' value={activity.name} onChange={this.handleCheckBox} />;
+                  if (this.state.activities.includes(activity.name)) {
+                    activityOption = <input defaultChecked='true' type='checkbox' id={activity.name} name='activities' value={activity.name} onChange={this.handleCheckBox} />;
+                  }
                   return (
                     <Col xs={6} key={activity.name}>
-                      <input type='checkbox' id={activity.name} name='activities' value={activity.name} onChange={this.handleCheckBox}/>
+                      {activityOption}
                       <label htmlFor={activity.name} className='fw-light ps-2 lh-lg'>{activity.name}</label>
                     </Col>
                   );
@@ -247,9 +255,13 @@ export default class ReviewPage extends React.Component {
                   <Row>
                     {
                       visitors.map(visitor => {
+                        let visitorOption = <input type='checkbox' id={visitor} name='visitors' value={visitor} onChange={this.handleCheckBox} />;
+                        if (this.state.visitors.includes(visitor)) {
+                          visitorOption = <input defaultChecked='true' type='checkbox' id={visitor} name='visitors' value={visitor} onChange={this.handleCheckBox} />;
+                        }
                         return (
                           <Col xs={6} key={visitor}>
-                            <input type='checkbox' id={visitor} name='visitors' value={visitor} onChange={this.handleCheckBox} />
+                            {visitorOption}
                             <label htmlFor={visitor} className='fw-light ps-2 lh-lg'>{visitor}</label>
                           </Col>
                         );
