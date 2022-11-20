@@ -29,10 +29,43 @@ export default class ReviewPage extends React.Component {
     this.handleCheckBox = this.handleCheckBox.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.retrieveReview = this.retrieveReview.bind(this);
   }
 
   componentDidMount() {
     this.fetchData();
+    if (this.props.edit) {
+      this.retrieveReview();
+    }
+  }
+
+  retrieveReview() {
+    const parkCode = this.props.park;
+    const token = window.localStorage.getItem('park-reviews-jwt');
+    const header = {
+      headers: {
+        'X-Access-Token': token
+      }
+    };
+    fetch(`/api/edit/${parkCode}`, header)
+      .then(response => response.json())
+      .then(result => {
+        const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts } = result;
+        const startDate = datesVisited.split(',')[0].split('[')[1];
+        const endDate = datesVisited.split(',')[1].split(')')[0];
+        const activities = recommendedActivities.split(',');
+        const visitors = recommendedVisitors.split(',');
+        this.setState({
+          rating,
+          activities,
+          visitors,
+          endDate,
+          startDate,
+          tips,
+          generalThoughts
+        });
+      });
+
   }
 
   handleInputChange(event) {
