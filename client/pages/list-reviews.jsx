@@ -89,7 +89,7 @@ export default class UserReviews extends React.Component {
                       <span className='fa-solid fa-ellipsis grayscale' />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item href=''>Edit Review</Dropdown.Item>
+                      <Dropdown.Item href={`#edit-review?parkCode=${review.parkCode}`}>Edit Review</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
