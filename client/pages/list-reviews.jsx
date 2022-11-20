@@ -9,6 +9,7 @@ import Image from 'react-bootstrap/Image';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import states from '../lib/states';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export default class UserReviews extends React.Component {
   constructor(props) {
@@ -78,6 +79,14 @@ export default class UserReviews extends React.Component {
           <Card className='open-sans shadow-sm'>
             <Card.Img variant="top" className='image-size' src={parkImage} alt={parkName} />
             <Card.Body className='border border-bottom-2'>
+              <Dropdown>
+                <Dropdown.Toggle variant='no-link' id='edit-drop'>
+                  <span className='fa-solid fa-ellipsis' />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href=''>Edit Review</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
               <Card.Title className='merriweather fw-Semibold mb-1 fs-2'>{parkName}</Card.Title>
               <Card.Text className='mb-1'>
                 Rating: {rating}
