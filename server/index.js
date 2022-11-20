@@ -107,10 +107,6 @@ app.use(authorizationMiddleware);
 
 app.get('/api/accounts/', (req, res, next) => {
   const { accountId } = req.user;
-  const total = `
-    select count(*) as "reviews"
-    from "reviews"
-    where "accountId" = $1`;
 
   const sql = `
     select "stateCode",
@@ -125,6 +121,12 @@ app.get('/api/accounts/', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       const visits = result.rows;
+
+      const total = `
+        select count(*) as "reviews"
+        from "reviews"
+        where "accountId" = $1`;
+
       db.query(total, params)
         .then(response => {
           const amount = response.rows;

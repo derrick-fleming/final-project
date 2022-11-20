@@ -1,5 +1,5 @@
 import React from 'react';
-import defaultStates from '../lib/defaultStateCount';
+import defaultStates from '../lib/default-state-count';
 import * as topojson from 'topojson-client';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,25 +13,10 @@ export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: this.props.user,
       name: null
     };
-    this.renderInforgraphic = this.renderInforgraphic.bind(this);
-    this.checkClick = this.checkClick.bind(this);
+    this.renderInfographic = this.renderInfographic.bind(this);
     this.infographicMap = React.createRef();
-  }
-
-  checkClick(event, d) {
-    const name = d.properties.name;
-    if (this.state.name === name) {
-      const state = states.find(state => state.name === name);
-      const stateCode = state.code;
-      window.location.hash = `#accounts/reviews?state=${stateCode}`;
-    } else {
-      this.setState({
-        state: name
-      });
-    }
   }
 
   componentDidMount() {
@@ -55,13 +40,13 @@ export default class UserAccount extends React.Component {
               defaultStates[stateCode].visits = element.visits;
             }
           });
-          this.renderInforgraphic();
+          this.renderInfographic();
           this.setState({
             results: result[0],
             total: result[1][0].reviews
           });
         } else {
-          this.renderInforgraphic();
+          this.renderInfographic();
           this.setState({
             results: null,
             total: 'N/A'
@@ -71,7 +56,7 @@ export default class UserAccount extends React.Component {
       .catch(err => console.error(err));
   }
 
-  renderInforgraphic() {
+  renderInfographic() {
     const dataObject = {};
     for (const key in defaultStates) {
       const stateName = defaultStates[key].name;
@@ -79,7 +64,7 @@ export default class UserAccount extends React.Component {
       dataObject[stateName] = Number(visits);
     }
     const color = d3.scaleQuantize()
-      .domain([1, 15])
+      .domain([0, 9])
       .range(d3.schemeGreens[9]);
 
     const path = d3.geoPath();
@@ -172,7 +157,7 @@ export default class UserAccount extends React.Component {
     }
     const statesNeeded = this.state.results ? 50 - this.state.results.length : 'N/A';
     let mostVisited = 'N/A';
-    if (this.state.results && this.state.results > 0) {
+    if (this.state.results && this.state.results.length > 0) {
       const stateCode = this.state.results[0].stateCode;
       mostVisited = Object.values(defaultStates[stateCode].name);
     }
@@ -230,7 +215,7 @@ export default class UserAccount extends React.Component {
                     <td />
                     <td />
                     <td />
-                    <td>15+</td>
+                    <td>9</td>
                     <td />
                   </tr>
                 </tbody>
