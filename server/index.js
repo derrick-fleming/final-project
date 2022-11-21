@@ -244,7 +244,7 @@ app.put('/api/edit/reviews', (req, res, next) => {
       "recommendedVisitors" = $6,
       "tips" = $7,
       "generalThoughts" = $8,
-      "imageUrl" = $9
+      "imageUrl" = coalesce($9, "imageUrl")
   where "parkCode" = $2 and "accountId" = $1`;
   const params = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
   db.query(sql, params)

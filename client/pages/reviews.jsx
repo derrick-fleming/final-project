@@ -22,7 +22,8 @@ export default class ReviewPage extends React.Component {
       tips: '',
       generalThoughts: '',
       startDate: '',
-      endDate: ''
+      endDate: '',
+      image: null
     };
     this.fileInputRef = React.createRef();
     this.fetchData = this.fetchData.bind(this);
@@ -305,7 +306,7 @@ export default class ReviewPage extends React.Component {
                   <Form.Text className='fs-6 fst-italic fw-light'>
                     Upload your favorite photos from this park.
                   </Form.Text>
-                  <Form.Control id='image' className='mt-3' name='image' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
+                  <Form.Control defaultValue={this.state.image} id='image' className='mt-3' name='image' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef}/>
                   <Form.Control.Feedback type="valid">Photo is optional</Form.Control.Feedback>
                 </Form.Group>
               </Col>
