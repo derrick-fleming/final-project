@@ -51,11 +51,12 @@ export default class ReviewPage extends React.Component {
     fetch(`/api/edit/${parkCode}`, header)
       .then(response => response.json())
       .then(result => {
-        const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts } = result;
+        const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips } = result;
         const startDate = datesVisited.split(',')[0].split('[')[1];
         const endDate = datesVisited.split(',')[1].split(')')[0];
         const activities = recommendedActivities.split(',');
         const visitors = recommendedVisitors.split(',');
+        const generalThoughts = result.genralThoughts === null ? '' : result.genralThoughts;
         this.setState({
           rating,
           activities,
@@ -179,19 +180,22 @@ export default class ReviewPage extends React.Component {
       return <div />;
     }
     const { name } = this.state.results;
-    const stars = [5, 4, 3, 2, 1];
-    const rating = stars.map(star => {
-      let starInput = <input required id={`rating-${star}`} className='px-1' type='radio' name='rating' value={`${star}`} onClick={this.handleInputChange} />;
-      if (this.state.rating === star) {
-        starInput = <input defaultChecked='true' required id={`rating-${star}`} className='px-1' type='radio' name='rating' value={`${star}`} onClick={this.handleInputChange} />;
-      }
-      return (
-        <>
-          {starInput}
-          <label htmlFor={`rating-${star}`} className='pt-1 fa-solid fa-star' />
-        </>
-      );
-    });
+    const star5 = this.state.rating === 5
+      ? <input defaultChecked='true' required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleInputChange} />
+      : <input required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleInputChange} />;
+    const star4 = this.state.rating === 4
+      ? <input defaultChecked='true' required id='rating-4' className='px-1' type='radio' name='rating' value='4' onClick={this.handleInputChange} />
+      : <input required id='rating-4' className='px-1' type='radio' name='rating' value='4' onClick={this.handleInputChange} />;
+    const star3 = this.state.rating === 3
+      ? <input defaultChecked='true' required id='rating-3' className='px-1' type='radio' name='rating' value='3' onClick={this.handleInputChange} />
+      : <input required id='rating-3' className='px-1' type='radio' name='rating' value='3' onClick={this.handleInputChange} />;
+    const star2 = this.state.rating === 2
+      ? <input defaultChecked='true' required id='rating-2' className='px-1' type='radio' name='rating' value='2' onClick={this.handleInputChange} />
+      : <input required id='rating-2' className='px-1' type='radio' name='rating' value='2' onClick={this.handleInputChange} />;
+    const star1 = this.state.rating === 1
+      ? <input defaultChecked='true' required id='rating-1' className='px-1' type='radio' name='rating' value='1' onClick={this.handleInputChange} />
+      : <input required id='rating-1' className='px-1' type='radio' name='rating' value='1' onClick={this.handleInputChange} />;
+
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
@@ -209,7 +213,16 @@ export default class ReviewPage extends React.Component {
               </Col>
               <Col xs={3}>
                 <div className='star-radio d-flex flex-row-reverse justify-content-end'>
-                  {rating}
+                  {star5}
+                  <label htmlFor='rating-5' className='pt-1 fa-solid fa-star' />
+                  {star4}
+                  <label htmlFor='rating-4' className='pt-1 fa-solid fa-star' />
+                  {star3}
+                  <label htmlFor='rating-3' className='pt-1 fa-solid fa-star' />
+                  {star2}
+                  <label htmlFor='rating-2' className='pt-1 fa-solid fa-star' />
+                  {star1}
+                  <label htmlFor='rating-1' className='pt-1 fa-solid fa-star' />
                   <Form.Control.Feedback type="invalid">Missing rating.</Form.Control.Feedback>
                 </div>
               </Col>
