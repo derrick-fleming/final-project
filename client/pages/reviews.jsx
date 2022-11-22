@@ -155,6 +155,7 @@ export default class ReviewPage extends React.Component {
         this.fileInputRef.current.value = null;
         if (this.state.editing) {
           window.location.hash = `#accounts/reviews?state=${this.state.results.addresses[0].stateCode}`;
+          return;
         }
         window.location.hash = `#details?park=${this.props.park}`;
       })

@@ -224,9 +224,10 @@ app.get('/api/edit/:parkCode', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.put('/api/edit/reviews', (req, res, next) => {
+app.put('/api/reviews', uploadsMiddleware, (req, res, next) => {
   const { accountId } = req.user;
   const { parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts } = req.body;
+
   if (!rating | !datesVisited | !recommendedActivities | !recommendedVisitors | !tips) {
     throw new ClientError(400, 'Required information missing: rating, dates, activities, visitors, or tips');
   }
@@ -245,12 +246,13 @@ app.put('/api/edit/reviews', (req, res, next) => {
       "tips" = $7,
       "generalThoughts" = $8,
       "imageUrl" = coalesce($9, "imageUrl")
-  where "parkCode" = $2 and "accountId" = $1`;
+  where "parkCode" = $2 and "accountId" = $1
+  returning *`;
   const params = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
   db.query(sql, params)
     .then(result => {
-      const [update] = result.rows;
-      res.json(update);
+      const update = result.rows[0];
+      res.status(200).json(update);
     })
     .catch(err => next(err));
 });
