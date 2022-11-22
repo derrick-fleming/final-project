@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import activities from '../lib/activities';
 import Button from 'react-bootstrap/Button';
 import AppContext from '../lib/app-context';
+import Image from 'react-bootstrap/Image';
 
 const visitors = ['Everyone', 'History Buffs', 'Families', 'Casual Travelers', 'Teens & Adults', 'Outdoor Enthusiast', 'Nature Lovers'];
 
@@ -13,6 +14,7 @@ export default class ReviewPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      editing: this.props.edit,
       validated: false,
       results: [],
       isLoading: true,
@@ -51,7 +53,7 @@ export default class ReviewPage extends React.Component {
     fetch(`/api/edit/${parkCode}`, header)
       .then(response => response.json())
       .then(result => {
-        const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips } = result;
+        const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips, imageUrl } = result;
         const startDate = datesVisited.split(',')[0].split('[')[1];
         const endDate = datesVisited.split(',')[1].split(')')[0];
         const activities = recommendedActivities.split(',');
@@ -64,7 +66,8 @@ export default class ReviewPage extends React.Component {
           endDate,
           startDate,
           tips,
-          generalThoughts
+          generalThoughts,
+          image: imageUrl
         });
       });
 
@@ -73,6 +76,12 @@ export default class ReviewPage extends React.Component {
   handleInputChange(event) {
     const value = event.target.value;
     const name = event.target.name;
+    if (event.target.name === 'image') {
+      this.setState({
+        image: null
+      });
+      return;
+    }
     this.setState({
       [name]: value
     });
@@ -177,7 +186,15 @@ export default class ReviewPage extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      return <div />;
+      return;
+    }
+    let image = '';
+    if (this.state.editing === true && this.state.image !== null) {
+      image = (
+        <>
+          <p className='fst-italic mt-2'>Previously uploaded image:</p>
+          <Image thumbnail className='thumbnail shadow-sm' src={this.state.image} alt='User Image' />
+        </>);
     }
     const { name } = this.state.results;
     const star5 = this.state.rating === 5
@@ -319,8 +336,9 @@ export default class ReviewPage extends React.Component {
                   <Form.Text className='fs-6 fst-italic fw-light'>
                     Upload your favorite photos from this park.
                   </Form.Text>
-                  <Form.Control defaultValue={this.state.image} id='image' className='mt-3' name='image' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef}/>
+                  <Form.Control onChange={this.handleInputChange} id='image' className='mt-3' name='image' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef}/>
                   <Form.Control.Feedback type="valid">Photo is optional</Form.Control.Feedback>
+                  {image}
                 </Form.Group>
               </Col>
             </Row>
