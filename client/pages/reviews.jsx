@@ -58,7 +58,7 @@ export default class ReviewPage extends React.Component {
         const endDate = datesVisited.split(',')[1].split(')')[0];
         const activities = recommendedActivities.split(',');
         const visitors = recommendedVisitors.split(',');
-        const generalThoughts = result.genralThoughts === null ? '' : result.genralThoughts;
+        const generalThoughts = result.genralThoughts === null ? '' : result.generalThoughts;
         this.setState({
           rating,
           activities,
@@ -139,8 +139,12 @@ export default class ReviewPage extends React.Component {
     formData.append('stateCode', this.state.results.addresses[0].stateCode);
     formData.append('parkDetails', JSON.stringify(parkDetails));
     const token = window.localStorage.getItem('park-reviews-jwt');
+    let action = 'POST';
+    if (this.state.editing) {
+      action = 'PUT';
+    }
     fetch('/api/reviews', {
-      method: 'POST',
+      method: action,
       headers: {
         'X-Access-Token': token
       },
@@ -149,6 +153,9 @@ export default class ReviewPage extends React.Component {
       .then(response => response.json())
       .then(result => {
         this.fileInputRef.current.value = null;
+        if (this.state.editing) {
+          window.location.hash = `#accounts/reviews?state=${this.state.results.addresses[0].stateCode}`;
+        }
         window.location.hash = `#details?park=${this.props.park}`;
       })
       .catch(err => console.error(err));
