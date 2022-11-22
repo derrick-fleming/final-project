@@ -221,6 +221,10 @@ export default class ReviewPage extends React.Component {
       ? <input defaultChecked='true' required id='rating-1' className='px-1' type='radio' name='rating' value='1' onClick={this.handleInputChange} />
       : <input required id='rating-1' className='px-1' type='radio' name='rating' value='1' onClick={this.handleInputChange} />;
 
+    const today = new Date();
+    const todayDate = today.toLocaleDateString().split('/');
+    const todayFormat = `${todayDate[2]}-${todayDate[0]}-${todayDate[1]}`;
+
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
@@ -259,12 +263,12 @@ export default class ReviewPage extends React.Component {
                   <hr className='mt-0'/>
                   <div>
                     <Form.Label htmlFor='start-dates' className='pe-2 fw-light'> Start Date: </Form.Label>
-                    <input value={this.state.startDate}className='border' required id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
-                    <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
+                    <input required value={this.state.startDate} className='border' min="1930-01-01" max={todayFormat} id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
+                    <Form.Control.Feedback type="invalid">Missing start date.</Form.Control.Feedback>
                   </div>
                   <div>
                     <Form.Label htmlFor='end-dates' className='pe-3 fw-light'> End Date: </Form.Label>
-                    <input value={this.state.endDate} className='border' required id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
+                    <input value={this.state.endDate} className='border' required id='end-dates' type='date' name='endDate' min="1930-01-01" max={todayFormat} onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
                   </div>
                 </Form.Group>
