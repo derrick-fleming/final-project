@@ -3,7 +3,7 @@ import { Loader } from '@googlemaps/js-api-loader';
 import escape from 'escape-html';
 
 const loader = new Loader({
-  apiKey: process.env.GOOGLE_API,
+  apiKey: process.env.GOOGLE_MAPS_API_KEY,
   version: 'weekly',
   libraries: ['places', 'marker', 'drawing']
 });
