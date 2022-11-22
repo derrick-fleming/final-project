@@ -101,20 +101,20 @@ export default class ParkDetails extends React.Component {
       return;
     }
     const park = this.state.results;
-    let rating;
-    if (this.state.parkRating.rating === null) {
-      rating = 'N/A';
-    } else {
-      let score = Number(this.state.parkRating.rating);
-      score = Math.round(score);
-      const stars = [1, 2, 3, 4, 5];
-      rating = stars.map((star, index) => {
-        if (index <= score - 1) {
-          return <span key={index} className='fa-solid fa-star green' />;
-        } else {
-          return <span key={index} className='fa-regular fa-star' />;
-        }
-      });
+    let rating = 'N/A';
+    if (this.state.parkRating) {
+      if (this.state.parkRating.rating !== 'N/A') {
+        let score = Number(this.state.parkRating.rating);
+        score = Math.round(score);
+        const stars = [1, 2, 3, 4, 5];
+        rating = stars.map((star, index) => {
+          if (index <= score - 1) {
+            return <span key={index} className='fa-solid fa-star green' />;
+          } else {
+            return <span key={index} className='fa-regular fa-star' />;
+          }
+        });
+      }
     }
 
     const { name, wikiImage, description, weatherInfo } = park;
