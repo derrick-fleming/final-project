@@ -116,6 +116,14 @@ export default class ReviewPage extends React.Component {
       return;
     }
 
+    const startDate = new Date(this.state.startDate);
+    const endDate = new Date(this.state.endDate);
+    const startParse = Date.parse(startDate);
+    const endParse = Date.parse(endDate);
+    if (startParse > endParse) {
+      return;
+    }
+
     if (this.state.activities.length === 0 || this.state.visitors.length === 0) {
       return;
     }
