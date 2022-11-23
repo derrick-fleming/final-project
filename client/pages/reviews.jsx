@@ -14,7 +14,7 @@ export default class ReviewPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editing: this.props.edit,
+      editing: false,
       validated: false,
       results: [],
       isLoading: true,
@@ -37,9 +37,7 @@ export default class ReviewPage extends React.Component {
 
   componentDidMount() {
     this.fetchData();
-    if (this.props.edit) {
-      this.retrieveReview();
-    }
+    this.retrieveReview();
   }
 
   retrieveReview() {
@@ -53,7 +51,10 @@ export default class ReviewPage extends React.Component {
     fetch(`/api/edit/${parkCode}`, header)
       .then(response => response.json())
       .then(result => {
-        const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips, imageUrl } = result;
+        if (result.length === 0) {
+          return;
+        }
+        const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips, imageUrl } = result[0];
         const startDate = datesVisited.split(',')[0].split('[')[1];
         const endDate = datesVisited.split(',')[1].split(')')[0];
         const activities = recommendedActivities.split(',');
@@ -67,7 +68,8 @@ export default class ReviewPage extends React.Component {
           startDate,
           tips,
           generalThoughts,
-          image: imageUrl
+          image: imageUrl,
+          editing: true
         });
       });
 

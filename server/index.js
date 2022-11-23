@@ -218,7 +218,7 @@ app.get('/api/edit/:parkCode', (req, res, next) => {
   const params = [accountId, parkCode];
   db.query(sql, params)
     .then(result => {
-      const [park] = result.rows;
+      const park = result.rows;
       res.status(200).json(park);
     })
     .catch(err => next(err));
