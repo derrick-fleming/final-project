@@ -103,7 +103,7 @@ export default class ParkDetails extends React.Component {
     const park = this.state.results;
     let rating = 'N/A';
     if (this.state.parkRating) {
-      if (this.state.parkRating.rating !== 'N/A') {
+      if (this.state.parkRating.rating !== null) {
         let score = Number(this.state.parkRating.rating);
         score = Math.round(score);
         const stars = [1, 2, 3, 4, 5];
