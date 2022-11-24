@@ -146,7 +146,7 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
   const dates = `[${datesVisited}]`;
   let url = null;
   if (req.file !== undefined) {
-    url = `/images/${req.file.filename}`;
+    url = req.file.location;
   }
 
   const sqlSelect = `

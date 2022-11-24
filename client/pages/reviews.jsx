@@ -25,7 +25,8 @@ export default class ReviewPage extends React.Component {
       generalThoughts: '',
       startDate: '',
       endDate: '',
-      image: null
+      image: null,
+      dateError: ''
     };
     this.fileInputRef = React.createRef();
     this.fetchData = this.fetchData.bind(this);
@@ -84,6 +85,13 @@ export default class ReviewPage extends React.Component {
       });
       return;
     }
+    if (event.target.name === 'endDate' || event.target.name === 'startDate') {
+      this.setState({
+        dateError: '',
+        [name]: value
+      });
+      return;
+    }
     this.setState({
       [name]: value
     });
@@ -93,9 +101,15 @@ export default class ReviewPage extends React.Component {
     const target = event.target;
     const name = event.target.name;
     const array = this.state[name];
-    if (target.checked === true) {
+    if (event.target.name === 'activities' && target.checked === true) {
       this.setState({
-        name: array.push(event.target.id)
+        name: array.push(event.target.id),
+        activitiesError: ''
+      });
+    } else if (event.target.name === 'visitors' && target.checked === true) {
+      this.setState({
+        name: array.push(event.target.id),
+        visitorsError: ''
       });
     } else if (target.checked === false) {
       const index = array.indexOf(event.target.id);
@@ -121,10 +135,21 @@ export default class ReviewPage extends React.Component {
     const startParse = Date.parse(startDate);
     const endParse = Date.parse(endDate);
     if (startParse > endParse) {
+      this.setState({
+        dateError: 'End date must be after the start date.'
+      });
       return;
     }
 
-    if (this.state.activities.length === 0 || this.state.visitors.length === 0) {
+    if (this.state.activities.length === 0) {
+      this.setState({
+        activitiesError: 'Must select at least one activity.'
+      });
+      return;
+    } if (this.state.visitors.length === 0) {
+      this.setState({
+        visitorsError: 'Must select at least one visitor group.'
+      });
       return;
     }
 
@@ -274,13 +299,14 @@ export default class ReviewPage extends React.Component {
                   <hr className='mt-0'/>
                   <div>
                     <Form.Label htmlFor='start-dates' className='pe-2 fw-light'> Start Date: </Form.Label>
-                    <input required value={this.state.startDate} className='border' min="1930-01-01" max={todayFormat} id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
+                    <input required value={this.state.startDate} className='border' min="1970-01-01" max={todayFormat} id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing start date.</Form.Control.Feedback>
                   </div>
                   <div>
                     <Form.Label htmlFor='end-dates' className='pe-3 fw-light'> End Date: </Form.Label>
-                    <input value={this.state.endDate} className='border' required id='end-dates' type='date' name='endDate' min="1930-01-01" max={todayFormat} onChange={this.handleInputChange}/>
+                    <input value={this.state.endDate} className='border' required id='end-dates' type='date' name='endDate' min="1970-01-01" max={todayFormat} onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
+                    <Form.Text className='d-block text-danger'>{this.state.dateError}</Form.Text>
                   </div>
                 </Form.Group>
                 <Form.Group className='mb-3'>
@@ -301,6 +327,7 @@ export default class ReviewPage extends React.Component {
                   );
                 })
               }
+                    <Form.Text className='d-block text-danger'>{this.state.activitiesError}</Form.Text>
                   </Row>
                 </Form.Group>
                 <Form.Group className='mb-3'>
@@ -321,6 +348,7 @@ export default class ReviewPage extends React.Component {
                         );
                       })
                     }
+                    <Form.Text className='d-block text-danger'>{this.state.visitorsError}</Form.Text>
                   </Row>
                 </Form.Group>
               </Col>
