@@ -80,11 +80,11 @@ export default class UserReviews extends React.Component {
             <Card.Img variant="top" className='image-size' src={parkImage} alt={parkName} />
             <Card.Body className='border border-bottom-2'>
               <Row>
-                <Col xs={8}>
+                <Col xs={9}>
                   <Card.Title className='merriweather fw-Semibold mb-1 fs-2'>{parkName}</Card.Title>
                 </Col>
                 <Col className='text-end'>
-                  <Dropdown align='end' xs={4}>
+                  <Dropdown align='end' xs={3}>
                     <Dropdown.Toggle variant='no-link' id='edit-drop'>
                       <span className='fa-solid fa-ellipsis grayscale' />
                     </Dropdown.Toggle>
