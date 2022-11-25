@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import activities from '../lib/activities';
 import Button from 'react-bootstrap/Button';
 import AppContext from '../lib/app-context';
+import Image from 'react-bootstrap/Image';
 
 const visitors = ['Everyone', 'History Buffs', 'Families', 'Casual Travelers', 'Teens & Adults', 'Outdoor Enthusiast', 'Nature Lovers'];
 
@@ -13,6 +14,7 @@ export default class ReviewPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      editing: false,
       validated: false,
       results: [],
       isLoading: true,
@@ -22,22 +24,74 @@ export default class ReviewPage extends React.Component {
       tips: '',
       generalThoughts: '',
       startDate: '',
-      endDate: ''
+      endDate: '',
+      image: null,
+      dateError: ''
     };
     this.fileInputRef = React.createRef();
     this.fetchData = this.fetchData.bind(this);
     this.handleCheckBox = this.handleCheckBox.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.retrieveReview = this.retrieveReview.bind(this);
   }
 
   componentDidMount() {
     this.fetchData();
+    this.retrieveReview();
+  }
+
+  retrieveReview() {
+    const parkCode = this.props.park;
+    const token = window.localStorage.getItem('park-reviews-jwt');
+    const header = {
+      headers: {
+        'X-Access-Token': token
+      }
+    };
+    fetch(`/api/edit/${parkCode}`, header)
+      .then(response => response.json())
+      .then(result => {
+        if (result.length === 0) {
+          return;
+        }
+        const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips, imageUrl } = result[0];
+        const startDate = datesVisited.split(',')[0].split('[')[1];
+        const endDate = datesVisited.split(',')[1].split(')')[0];
+        const activities = recommendedActivities.split(',');
+        const visitors = recommendedVisitors.split(',');
+        const generalThoughts = result[0].genralThoughts === null ? '' : result[0].generalThoughts;
+        this.setState({
+          rating,
+          activities,
+          visitors,
+          endDate,
+          startDate,
+          tips,
+          generalThoughts,
+          image: imageUrl,
+          editing: true
+        });
+      });
+
   }
 
   handleInputChange(event) {
     const value = event.target.value;
     const name = event.target.name;
+    if (event.target.name === 'image') {
+      this.setState({
+        image: null
+      });
+      return;
+    }
+    if (event.target.name === 'endDate' || event.target.name === 'startDate') {
+      this.setState({
+        dateError: '',
+        [name]: value
+      });
+      return;
+    }
     this.setState({
       [name]: value
     });
@@ -47,9 +101,15 @@ export default class ReviewPage extends React.Component {
     const target = event.target;
     const name = event.target.name;
     const array = this.state[name];
-    if (target.checked === true) {
+    if (event.target.name === 'activities' && target.checked === true) {
       this.setState({
-        name: array.push(event.target.id)
+        name: array.push(event.target.id),
+        activitiesError: ''
+      });
+    } else if (event.target.name === 'visitors' && target.checked === true) {
+      this.setState({
+        name: array.push(event.target.id),
+        visitorsError: ''
       });
     } else if (target.checked === false) {
       const index = array.indexOf(event.target.id);
@@ -70,7 +130,26 @@ export default class ReviewPage extends React.Component {
       return;
     }
 
-    if (this.state.activities.length === 0 || this.state.visitors.length === 0) {
+    const startDate = new Date(this.state.startDate);
+    const endDate = new Date(this.state.endDate);
+    const startParse = Date.parse(startDate);
+    const endParse = Date.parse(endDate);
+    if (startParse > endParse) {
+      this.setState({
+        dateError: 'End date must be after the start date.'
+      });
+      return;
+    }
+
+    if (this.state.activities.length === 0) {
+      this.setState({
+        activitiesError: 'Must select at least one activity.'
+      });
+      return;
+    } if (this.state.visitors.length === 0) {
+      this.setState({
+        visitorsError: 'Must select at least one visitor group.'
+      });
       return;
     }
 
@@ -78,6 +157,7 @@ export default class ReviewPage extends React.Component {
       name: this.state.results.name,
       imageUrl: this.state.results.wikiImage
     };
+
     const dates = [this.state.startDate, this.state.endDate];
     let image = null;
     if (this.fileInputRef.current.files[0]) {
@@ -95,8 +175,12 @@ export default class ReviewPage extends React.Component {
     formData.append('stateCode', this.state.results.addresses[0].stateCode);
     formData.append('parkDetails', JSON.stringify(parkDetails));
     const token = window.localStorage.getItem('park-reviews-jwt');
+    let action = 'POST';
+    if (this.state.editing) {
+      action = 'PUT';
+    }
     fetch('/api/reviews', {
-      method: 'POST',
+      method: action,
       headers: {
         'X-Access-Token': token
       },
@@ -105,6 +189,10 @@ export default class ReviewPage extends React.Component {
       .then(response => response.json())
       .then(result => {
         this.fileInputRef.current.value = null;
+        if (this.state.editing) {
+          window.location.hash = `#accounts/reviews?state=${this.state.results.addresses[0].stateCode}`;
+          return;
+        }
         window.location.hash = `#details?park=${this.props.park}`;
       })
       .catch(err => console.error(err));
@@ -142,9 +230,37 @@ export default class ReviewPage extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      return <div />;
+      return;
+    }
+    let image = '';
+    if (this.state.editing === true && this.state.image !== null) {
+      image = (
+        <>
+          <p className='fst-italic mt-2'>Previously uploaded image:</p>
+          <Image thumbnail className='thumbnail shadow-sm' src={this.state.image} alt='User Image' />
+        </>);
     }
     const { name } = this.state.results;
+    const star5 = this.state.rating === 5
+      ? <input defaultChecked='true' required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleInputChange} />
+      : <input required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleInputChange} />;
+    const star4 = this.state.rating === 4
+      ? <input defaultChecked='true' required id='rating-4' className='px-1' type='radio' name='rating' value='4' onClick={this.handleInputChange} />
+      : <input required id='rating-4' className='px-1' type='radio' name='rating' value='4' onClick={this.handleInputChange} />;
+    const star3 = this.state.rating === 3
+      ? <input defaultChecked='true' required id='rating-3' className='px-1' type='radio' name='rating' value='3' onClick={this.handleInputChange} />
+      : <input required id='rating-3' className='px-1' type='radio' name='rating' value='3' onClick={this.handleInputChange} />;
+    const star2 = this.state.rating === 2
+      ? <input defaultChecked='true' required id='rating-2' className='px-1' type='radio' name='rating' value='2' onClick={this.handleInputChange} />
+      : <input required id='rating-2' className='px-1' type='radio' name='rating' value='2' onClick={this.handleInputChange} />;
+    const star1 = this.state.rating === 1
+      ? <input defaultChecked='true' required id='rating-1' className='px-1' type='radio' name='rating' value='1' onClick={this.handleInputChange} />
+      : <input required id='rating-1' className='px-1' type='radio' name='rating' value='1' onClick={this.handleInputChange} />;
+
+    const today = new Date();
+    const todayDate = today.toLocaleDateString().split('/');
+    const todayFormat = `${todayDate[2]}-${todayDate[0]}-${todayDate[1]}`;
+
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
@@ -162,16 +278,16 @@ export default class ReviewPage extends React.Component {
               </Col>
               <Col xs={3}>
                 <div className='star-radio d-flex flex-row-reverse justify-content-end'>
-                  <input required id='rating-5' className='px-1' type='radio' name='rating' value='5' onClick={this.handleInputChange} />
-                  <label htmlFor="rating-5" className='pt-1 fa-solid fa-star'/>
-                  <input className='px-1' id='rating-4' type='radio' name='rating' value='4' onClick={this.handleInputChange}/>
-                  <label htmlFor="rating-4" className='pt-1 fa-solid fa-star d-inline'/>
-                  <input className='px-1' id='rating-3' type='radio' name='rating' value='3' onClick={this.handleInputChange}/>
-                  <label htmlFor="rating-3" className='pt-1 fa-solid fa-star'/>
-                  <input className='px-1' id='rating-2' type='radio' name='rating' value='2' onClick={this.handleInputChange}/>
-                  <label htmlFor="rating-2" className='pt-1 fa-solid fa-star'/>
-                  <input className='px-1' id='rating-1' type='radio' name='rating' value='1' onClick={this.handleInputChange}/>
-                  <label htmlFor="rating-1" className='pt-1 fa-solid fa-star'/>
+                  {star5}
+                  <label htmlFor='rating-5' className='pt-1 fa-solid fa-star' />
+                  {star4}
+                  <label htmlFor='rating-4' className='pt-1 fa-solid fa-star' />
+                  {star3}
+                  <label htmlFor='rating-3' className='pt-1 fa-solid fa-star' />
+                  {star2}
+                  <label htmlFor='rating-2' className='pt-1 fa-solid fa-star' />
+                  {star1}
+                  <label htmlFor='rating-1' className='pt-1 fa-solid fa-star' />
                   <Form.Control.Feedback type="invalid">Missing rating.</Form.Control.Feedback>
                 </div>
               </Col>
@@ -183,13 +299,14 @@ export default class ReviewPage extends React.Component {
                   <hr className='mt-0'/>
                   <div>
                     <Form.Label htmlFor='start-dates' className='pe-2 fw-light'> Start Date: </Form.Label>
-                    <input className='border' required id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
-                    <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
+                    <input required value={this.state.startDate} className='border' min="1970-01-01" max={todayFormat} id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
+                    <Form.Control.Feedback type="invalid">Missing start date.</Form.Control.Feedback>
                   </div>
                   <div>
                     <Form.Label htmlFor='end-dates' className='pe-3 fw-light'> End Date: </Form.Label>
-                    <input className='border' required id='end-dates' type='date' name='endDate' onChange={this.handleInputChange}/>
+                    <input value={this.state.endDate} className='border' required id='end-dates' type='date' name='endDate' min="1970-01-01" max={todayFormat} onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
+                    <Form.Text className='d-block text-danger'>{this.state.dateError}</Form.Text>
                   </div>
                 </Form.Group>
                 <Form.Group className='mb-3'>
@@ -198,14 +315,19 @@ export default class ReviewPage extends React.Component {
                   <Row>
                     {
                 activities.map(activity => {
+                  let activityOption = <input type='checkbox' id={activity.name} name='activities' value={activity.name} onChange={this.handleCheckBox} />;
+                  if (this.state.activities.includes(activity.name)) {
+                    activityOption = <input defaultChecked='true' type='checkbox' id={activity.name} name='activities' value={activity.name} onChange={this.handleCheckBox} />;
+                  }
                   return (
                     <Col xs={6} key={activity.name}>
-                      <input type='checkbox' id={activity.name} name='activities' value={activity.name} onChange={this.handleCheckBox}/>
+                      {activityOption}
                       <label htmlFor={activity.name} className='fw-light ps-2 lh-lg'>{activity.name}</label>
                     </Col>
                   );
                 })
               }
+                    <Form.Text className='d-block text-danger'>{this.state.activitiesError}</Form.Text>
                   </Row>
                 </Form.Group>
                 <Form.Group className='mb-3'>
@@ -214,14 +336,19 @@ export default class ReviewPage extends React.Component {
                   <Row>
                     {
                       visitors.map(visitor => {
+                        let visitorOption = <input type='checkbox' id={visitor} name='visitors' value={visitor} onChange={this.handleCheckBox} />;
+                        if (this.state.visitors.includes(visitor)) {
+                          visitorOption = <input defaultChecked='true' type='checkbox' id={visitor} name='visitors' value={visitor} onChange={this.handleCheckBox} />;
+                        }
                         return (
                           <Col xs={6} key={visitor}>
-                            <input type='checkbox' id={visitor} name='visitors' value={visitor} onChange={this.handleCheckBox} />
+                            {visitorOption}
                             <label htmlFor={visitor} className='fw-light ps-2 lh-lg'>{visitor}</label>
                           </Col>
                         );
                       })
                     }
+                    <Form.Text className='d-block text-danger'>{this.state.visitorsError}</Form.Text>
                   </Row>
                 </Form.Group>
               </Col>
@@ -260,8 +387,9 @@ export default class ReviewPage extends React.Component {
                   <Form.Text className='fs-6 fst-italic fw-light'>
                     Upload your favorite photos from this park.
                   </Form.Text>
-                  <Form.Control id='image' className='mt-3' name='image' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef} />
+                  <Form.Control onChange={this.handleInputChange} id='image' className='mt-3' name='image' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef}/>
                   <Form.Control.Feedback type="valid">Photo is optional</Form.Control.Feedback>
+                  {image}
                 </Form.Group>
               </Col>
             </Row>

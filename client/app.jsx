@@ -64,9 +64,13 @@ export default class App extends React.Component {
       const park = this.state.route.params.get('park');
       return <ParkDetails search={park} />;
     }
-    if (path === 'reviews') {
+    if (path === 'reviews' || path === 'edit-review') {
       const review = this.state.route.params.get('parkCode');
-      return <ReviewPage park={review} />;
+      let edit = false;
+      if (path === 'edit-review') {
+        edit = true;
+      }
+      return <ReviewPage park={review} edit={edit}/>;
     }
     if (path === 'accounts/user') {
       return <UserAccount />;

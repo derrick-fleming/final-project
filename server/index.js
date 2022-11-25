@@ -146,7 +146,7 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
   const dates = `[${datesVisited}]`;
   let url = null;
   if (req.file !== undefined) {
-    url = `/images/${req.file.filename}`;
+    url = req.file.location;
   }
 
   const sqlSelect = `
@@ -204,6 +204,55 @@ app.get('/api/reviews/:stateCode', (req, res, next) => {
     .then(result => {
       const reviews = result.rows;
       res.status(200).json(reviews);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/edit/:parkCode', (req, res, next) => {
+  const { accountId } = req.user;
+  const parkCode = req.params.parkCode;
+  const sql = `
+    select *
+    from "reviews"
+    where "accountId" = $1 and "parkCode" = $2`;
+  const params = [accountId, parkCode];
+  db.query(sql, params)
+    .then(result => {
+      const park = result.rows;
+      res.status(200).json(park);
+    })
+    .catch(err => next(err));
+});
+
+app.put('/api/reviews', uploadsMiddleware, (req, res, next) => {
+  const { accountId } = req.user;
+  const { parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts } = req.body;
+
+  if (!rating | !datesVisited | !recommendedActivities | !recommendedVisitors | !tips) {
+    throw new ClientError(400, 'Required information missing: rating, dates, activities, visitors, or tips');
+  }
+  const dates = `[${datesVisited}]`;
+  let url = null;
+  if (req.file !== undefined) {
+    url = req.file.location;
+  }
+
+  const sql = `
+  update "reviews"
+  set "rating" = $3,
+      "datesVisited" = $4,
+      "recommendedActivities" = $5,
+      "recommendedVisitors" = $6,
+      "tips" = $7,
+      "generalThoughts" = $8,
+      "imageUrl" = coalesce($9, "imageUrl")
+  where "parkCode" = $2 and "accountId" = $1
+  returning *`;
+  const params = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
+  db.query(sql, params)
+    .then(result => {
+      const update = result.rows[0];
+      res.status(200).json(update);
     })
     .catch(err => next(err));
 });
