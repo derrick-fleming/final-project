@@ -14,7 +14,8 @@ export default class ParkDetails extends React.Component {
     super(props);
     this.state = {
       results: [],
-      isLoading: true
+      isLoading: true,
+      pending: true
     };
     this.goBack = this.goBack.bind(this);
     this.fetchData = this.fetchData.bind(this);
@@ -97,9 +98,14 @@ export default class ParkDetails extends React.Component {
   }
 
   render() {
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     if (this.state.isLoading) {
-      return;
+      return spinner;
     }
+
     const park = this.state.results;
     let rating = 'N/A';
     if (this.state.parkRating) {
@@ -141,6 +147,7 @@ export default class ParkDetails extends React.Component {
           <h2 className='merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-info-circle pe-2' />Park Info</h2>
         </div>
         <Container>
+          {spinner}
           <Row className='mb-2 large-screen-spacing justify-content-center'>
             <Col xs={9} xl={8}>
               <h2 className=' merriweather fw-bold'>{name}</h2>
