@@ -84,11 +84,7 @@ html,
 }
 
 .card-width {
-  width: 21.875rem;
-}
-
-.home-card {
-  min-width: 21.875rem;
+  max-width: 31.25rem;
 }
 
 .gold {
@@ -275,7 +271,17 @@ input:checked {
   display: none;
 }
 
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+}
+
 @media screen and (min-width: 768px) {
+  .image-size {
+    height: 261px;
+  }
+
   .image-details {
     height: 310px;
     max-width: 500px;
@@ -303,16 +309,8 @@ input:checked {
 }
 
 @media screen and (min-width: 992px) {
-  .image-size {
-    height: 261px;
-  }
-
   .text-box {
     height: 175px;
-  }
-
-  .card-width {
-    width: 26.188rem;
   }
 
   .large-screen-spacing {

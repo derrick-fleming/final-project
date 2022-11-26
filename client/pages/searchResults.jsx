@@ -163,20 +163,21 @@ export default class SearchResult extends React.Component {
             <GoogleMaps results={this.state.results.data}/>
           </Col>
         </Row>
-        <Row>
-          {
-                this.state.results.data.map(park => {
-                  const { name, wikiImage, designation, parkCode } = park;
-                  const address = `${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
-                  let activityList = park.activities.filter(activity => activities.has(activity.name)).map(activity => activity.name).sort((a, b) => activitiesOrder[a] - activitiesOrder[b]);
-                  if (activityList.length > 3) {
-                    activityList.splice(4);
-                  }
-                  activityList = activityList.join(' | ');
-                  return (
-                    <Col key={parkCode} md={6} className='mt-2 mb-2'>
-                      <Row className='d-flex justify-content-center'>
-                        <Card id={parkCode} className='p-0 open-sans card-width mb-4 shadow-sm'>
+        <Row className='justify-content-center'>
+          <Col xl={11} sm={9} md={11}>
+            <Row>
+              {
+                  this.state.results.data.map(park => {
+                    const { name, wikiImage, designation, parkCode } = park;
+                    const address = `${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
+                    let activityList = park.activities.filter(activity => activities.has(activity.name)).map(activity => activity.name).sort((a, b) => activitiesOrder[a] - activitiesOrder[b]);
+                    if (activityList.length > 3) {
+                      activityList.splice(4);
+                    }
+                    activityList = activityList.join(' | ');
+                    return (
+                      <Col key={parkCode} xs={12} md={6} className='mt-2 mb-2'>
+                        <Card id={parkCode} className='p-0 open-sans mb-4 shadow-sm'>
                           <Card.Img variant="top" src={wikiImage} alt={name} className='image-size'/>
                           <Card.Body>
                             <Card.Text className='m-0 lh-lg'>
@@ -192,11 +193,12 @@ export default class SearchResult extends React.Component {
                             <a href={`#details?park=${parkCode}`} className='btn btn-success merriweather lh-lg my-2'>Learn More</a>
                           </Card.Body>
                         </Card>
-                      </Row>
-                    </Col>
-                  );
-                })
-            }
+                      </Col>
+                    );
+                  })
+              }
+            </Row>
+          </Col>
         </Row>
         {pagination}
       </Container>

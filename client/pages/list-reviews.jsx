@@ -229,7 +229,7 @@ export default class UserReviews extends React.Component {
         </div>
         <Container>
           <Row className='justify-content-center'>
-            <Col xl={10} md={11} lg={12}>
+            <Col xl={11} md={10} lg={12}>
               <Row>
                 {this.renderReviews()}
               </Row>

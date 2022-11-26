@@ -129,7 +129,7 @@ export default class Home extends React.Component {
           </Row>
           <Row className='justify-content-center open-sans'>
             <Col md={6}>
-              <Card className='mb-4 shadow-sm home-card'>
+              <Card className='mb-4 shadow-sm'>
                 <Card.Img variant="top" alt="Trees illustration" src="/images/placeholder-trees.png" className='image-size' />
                 <Card.Body className='m-2'>
                   <Card.Title className='merriweather fw-bold fs-4'>States & Territories</Card.Title>
@@ -141,7 +141,7 @@ export default class Home extends React.Component {
               </Card>
             </Col>
             <Col md={6}>
-              <Card className='mb-4 shadow-sm home-card'>
+              <Card className='mb-4 shadow-sm'>
                 <Card.Img variant="top" alt="Mountain illustration" src="/images/placeholder-yosemite.png" className='image-size' />
                 <Card.Body className='m-2'>
                   <Card.Title className='merriweather fw-bold fs-4'>Activities</Card.Title>

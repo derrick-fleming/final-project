@@ -194,7 +194,7 @@ export default class ParkDetails extends React.Component {
                       {address2}
                     </p>
                     <SinglePointMap className='google-map' results={this.state.results} />
-                    <p className="description-text fw-light pt-4">
+                    <p className="description-text fw-light pt-4 text-overflow">
                       {park.directionsInfo}
                     </p>
                   </Accordion.Body>
@@ -203,7 +203,7 @@ export default class ParkDetails extends React.Component {
                   <Accordion.Header>
                     <h6 className='mb-0 merriweather'><span className='fa-solid fa-hand-holding-dollar pe-2' /> Fees </h6>
                   </Accordion.Header>
-                  <Accordion.Body className='large-screen-spacing'>
+                  <Accordion.Body className='large-screen-spacing text-overflow'>
                     Entrance Fees:
                     {entranceFees}
                   </Accordion.Body>
@@ -212,7 +212,7 @@ export default class ParkDetails extends React.Component {
                   <Accordion.Header>
                     <h6 className='mb-0 merriweather'><span className='fa-solid fa-cloud-sun pe-2' /> Weather Information </h6>
                   </Accordion.Header>
-                  <Accordion.Body className='fw-light description-text large-screen-spacing'>
+                  <Accordion.Body className='fw-light description-text large-screen-spacing text-overflow'>
                     {weatherInfo}
                   </Accordion.Body>
                 </Accordion.Item>
