@@ -216,7 +216,7 @@ export default class UserReviews extends React.Component {
       return (
         <>
           <h3 className='m-5 merriweather text-center'>Sorry, 0 reviews found. </h3>
-          <h3 className='merriweather text-center'>Review parks by browsing or searching for different parks!</h3>
+          <h5 className='merriweather text-center'>Return to your <a href='#accounts/user'>account page</a> or start writing reviews by <a href='#home?browse=states'>browsing states</a></h5>
         </>
       );
     }
