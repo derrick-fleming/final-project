@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import GoogleMaps from '../components/googleMaps';
 import Pagination from 'react-bootstrap/Pagination';
+import states from '../lib/states';
 
 const activities = new Set(['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours']);
 const activitiesOrder = {
@@ -131,6 +132,10 @@ export default class SearchResult extends React.Component {
     let results = `${maxResults} search results found.`;
     if (maxResults === '0') {
       results = 'Sorry, no results found. Try searching again.';
+    }
+    if (this.props.action === 'states') {
+      const state = states.find(state => state.code === this.props.search);
+      results = `${maxResults} search results found in or related to ${state.name}.`;
     }
     let pages;
     let pagination;

@@ -143,7 +143,7 @@ export default class Home extends React.Component {
                 <Card.Body className='m-2'>
                   <Card.Title className='merriweather fw-bold fs-4'>States & Territories</Card.Title>
                   <Card.Text className='fs-6 pb-2'>
-                    Browse through a list of states and territories to discover national parks found within each state.
+                    Browse through a list of states and territories to discover national parks related to each state.
                   </Card.Text>
                   <Button variant="success" className='merriweather lh-lg' onClick={this.handleShow} id='states'>Select a Location</Button>
                 </Card.Body>
