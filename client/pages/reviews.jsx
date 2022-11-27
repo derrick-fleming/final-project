@@ -26,7 +26,8 @@ export default class ReviewPage extends React.Component {
       startDate: '',
       endDate: '',
       image: null,
-      dateError: ''
+      dateError: '',
+      networkError: false
     };
     this.fileInputRef = React.createRef();
     this.fetchData = this.fetchData.bind(this);
@@ -71,6 +72,13 @@ export default class ReviewPage extends React.Component {
           generalThoughts,
           image: imageUrl,
           editing: true
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          isLoading: false,
+          networkError: true
         });
       });
 
@@ -198,7 +206,13 @@ export default class ReviewPage extends React.Component {
         }
         window.location.hash = `#details?park=${this.props.park}`;
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
+      });
   }
 
   fetchData() {
@@ -238,6 +252,13 @@ export default class ReviewPage extends React.Component {
 
     if (this.state.isLoading) {
       return spinner;
+    }
+    if (this.state.networkError) {
+      return (
+        <Container>
+          <h3 className='lh-lg pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+        </Container>
+      );
     }
     let image = '';
     if (this.state.editing === true && this.state.image !== null) {
