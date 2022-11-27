@@ -115,8 +115,8 @@ export default class SearchResult extends React.Component {
 
     const maxResults = this.state.results.total;
     let results = `${maxResults} search results found.`;
-    if (this.state.results.length === 0) {
-      results = 'Sorry, no results found.';
+    if (maxResults === '0') {
+      results = 'Sorry, no results found. Try searching again.';
     }
     let pages;
     let pagination;
