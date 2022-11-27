@@ -13,7 +13,9 @@ export default class AuthPage extends React.Component {
       duplicate: '',
       error: '',
       isLoading: false,
-      show: false
+      show: false,
+      username: 'demoAccount',
+      password: 'dem0@accounT'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -188,14 +190,14 @@ export default class AuthPage extends React.Component {
                   <Form.Label className='merriweather fs-5'>
                     {username}
                   </Form.Label>
-                  <Form.Control autoComplete="username" required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
+                  <Form.Control autoComplete="username" required name="username" type="text" value={this.state.username} placeholder="Enter username" onChange={this.handleInputChange}/>
                   <Form.Text className="open-sans text-danger">{this.state.duplicate}</Form.Text>
                 </Form.Group>
                 <Form.Group controlId="password">
                   <Form.Label className='merriweather fs-5 mt-5'>
                     Password
                   </Form.Label>
-                  <Form.Control autoComplete="current-password" required name="password" type="password" placeholder="Enter password" onChange={this.handleInputChange}/>
+                  <Form.Control autoComplete="current-password" required name="password" type="password" value={this.state.password} placeholder="Enter password" onChange={this.handleInputChange}/>
                   <Form.Control.Feedback type="invalid" />
                   <Form.Text className='open-sans text-danger'>
                     {this.state.error}
