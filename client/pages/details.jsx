@@ -15,7 +15,7 @@ export default class ParkDetails extends React.Component {
     this.state = {
       results: [],
       isLoading: true,
-      pending: true
+      networkError: false
     };
     this.goBack = this.goBack.bind(this);
     this.fetchData = this.fetchData.bind(this);
@@ -29,6 +29,9 @@ export default class ParkDetails extends React.Component {
   }
 
   showRating() {
+    if (this.state.networkError) {
+      return;
+    }
     const park = this.props.search;
     fetch(`/api/parksCache/${park}`)
       .then(response => response.json())
@@ -36,7 +39,8 @@ export default class ParkDetails extends React.Component {
         this.setState({
           parkRating: result
         });
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   handleShow(event) {
@@ -94,7 +98,13 @@ export default class ParkDetails extends React.Component {
             });
           });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
+      });
   }
 
   render() {
@@ -104,6 +114,13 @@ export default class ParkDetails extends React.Component {
 
     if (this.state.isLoading) {
       return spinner;
+    }
+    if (this.state.networkError) {
+      return (
+        <Container>
+          <h3 className='lh-lg pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+        </Container>
+      );
     }
 
     const park = this.state.results;
