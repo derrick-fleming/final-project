@@ -55,12 +55,6 @@ export default class AuthPage extends React.Component {
             isLoading: false
           });
         }
-        if (res.status === 500) {
-          this.setState({
-            isLoading: false,
-            show: true
-          });
-        }
         return res.json();
       })
       .then(result => {
@@ -77,7 +71,13 @@ export default class AuthPage extends React.Component {
           window.location.hash = 'accounts/user';
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          isLoading: false,
+          show: true
+        });
+      });
   }
 
   validate(value) {

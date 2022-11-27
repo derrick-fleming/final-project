@@ -29,9 +29,6 @@ export default class ParkDetails extends React.Component {
   }
 
   showRating() {
-    if (this.state.networkError) {
-      return;
-    }
     const park = this.props.search;
     fetch(`/api/parksCache/${park}`)
       .then(response => response.json())
