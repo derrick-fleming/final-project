@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
 export default class AuthPage extends React.Component {
   constructor(props) {
@@ -11,11 +12,13 @@ export default class AuthPage extends React.Component {
     this.state = {
       duplicate: '',
       error: '',
-      isLoading: false
+      isLoading: false,
+      show: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.validate = this.validate.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   handleSubmit(event) {
@@ -50,6 +53,12 @@ export default class AuthPage extends React.Component {
           this.setState({
             duplicate: 'Username has already been taken',
             isLoading: false
+          });
+        }
+        if (res.status === 500) {
+          this.setState({
+            isLoading: false,
+            show: true
           });
         }
         return res.json();
@@ -101,13 +110,26 @@ export default class AuthPage extends React.Component {
         error: ''
       });
     }
+  }
 
+  handleClose(event) {
+    this.setState({
+      show: false
+    });
   }
 
   render() {
     const spinner = this.state.isLoading === true
       ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
       : '';
+
+    const serverError = this.state.show
+      ? (
+        <Alert variant='danger' onClose={this.handleClose} dismissible>
+          <Alert.Heading> Server Error</Alert.Heading>
+          <p>Sorry, an unexpected error occurred. Please try again later.</p>
+        </Alert>)
+      : null;
 
     let anchorText = 'Register';
     let link = '#sign-up';
@@ -153,6 +175,7 @@ export default class AuthPage extends React.Component {
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>{heroText}</h2>
         </div>
         <Container>
+          {serverError}
           <Row className='justify-content-center'>
             <Col xs={10} md={9} className='open-sans text-center'>
               {openingText}
