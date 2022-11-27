@@ -17,7 +17,8 @@ export default class UserReviews extends React.Component {
     this.state = {
       result: null,
       imageUrl: null,
-      isLoading: true
+      isLoading: true,
+      networkError: false
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -201,6 +202,13 @@ export default class UserReviews extends React.Component {
           result,
           isLoading: false
         });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
       });
   }
 
@@ -209,8 +217,15 @@ export default class UserReviews extends React.Component {
       ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
       : '';
 
-    if (!this.state.result) {
+    if (this.state.isLoading) {
       return spinner;
+    }
+    if (this.state.networkError) {
+      return (
+        <Container>
+          <h3 className='lh-lg pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+        </Container>
+      );
     }
     if (this.state.result.length === 0) {
       return (

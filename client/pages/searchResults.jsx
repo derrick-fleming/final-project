@@ -71,7 +71,6 @@ export default class SearchResult extends React.Component {
       start = ((Number(this.state.active) * 50) - 50);
     }
     const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&start=${start}&api_key=${parkKey}`;
-    // link = '/get-parks-results.json';
     fetch(link)
       .then(response => response.json())
       .then(states => {

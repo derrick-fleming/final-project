@@ -172,7 +172,7 @@ export default class UserAccount extends React.Component {
     if (this.state.networkError) {
       return (
         <Container>
-          <h3 className='pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+          <h3 className='lh-lg pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
         </Container>
       );
     }
