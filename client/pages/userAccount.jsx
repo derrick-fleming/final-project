@@ -14,7 +14,8 @@ export default class UserAccount extends React.Component {
     super(props);
     this.state = {
       name: null,
-      isLoading: true
+      isLoading: true,
+      networkError: false
     };
     this.renderInfographic = this.renderInfographic.bind(this);
     this.infographicMap = React.createRef();
@@ -56,7 +57,13 @@ export default class UserAccount extends React.Component {
           });
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
+      });
   }
 
   renderInfographic() {
@@ -161,6 +168,14 @@ export default class UserAccount extends React.Component {
     const spinner = this.state.isLoading === true
       ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
       : '';
+
+    if (this.state.networkError) {
+      return (
+        <Container>
+          <h3 className='pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+        </Container>
+      );
+    }
 
     const statesNeeded = this.state.results ? 50 - this.state.results.length : 'N/A';
     let mostVisited = 'N/A';
