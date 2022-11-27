@@ -241,7 +241,7 @@ export default class UserReviews extends React.Component {
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src='images/mountain-scene.png' alt='Mountain view' className='hero-image' />
+          <img src='images/mountain-scene.webp' alt='Mountain view' className='hero-image' />
           <h2 className='merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>
             Your Reviews:
             <br />

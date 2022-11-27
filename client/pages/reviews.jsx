@@ -231,7 +231,7 @@ export default class ReviewPage extends React.Component {
           .then(response => response.json())
           .then(image => {
             if (image.query.pages[0].thumbnail === undefined) {
-              state.wikiImage = '/images/mountains.png';
+              state.wikiImage = '/images/mountains.webp';
             } else {
               state.wikiImage = image.query.pages[0].thumbnail.source;
             }

@@ -116,7 +116,7 @@ export default class Home extends React.Component {
     return (
       <>
         <div className='position-relative hero-background text-center'>
-          <img src='images/mountain-scene.png' alt='Mountain view' className='home-hero-image' />
+          <img src='images/mountain-scene.webp' alt='Mountain view' className='home-hero-image' />
           <div className='position-absolute top-50 start-50 translate-middle home-top'>
             <h1 className='merriweather fw-bold text-white mb-0'>Explore, review, and track your visits to <br />
               U.S. National Parks</h1>
@@ -139,7 +139,7 @@ export default class Home extends React.Component {
           <Row className='justify-content-center open-sans'>
             <Col md={6}>
               <Card className='mb-4 shadow-sm'>
-                <Card.Img variant="top" alt="Trees illustration" src="/images/placeholder-trees.png" className='image-size' />
+                <Card.Img variant="top" alt="Trees illustration" src="/images/placeholder-trees.webp" className='image-size' />
                 <Card.Body className='m-2'>
                   <Card.Title className='merriweather fw-bold fs-4'>States & Territories</Card.Title>
                   <Card.Text className='fs-6 pb-2'>
@@ -151,7 +151,7 @@ export default class Home extends React.Component {
             </Col>
             <Col md={6}>
               <Card className='mb-4 shadow-sm'>
-                <Card.Img variant="top" alt="Mountain illustration" src="/images/placeholder-yosemite.png" className='image-size' />
+                <Card.Img variant="top" alt="Mountain illustration" src="/images/placeholder-yosemite.webp" className='image-size' />
                 <Card.Body className='m-2'>
                   <Card.Title className='merriweather fw-bold fs-4'>Activities</Card.Title>
                   <Card.Text className='fs-6 pb-2'>
