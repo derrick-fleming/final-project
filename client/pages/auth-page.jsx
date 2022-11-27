@@ -134,7 +134,7 @@ export default class AuthPage extends React.Component {
     let anchorText = 'Register';
     let link = '#sign-up';
     let username = 'Username';
-    let heroImage = 'images/arches.png';
+    let heroImage = 'images/arches.webp';
     let heroText = 'Sign In';
     let buttonText = 'Sign In';
     let openingText = (
@@ -154,7 +154,7 @@ export default class AuthPage extends React.Component {
       anchorText = 'Sign in';
       link = '#sign-in';
       username = 'Create a username';
-      heroImage = 'images/beach.png';
+      heroImage = 'images/beach.webp';
       heroText = 'Create an Account';
       buttonText = 'Sign Up';
       openingText = (
