@@ -157,7 +157,7 @@ export default class ParkDetails extends React.Component {
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src='images/lake.png' alt='Mountain view with lake' className='hero-image' />
+          <img src='images/lake.webp' alt='Mountain view with lake' className='hero-image' />
           <h2 className='merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-info-circle pe-2' />Park Info</h2>
         </div>
         <Container>

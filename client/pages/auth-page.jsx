@@ -171,7 +171,7 @@ export default class AuthPage extends React.Component {
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src={heroImage} alt='Mountain view with lake' className='account-hero-image' />
+          <img src={heroImage} alt='view of nature' className='account-hero-image' />
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>{heroText}</h2>
         </div>
         <Container>

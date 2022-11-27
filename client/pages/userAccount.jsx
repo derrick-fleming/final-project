@@ -187,7 +187,7 @@ export default class UserAccount extends React.Component {
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src='images/joshua-tree.png' alt='Mountain view with lake' className='hero-image' />
+          <img src='images/joshua-tree.webp' alt='Mountain view with lake' className='hero-image' />
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>
             <span className='fa-solid fa-map pe-2' />Account Information
           </h2>
