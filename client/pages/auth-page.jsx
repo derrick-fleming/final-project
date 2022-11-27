@@ -4,20 +4,29 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
 export default class AuthPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       duplicate: '',
-      error: ''
+      error: '',
+      isLoading: false,
+      show: false,
+      username: 'demoAccount',
+      password: 'dem0@accounT'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.validate = this.validate.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   handleSubmit(event) {
+    this.setState({
+      isLoading: true
+    });
     event.preventDefault();
     if (this.state.error !== null && this.props.action === 'sign-up') {
       return;
@@ -38,12 +47,14 @@ export default class AuthPage extends React.Component {
         if (res.status === 401) {
           this.setState({
             duplicate: 'Invalid login',
-            error: 'Invalid login'
+            error: 'Invalid login',
+            isLoading: false
           });
         }
         if (res.status === 409) {
           this.setState({
-            duplicate: 'Username has already been taken'
+            duplicate: 'Username has already been taken',
+            isLoading: false
           });
         }
         return res.json();
@@ -54,12 +65,21 @@ export default class AuthPage extends React.Component {
         }
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
+          this.setState({
+            isLoading: false
+          });
         } else if (result.user && result.token) {
           this.props.onSignIn(result);
           window.location.hash = 'accounts/user';
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          isLoading: false,
+          show: true
+        });
+      });
   }
 
   validate(value) {
@@ -92,14 +112,31 @@ export default class AuthPage extends React.Component {
         error: ''
       });
     }
+  }
 
+  handleClose(event) {
+    this.setState({
+      show: false
+    });
   }
 
   render() {
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
+    const serverError = this.state.show
+      ? (
+        <Alert variant='danger' onClose={this.handleClose} dismissible>
+          <Alert.Heading> Server Error</Alert.Heading>
+          <p>Sorry, an unexpected error occurred. Please try again later.</p>
+        </Alert>)
+      : null;
+
     let anchorText = 'Register';
     let link = '#sign-up';
     let username = 'Username';
-    let heroImage = 'images/arches.png';
+    let heroImage = 'images/arches.webp';
     let heroText = 'Sign In';
     let buttonText = 'Sign In';
     let openingText = (
@@ -119,7 +156,7 @@ export default class AuthPage extends React.Component {
       anchorText = 'Sign in';
       link = '#sign-in';
       username = 'Create a username';
-      heroImage = 'images/beach.png';
+      heroImage = 'images/beach.webp';
       heroText = 'Create an Account';
       buttonText = 'Sign Up';
       openingText = (
@@ -129,13 +166,18 @@ export default class AuthPage extends React.Component {
         </h5>
       );
     }
+
+    if (this.state.isLoading) {
+      return spinner;
+    }
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src={heroImage} alt='Mountain view with lake' className='account-hero-image' />
+          <img src={heroImage} alt='view of nature' className='account-hero-image' />
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>{heroText}</h2>
         </div>
         <Container>
+          {serverError}
           <Row className='justify-content-center'>
             <Col xs={10} md={9} className='open-sans text-center'>
               {openingText}
@@ -148,14 +190,14 @@ export default class AuthPage extends React.Component {
                   <Form.Label className='merriweather fs-5'>
                     {username}
                   </Form.Label>
-                  <Form.Control autoComplete="username" required name="username" type="text" placeholder="Enter username" onChange={this.handleInputChange}/>
+                  <Form.Control autoComplete="username" required name="username" type="text" value={this.state.username} placeholder="Enter username" onChange={this.handleInputChange}/>
                   <Form.Text className="open-sans text-danger">{this.state.duplicate}</Form.Text>
                 </Form.Group>
                 <Form.Group controlId="password">
                   <Form.Label className='merriweather fs-5 mt-5'>
                     Password
                   </Form.Label>
-                  <Form.Control autoComplete="current-password" required name="password" type="password" placeholder="Enter password" onChange={this.handleInputChange}/>
+                  <Form.Control autoComplete="current-password" required name="password" type="password" value={this.state.password} placeholder="Enter password" onChange={this.handleInputChange}/>
                   <Form.Control.Feedback type="invalid" />
                   <Form.Text className='open-sans text-danger'>
                     {this.state.error}

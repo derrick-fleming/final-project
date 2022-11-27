@@ -13,7 +13,9 @@ export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: null
+      name: null,
+      isLoading: true,
+      networkError: false
     };
     this.renderInfographic = this.renderInfographic.bind(this);
     this.infographicMap = React.createRef();
@@ -43,17 +45,25 @@ export default class UserAccount extends React.Component {
           this.renderInfographic();
           this.setState({
             results: result[0],
-            total: result[1][0].reviews
+            total: result[1][0].reviews,
+            isLoading: false
           });
         } else {
           this.renderInfographic();
           this.setState({
             results: null,
-            total: 'N/A'
+            total: 'N/A',
+            isLoading: false
           });
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
+      });
   }
 
   renderInfographic() {
@@ -155,6 +165,18 @@ export default class UserAccount extends React.Component {
       window.location.hash = '#sign-in';
       return;
     }
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
+    if (this.state.networkError) {
+      return (
+        <Container>
+          <h3 className='lh-lg pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+        </Container>
+      );
+    }
+
     const statesNeeded = this.state.results ? 50 - this.state.results.length : 'N/A';
     let mostVisited = 'N/A';
     if (this.state.results && this.state.results.length > 0) {
@@ -165,12 +187,13 @@ export default class UserAccount extends React.Component {
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src='images/joshua-tree.png' alt='Mountain view with lake' className='hero-image' />
+          <img src='images/joshua-tree.webp' alt='Mountain view with lake' className='hero-image' />
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>
             <span className='fa-solid fa-map pe-2' />Account Information
           </h2>
         </div>
         <Container>
+          {spinner}
           <Row className='my-4 justify-content-center'>
             <Col xs={12}>
               <h2 className='merriweather text-center'>Park Tracker</h2>

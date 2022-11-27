@@ -14,7 +14,8 @@ export default class ParkDetails extends React.Component {
     super(props);
     this.state = {
       results: [],
-      isLoading: true
+      isLoading: true,
+      networkError: false
     };
     this.goBack = this.goBack.bind(this);
     this.fetchData = this.fetchData.bind(this);
@@ -35,7 +36,8 @@ export default class ParkDetails extends React.Component {
         this.setState({
           parkRating: result
         });
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   handleShow(event) {
@@ -76,7 +78,7 @@ export default class ParkDetails extends React.Component {
               .then(response => response.json())
               .then(image => {
                 if (image.query.pages[0].thumbnail === undefined) {
-                  state.wikiImage = '/images/mountains.png';
+                  state.wikiImage = '/images/mountains.webp';
                 } else {
                   state.wikiImage = image.query.pages[0].thumbnail.source;
                 }
@@ -93,13 +95,31 @@ export default class ParkDetails extends React.Component {
             });
           });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
+      });
   }
 
   render() {
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     if (this.state.isLoading) {
-      return;
+      return spinner;
     }
+    if (this.state.networkError) {
+      return (
+        <Container>
+          <h3 className='lh-lg pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+        </Container>
+      );
+    }
+
     const park = this.state.results;
     let rating = 'N/A';
     if (this.state.parkRating) {
@@ -137,10 +157,11 @@ export default class ParkDetails extends React.Component {
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src='images/lake.png' alt='Mountain view with lake' className='hero-image' />
+          <img src='images/lake.webp' alt='Mountain view with lake' className='hero-image' />
           <h2 className='merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-info-circle pe-2' />Park Info</h2>
         </div>
         <Container>
+          {spinner}
           <Row className='mb-2 large-screen-spacing justify-content-center'>
             <Col xs={9} xl={8}>
               <h2 className=' merriweather fw-bold'>{name}</h2>
@@ -194,7 +215,7 @@ export default class ParkDetails extends React.Component {
                       {address2}
                     </p>
                     <SinglePointMap className='google-map' results={this.state.results} />
-                    <p className="description-text fw-light pt-4">
+                    <p className="description-text fw-light pt-4 text-overflow">
                       {park.directionsInfo}
                     </p>
                   </Accordion.Body>
@@ -203,7 +224,7 @@ export default class ParkDetails extends React.Component {
                   <Accordion.Header>
                     <h6 className='mb-0 merriweather'><span className='fa-solid fa-hand-holding-dollar pe-2' /> Fees </h6>
                   </Accordion.Header>
-                  <Accordion.Body className='large-screen-spacing'>
+                  <Accordion.Body className='large-screen-spacing text-overflow'>
                     Entrance Fees:
                     {entranceFees}
                   </Accordion.Body>
@@ -212,7 +233,7 @@ export default class ParkDetails extends React.Component {
                   <Accordion.Header>
                     <h6 className='mb-0 merriweather'><span className='fa-solid fa-cloud-sun pe-2' /> Weather Information </h6>
                   </Accordion.Header>
-                  <Accordion.Body className='fw-light description-text large-screen-spacing'>
+                  <Accordion.Body className='fw-light description-text large-screen-spacing text-overflow'>
                     {weatherInfo}
                   </Accordion.Body>
                 </Accordion.Item>

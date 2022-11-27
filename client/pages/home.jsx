@@ -16,7 +16,8 @@ export default class Home extends React.Component {
     this.state = {
       show: false,
       selection: '',
-      value: ''
+      value: '',
+      isLoading: true
     };
     this.handleClose = this.handleClose.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -74,6 +75,9 @@ export default class Home extends React.Component {
         selection: 'activities'
       });
     }
+    this.setState({
+      isLoading: false
+    });
   }
 
   handleSubmit(event) {
@@ -105,10 +109,14 @@ export default class Home extends React.Component {
       firstOption = 'Choose an activity';
     }
 
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     return (
       <>
         <div className='position-relative hero-background text-center'>
-          <img src='images/mountain-scene.png' alt='Mountain view' className='home-hero-image' />
+          <img src='images/mountain-scene.webp' alt='Mountain view' className='home-hero-image' />
           <div className='position-absolute top-50 start-50 translate-middle home-top'>
             <h1 className='merriweather fw-bold text-white mb-0'>Explore, review, and track your visits to <br />
               U.S. National Parks</h1>
@@ -120,6 +128,7 @@ export default class Home extends React.Component {
           </div>
         </div>
         <Container>
+          {spinner}
           <Row className='m-3'>
             <Col className='border-secondary border-top border-bottom p-4'>
               <h4 className='merriweather fw-light lh-base text-center'>
@@ -129,20 +138,20 @@ export default class Home extends React.Component {
           </Row>
           <Row className='justify-content-center open-sans'>
             <Col md={6}>
-              <Card className='mb-4 shadow-sm home-card'>
-                <Card.Img variant="top" alt="Trees illustration" src="/images/placeholder-trees.png" className='image-size' />
+              <Card className='mb-4 shadow-sm'>
+                <Card.Img variant="top" alt="Trees illustration" src="/images/placeholder-trees.webp" className='image-size' />
                 <Card.Body className='m-2'>
                   <Card.Title className='merriweather fw-bold fs-4'>States & Territories</Card.Title>
                   <Card.Text className='fs-6 pb-2'>
-                    Browse through a list of states and territories to discover national parks found within each state.
+                    Browse through a list of states and territories to discover national parks related to each state.
                   </Card.Text>
                   <Button variant="success" className='merriweather lh-lg' onClick={this.handleShow} id='states'>Select a Location</Button>
                 </Card.Body>
               </Card>
             </Col>
             <Col md={6}>
-              <Card className='mb-4 shadow-sm home-card'>
-                <Card.Img variant="top" alt="Mountain illustration" src="/images/placeholder-yosemite.png" className='image-size' />
+              <Card className='mb-4 shadow-sm'>
+                <Card.Img variant="top" alt="Mountain illustration" src="/images/placeholder-yosemite.webp" className='image-size' />
                 <Card.Body className='m-2'>
                   <Card.Title className='merriweather fw-bold fs-4'>Activities</Card.Title>
                   <Card.Text className='fs-6 pb-2'>

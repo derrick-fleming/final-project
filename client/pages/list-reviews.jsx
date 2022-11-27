@@ -16,7 +16,9 @@ export default class UserReviews extends React.Component {
     super(props);
     this.state = {
       result: null,
-      imageUrl: null
+      imageUrl: null,
+      isLoading: true,
+      networkError: false
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -197,20 +199,39 @@ export default class UserReviews extends React.Component {
       .then(response => response.json())
       .then(result => {
         this.setState({
-          result
+          result,
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
         });
       });
   }
 
   render() {
-    if (!this.state.result) {
-      return;
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
+    if (this.state.isLoading) {
+      return spinner;
+    }
+    if (this.state.networkError) {
+      return (
+        <Container>
+          <h3 className='lh-lg pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+        </Container>
+      );
     }
     if (this.state.result.length === 0) {
       return (
         <>
           <h3 className='m-5 merriweather text-center'>Sorry, 0 reviews found. </h3>
-          <h3 className='merriweather text-center'>Review parks by browsing or searching for different parks!</h3>
+          <h5 className='merriweather text-center'>Return to your <a href='#accounts/user'>account page</a> or start writing reviews by <a href='#home?browse=states'>browsing states</a></h5>
         </>
       );
     }
@@ -220,7 +241,7 @@ export default class UserReviews extends React.Component {
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src='images/mountain-scene.png' alt='Mountain view' className='hero-image' />
+          <img src='images/mountain-scene.webp' alt='Mountain view' className='hero-image' />
           <h2 className='merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'>
             Your Reviews:
             <br />
@@ -229,7 +250,7 @@ export default class UserReviews extends React.Component {
         </div>
         <Container>
           <Row className='justify-content-center'>
-            <Col xl={10} md={11} lg={12}>
+            <Col xl={11} md={10} lg={12}>
               <Row>
                 {this.renderReviews()}
               </Row>

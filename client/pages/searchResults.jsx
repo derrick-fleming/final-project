@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import GoogleMaps from '../components/googleMaps';
 import Pagination from 'react-bootstrap/Pagination';
+import states from '../lib/states';
 
 const activities = new Set(['Astronomy', 'Biking', 'Hiking', 'Camping', 'Birdwatching', 'Museum Exhibits', 'Fishing', 'Scenic Driving', 'Kayaking', 'Boating', 'Guided Tours']);
 const activitiesOrder = {
@@ -27,7 +28,8 @@ export default class SearchResult extends React.Component {
     this.state = {
       results: [],
       isLoading: true,
-      active: 1
+      active: 1,
+      networkError: false
     };
     this.fetchData = this.fetchData.bind(this);
     this.nextPage = this.nextPage.bind(this);
@@ -71,7 +73,6 @@ export default class SearchResult extends React.Component {
       start = ((Number(this.state.active) * 50) - 50);
     }
     const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&start=${start}&api_key=${parkKey}`;
-    // link = '/get-parks-results.json';
     fetch(link)
       .then(response => response.json())
       .then(states => {
@@ -84,7 +85,7 @@ export default class SearchResult extends React.Component {
               .then(response => response.json())
               .then(image => {
                 if (image.query.pages[0].thumbnail === undefined) {
-                  state.wikiImage = '/images/mountains.png';
+                  state.wikiImage = '/images/mountains.webp';
                 } else {
                   state.wikiImage = image.query.pages[0].thumbnail.source;
                 }
@@ -101,18 +102,40 @@ export default class SearchResult extends React.Component {
             });
           });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
+      });
   }
 
   render() {
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     if (this.state.isLoading === true) {
-      return null;
+      return spinner;
+    }
+
+    if (this.state.networkError) {
+      return (
+        <Container>
+          <h3 className='lh-lg pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+        </Container>
+      );
     }
 
     const maxResults = this.state.results.total;
     let results = `${maxResults} search results found.`;
-    if (this.state.results.length === 0) {
-      results = 'Sorry, no results found.';
+    if (maxResults === '0') {
+      results = 'Sorry, no results found. Try searching again.';
+    }
+    if (this.props.action === 'states') {
+      const state = states.find(state => state.code === this.props.search);
+      results = `${maxResults} search results found in or related to ${state.name}.`;
     }
     let pages;
     let pagination;
@@ -163,20 +186,21 @@ export default class SearchResult extends React.Component {
             <GoogleMaps results={this.state.results.data}/>
           </Col>
         </Row>
-        <Row>
-          {
-                this.state.results.data.map(park => {
-                  const { name, wikiImage, designation, parkCode } = park;
-                  const address = `${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
-                  let activityList = park.activities.filter(activity => activities.has(activity.name)).map(activity => activity.name).sort((a, b) => activitiesOrder[a] - activitiesOrder[b]);
-                  if (activityList.length > 3) {
-                    activityList.splice(4);
-                  }
-                  activityList = activityList.join(' | ');
-                  return (
-                    <Col key={parkCode} md={6} className='mt-2 mb-2'>
-                      <Row className='d-flex justify-content-center'>
-                        <Card id={parkCode} className='p-0 open-sans card-width mb-4 shadow-sm'>
+        <Row className='justify-content-center'>
+          <Col xl={11} sm={9} md={11}>
+            <Row>
+              {
+                  this.state.results.data.map(park => {
+                    const { name, wikiImage, designation, parkCode } = park;
+                    const address = `${park.addresses[0].city}, ${park.addresses[0].stateCode}`;
+                    let activityList = park.activities.filter(activity => activities.has(activity.name)).map(activity => activity.name).sort((a, b) => activitiesOrder[a] - activitiesOrder[b]);
+                    if (activityList.length > 3) {
+                      activityList.splice(4);
+                    }
+                    activityList = activityList.join(' | ');
+                    return (
+                      <Col key={parkCode} xs={12} md={6} className='mt-2 mb-2'>
+                        <Card id={parkCode} className='p-0 open-sans mb-4 shadow-sm'>
                           <Card.Img variant="top" src={wikiImage} alt={name} className='image-size'/>
                           <Card.Body>
                             <Card.Text className='m-0 lh-lg'>
@@ -192,11 +216,12 @@ export default class SearchResult extends React.Component {
                             <a href={`#details?park=${parkCode}`} className='btn btn-success merriweather lh-lg my-2'>Learn More</a>
                           </Card.Body>
                         </Card>
-                      </Row>
-                    </Col>
-                  );
-                })
-            }
+                      </Col>
+                    );
+                  })
+              }
+            </Row>
+          </Col>
         </Row>
         {pagination}
       </Container>
