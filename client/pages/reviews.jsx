@@ -292,7 +292,7 @@ export default class ReviewPage extends React.Component {
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
-          <img src='images/placeholder-trees.png' alt='Group of trees' className='hero-image' />
+          <img src='images/placeholder-trees.webp' alt='Group of trees' className='hero-image' />
           <h2 className='w-100 merriweather fw-bold position-absolute top-50 start-50 translate-middle text-white'><span className='fa-solid fa-pen-to-square pe-2' />Review Form</h2>
         </div>
         <Container className='mb-4'>
@@ -398,7 +398,7 @@ export default class ReviewPage extends React.Component {
                   </Form.Label>
                   <hr className='my-0' />
                   <Form.Text className='fs-6 fst-italic fw-light'>
-                    Explain your rating or mention other activites someone should know about this park.
+                    Explain your rating or write about a memorable experience at this park.
                   </Form.Text>
                   <Form.Control id='generalThoughts' name='generalThoughts' as='textarea' className='text-box mt-3' value={this.state.generalThoughts} onChange={this.handleInputChange} placeholder='Write your thoughts here' />
                   <Form.Control.Feedback type="valid">General Thoughts are optional</Form.Control.Feedback>
@@ -413,7 +413,7 @@ export default class ReviewPage extends React.Component {
                   </Form.Label>
                   <hr className='my-0' />
                   <Form.Text className='fs-6 fst-italic fw-light'>
-                    Upload your favorite photos from this park.
+                    Upload your favorite photo from this park.
                   </Form.Text>
                   <Form.Control onChange={this.handleInputChange} id='image' className='mt-3' name='image' type='file' accept='.png, .jpg, .jpeg, .gif' ref={this.fileInputRef}/>
                   <Form.Control.Feedback type="valid">Photo is optional</Form.Control.Feedback>
