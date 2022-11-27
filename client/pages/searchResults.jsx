@@ -27,7 +27,8 @@ export default class SearchResult extends React.Component {
     this.state = {
       results: [],
       isLoading: true,
-      active: 1
+      active: 1,
+      networkError: false
     };
     this.fetchData = this.fetchData.bind(this);
     this.nextPage = this.nextPage.bind(this);
@@ -100,7 +101,13 @@ export default class SearchResult extends React.Component {
             });
           });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
+      });
   }
 
   render() {
@@ -110,6 +117,14 @@ export default class SearchResult extends React.Component {
 
     if (this.state.isLoading === true) {
       return spinner;
+    }
+
+    if (this.state.networkError) {
+      return (
+        <Container>
+          <h3 className='lh-lg pt-4 mt-4 merriweather text-center'>Sorry, there was an error connecting to the network! Please check your internet connection and try again.</h3>
+        </Container>
+      );
     }
 
     const maxResults = this.state.results.total;
