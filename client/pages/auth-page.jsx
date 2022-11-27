@@ -10,7 +10,8 @@ export default class AuthPage extends React.Component {
     super(props);
     this.state = {
       duplicate: '',
-      error: ''
+      error: '',
+      isLoading: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -18,6 +19,9 @@ export default class AuthPage extends React.Component {
   }
 
   handleSubmit(event) {
+    this.setState({
+      isLoading: true
+    });
     event.preventDefault();
     if (this.state.error !== null && this.props.action === 'sign-up') {
       return;
@@ -38,12 +42,14 @@ export default class AuthPage extends React.Component {
         if (res.status === 401) {
           this.setState({
             duplicate: 'Invalid login',
-            error: 'Invalid login'
+            error: 'Invalid login',
+            isLoading: false
           });
         }
         if (res.status === 409) {
           this.setState({
-            duplicate: 'Username has already been taken'
+            duplicate: 'Username has already been taken',
+            isLoading: false
           });
         }
         return res.json();
@@ -54,6 +60,9 @@ export default class AuthPage extends React.Component {
         }
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
+          this.setState({
+            isLoading: false
+          });
         } else if (result.user && result.token) {
           this.props.onSignIn(result);
           window.location.hash = 'accounts/user';
@@ -96,6 +105,10 @@ export default class AuthPage extends React.Component {
   }
 
   render() {
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     let anchorText = 'Register';
     let link = '#sign-up';
     let username = 'Username';
@@ -128,6 +141,10 @@ export default class AuthPage extends React.Component {
           rate different parks, and keep track of all the places you&apos;ve visited.
         </h5>
       );
+    }
+
+    if (this.state.isLoading) {
+      return spinner;
     }
     return (
       <>

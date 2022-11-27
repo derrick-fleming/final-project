@@ -153,6 +153,10 @@ export default class ReviewPage extends React.Component {
       return;
     }
 
+    this.setState({
+      isLoading: true
+    });
+
     const parkDetails = {
       name: this.state.results.name,
       imageUrl: this.state.results.wikiImage
@@ -188,7 +192,6 @@ export default class ReviewPage extends React.Component {
     })
       .then(response => response.json())
       .then(result => {
-        this.fileInputRef.current.value = null;
         if (this.state.editing) {
           window.location.hash = `#accounts/reviews?state=${this.state.results.addresses[0].stateCode}`;
           return;
@@ -229,8 +232,12 @@ export default class ReviewPage extends React.Component {
   }
 
   render() {
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     if (this.state.isLoading) {
-      return;
+      return spinner;
     }
     let image = '';
     if (this.state.editing === true && this.state.image !== null) {

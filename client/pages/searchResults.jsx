@@ -105,8 +105,12 @@ export default class SearchResult extends React.Component {
   }
 
   render() {
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     if (this.state.isLoading === true) {
-      return null;
+      return spinner;
     }
 
     const maxResults = this.state.results.total;

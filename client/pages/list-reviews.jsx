@@ -16,7 +16,8 @@ export default class UserReviews extends React.Component {
     super(props);
     this.state = {
       result: null,
-      imageUrl: null
+      imageUrl: null,
+      isLoading: true
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -197,14 +198,19 @@ export default class UserReviews extends React.Component {
       .then(response => response.json())
       .then(result => {
         this.setState({
-          result
+          result,
+          isLoading: false
         });
       });
   }
 
   render() {
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     if (!this.state.result) {
-      return;
+      return spinner;
     }
     if (this.state.result.length === 0) {
       return (

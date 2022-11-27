@@ -13,7 +13,8 @@ export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: null
+      name: null,
+      isLoading: true
     };
     this.renderInfographic = this.renderInfographic.bind(this);
     this.infographicMap = React.createRef();
@@ -43,13 +44,15 @@ export default class UserAccount extends React.Component {
           this.renderInfographic();
           this.setState({
             results: result[0],
-            total: result[1][0].reviews
+            total: result[1][0].reviews,
+            isLoading: false
           });
         } else {
           this.renderInfographic();
           this.setState({
             results: null,
-            total: 'N/A'
+            total: 'N/A',
+            isLoading: false
           });
         }
       })
@@ -155,6 +158,10 @@ export default class UserAccount extends React.Component {
       window.location.hash = '#sign-in';
       return;
     }
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     const statesNeeded = this.state.results ? 50 - this.state.results.length : 'N/A';
     let mostVisited = 'N/A';
     if (this.state.results && this.state.results.length > 0) {
@@ -171,6 +178,7 @@ export default class UserAccount extends React.Component {
           </h2>
         </div>
         <Container>
+          {spinner}
           <Row className='my-4 justify-content-center'>
             <Col xs={12}>
               <h2 className='merriweather text-center'>Park Tracker</h2>

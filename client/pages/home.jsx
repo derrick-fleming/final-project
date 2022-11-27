@@ -16,7 +16,8 @@ export default class Home extends React.Component {
     this.state = {
       show: false,
       selection: '',
-      value: ''
+      value: '',
+      isLoading: true
     };
     this.handleClose = this.handleClose.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -74,6 +75,9 @@ export default class Home extends React.Component {
         selection: 'activities'
       });
     }
+    this.setState({
+      isLoading: false
+    });
   }
 
   handleSubmit(event) {
@@ -105,6 +109,10 @@ export default class Home extends React.Component {
       firstOption = 'Choose an activity';
     }
 
+    const spinner = this.state.isLoading === true
+      ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
+      : '';
+
     return (
       <>
         <div className='position-relative hero-background text-center'>
@@ -120,6 +128,7 @@ export default class Home extends React.Component {
           </div>
         </div>
         <Container>
+          {spinner}
           <Row className='m-3'>
             <Col className='border-secondary border-top border-bottom p-4'>
               <h4 className='merriweather fw-light lh-base text-center'>
