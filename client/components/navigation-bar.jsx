@@ -56,7 +56,7 @@ export default class NavigationBar extends React.Component {
     return (
       <Navbar collapseOnSelect variant="dark" expand={expand} className="p-0 mb-0 search-green">
         <Container fluid='xl' className="flex-nowrap">
-          <a className="pe-5 text-white nav-title fs-1" href="#home">Parks</a>
+          <a className="pe-4 text-white nav-title fs-1" href="#home">Park-Advisor</a>
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-${expand}`}
             aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
