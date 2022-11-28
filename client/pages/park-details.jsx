@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Accordion from 'react-bootstrap/Accordion';
 import Col from 'react-bootstrap/Col';
-import SinglePointMap from '../components/oneLocationMap';
+import SinglePointMap from '../components/one-location-map';
 import activities from '../lib/details';
 import AppContext from '../lib/app-context';
 import Button from 'react-bootstrap/Button';

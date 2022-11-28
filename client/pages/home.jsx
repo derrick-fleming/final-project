@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchBar from '../components/searchBar';
+import SearchBar from '../components/search-bar';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';

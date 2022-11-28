@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import GoogleMaps from '../components/googleMaps';
+import GoogleMaps from '../components/google-maps';
 import Pagination from 'react-bootstrap/Pagination';
 import states from '../lib/states';
 
