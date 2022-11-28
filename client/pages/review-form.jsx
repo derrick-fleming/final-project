@@ -5,7 +5,6 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import activities from '../lib/activities';
 import Button from 'react-bootstrap/Button';
-import AppContext from '../lib/app-context';
 import Image from 'react-bootstrap/Image';
 
 const visitors = ['Everyone', 'History Buffs', 'Families', 'Casual Travelers', 'Teens & Adults', 'Outdoor Enthusiast', 'Nature Lovers'];
@@ -35,6 +34,7 @@ export default class ReviewPage extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.retrieveReview = this.retrieveReview.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -82,6 +82,10 @@ export default class ReviewPage extends React.Component {
         });
       });
 
+  }
+
+  handleClick() {
+    window.history.back();
   }
 
   handleInputChange(event) {
@@ -419,9 +423,9 @@ export default class ReviewPage extends React.Component {
             </Row>
             <Row className='my-2'>
               <Col>
-                <a className='btn btn-secondary merriweather lh-lg px-4' href={`#details?park=${this.props.park}`}>
+                <Button className='btn btn-secondary merriweather lh-lg px-4' onClick={this.handleClick}>
                   Cancel
-                </a>
+                </Button>
               </Col>
               <Col className='text-end'>
                 <Button className='merriweather lh-lg px-4' variant="success" type='submit'>
@@ -435,5 +439,3 @@ export default class ReviewPage extends React.Component {
     );
   }
 }
-
-ReviewPage.contextType = AppContext;

@@ -1,5 +1,4 @@
 import React from 'react';
-import AppContext from '../lib/app-context';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -271,5 +270,3 @@ export default class UserReviews extends React.Component {
     ;
   }
 }
-
-UserReviews.contextType = AppContext;
