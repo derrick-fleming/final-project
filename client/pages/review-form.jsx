@@ -61,7 +61,7 @@ export default class ReviewPage extends React.Component {
         const endDate = datesVisited.split(',')[1].split(')')[0];
         const activities = recommendedActivities.split(',');
         const visitors = recommendedVisitors.split(',');
-        const generalThoughts = result[0].genralThoughts === null ? '' : result[0].generalThoughts;
+        const generalThoughts = result[0].generalThoughts === null ? '' : result[0].generalThoughts;
         this.setState({
           rating,
           activities,
@@ -171,10 +171,8 @@ export default class ReviewPage extends React.Component {
     };
 
     const dates = [this.state.startDate, this.state.endDate];
-    let image = null;
-    if (this.fileInputRef.current.files[0]) {
-      image = this.fileInputRef.current.files[0];
-    }
+    const image = this.fileInputRef.current.files[0] ? this.fileInputRef.current.files[0] : null;
+
     const formData = new FormData();
     formData.append('image', image);
     formData.append('parkCode', this.props.park);
