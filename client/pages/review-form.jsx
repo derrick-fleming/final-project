@@ -317,22 +317,24 @@ export default class ReviewPage extends React.Component {
                   {star1}
                   <label htmlFor='rating-1' className='pt-1 fa-solid fa-star' />
                   <Form.Control.Feedback type="invalid">Missing rating.</Form.Control.Feedback>
+
                 </div>
               </Col>
+
             </Form.Group>
             <Row>
               <Col sm={12} lg={6}>
                 <Form.Group className='mb-3'>
                   <h5 className='mb-0 pb-1'><span className='fa-regular fa-calendar-days pe-2' />Dates Visited*</h5>
                   <hr className='mt-0'/>
-                  <div>
-                    <Form.Label htmlFor='start-dates' className='pe-2 fw-light'> Start Date: </Form.Label>
-                    <input required value={this.state.startDate} className='border' min="1970-01-01" max={todayFormat} id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
+                  <div className='mb-2'>
+                    <Form.Label htmlFor='start-dates' className='pe-2 fw-light mb-0'> Start Date: </Form.Label>
+                    <input required value={this.state.startDate} className='border gray-scale' min="1970-01-01" max={todayFormat} id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing start date.</Form.Control.Feedback>
                   </div>
-                  <div>
-                    <Form.Label htmlFor='end-dates' className='pe-3 fw-light'> End Date: </Form.Label>
-                    <input value={this.state.endDate} className='border' required id='end-dates' type='date' name='endDate' min="1970-01-01" max={todayFormat} onChange={this.handleInputChange}/>
+                  <div className='mt-3'>
+                    <Form.Label htmlFor='end-dates' className='mb-0 pe-3 fw-light'> End Date: </Form.Label>
+                    <input value={this.state.endDate} className='border gray-scale' required id='end-dates' type='date' name='endDate' min="1970-01-01" max={todayFormat} onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
                     <Form.Text className='d-block text-danger'>{this.state.dateError}</Form.Text>
                   </div>
@@ -393,12 +395,12 @@ export default class ReviewPage extends React.Component {
                   <Form.Control.Feedback type="invalid">Write at least one tip</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className='mb-3'>
-                  <Form.Label className='mb-0 pb-1 fs-5'>
-                    <span htmlFor='generalThoughts'className='fa-solid fa-lightbulb pe-2' />General Thoughts
+                  <Form.Label htmlFor='generalThoughts' className='mb-0 pb-1 fs-5'>
+                    <span className='fa-solid fa-lightbulb pe-2' />General Thoughts
                   </Form.Label>
                   <hr className='my-0' />
                   <Form.Text className='fs-6 fst-italic fw-light'>
-                    Explain your rating or write about a memorable experience at this park.
+                    Explain your rating or write about a memorable experience at {this.state.results.name}.
                   </Form.Text>
                   <Form.Control id='generalThoughts' name='generalThoughts' as='textarea' className='text-box mt-3' value={this.state.generalThoughts} onChange={this.handleInputChange} placeholder='Write your thoughts here' />
                   <Form.Control.Feedback type="valid">General Thoughts are optional</Form.Control.Feedback>

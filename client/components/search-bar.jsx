@@ -36,8 +36,8 @@ export default class SearchBar extends React.Component {
       searchText = null;
     }
     return (
-      <Container fluid='xl' className='p-4'>
-        <Row className='mb-4'>
+      <Container fluid='xl' className='p-4 mt-2'>
+        <Row className='mb-2'>
           {searchText}
         </Row>
         <Row>

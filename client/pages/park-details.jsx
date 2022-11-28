@@ -155,7 +155,7 @@ export default class ParkDetails extends React.Component {
         </div>
         <Container>
           {spinner}
-          <Row className='mb-2 large-screen-spacing justify-content-center'>
+          <Row className='mb-2 large-screen-spacing justify-content-center '>
             <Col xs={9} xl={8}>
               <h2 className=' merriweather fw-bold'>{name}</h2>
             </Col>
@@ -163,13 +163,13 @@ export default class ParkDetails extends React.Component {
               <a className='open-sans go-back text-decoration-none fw-bold' onClick={this.goBack}>Go Back</a>
             </Col>
           </Row>
-          <Row className='justify-content-center large-screen-spacing'>
+          <Row className='large-screen-spacing justify-content-center '>
             <Col xs={12} md={6} xl={5}>
               <img className='shadow-sm p-0 rounded image-details mt-1 mb-3' src={wikiImage} alt={name} />
             </Col>
             <Col xs={12} md={6}>
-              <h3 className='px-0 px-1-sm merriweather fw-bold'> Description <span className='fs-6 ps-1 ps-sm-5 ps-md-2 ps-lg-5'>Rating: {rating}</span></h3>
-              <p className='p-1 description-text fw-light fs-6'>{description}</p>
+              <h3 className='merriweather fw-bold'> Description <span className='fs-6 ps-1 ps-sm-5 ps-md-2 ps-lg-5'>Rating: {rating}</span></h3>
+              <p className='open-sans p-1 description-text fw-light fs-6'>{description}</p>
             </Col>
           </Row>
           <Row className='justify-content-center mb-4'>

@@ -206,7 +206,7 @@ export default class AuthPage extends React.Component {
                 </Form.Group>
                 <Row className='mt-4'>
                   <Col>
-                    <a className='btn merriweather go-back text-decoration-none fs-6' href={link}>
+                    <a className='btn merriweather go-back fs-6' href={link}>
                       {anchorText}
                     </a>
                   </Col>

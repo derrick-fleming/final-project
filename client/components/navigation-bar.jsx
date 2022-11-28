@@ -61,6 +61,7 @@ export default class NavigationBar extends React.Component {
             id={`offcanvasNavbar-expand-${expand}`}
             aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
             placement="end"
+            className='canvas-width'
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title className='gray-scale merriweather fs-2' id={`offcanvasNavbarLabel-expand-${expand}`}>

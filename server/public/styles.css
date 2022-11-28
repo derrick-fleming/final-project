@@ -41,31 +41,8 @@ html,
   color: #779f7d;
 }
 
-.btn-success {
-  background-color: #779f7d;
-  color: #ffff;
-  border: none;
-}
-
-.nav-icon {
-  color: #fff;
-  transition: color 0.25s ease-in-out;
-}
-
-.btn-success:hover {
-  background-color: #2e7d32b8;
-}
-
-.form-control:focus,
-.form-select:focus {
-  border-color: #2e7d32b8;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #2e7d32b8;
-}
-
-.nav-search:hover {
-  background-color: #2e7d32b8;
-  color: white;
-  border-color: #2e7d32b8;
+.offcanvas.canvas-width {
+  width: 60%;
 }
 
 .search-hide {
@@ -105,39 +82,8 @@ html,
   color: #117c8d;
 }
 
-.dropdown-menu {
-  --bs-dropdown-link-active-bg: #779f7d;
-  --bs-dropdown-link-hover-bg: #cbdfcc;
-  --bs-dropdown-link-color: #454d55;
-}
-
-.offcanvas.offcanvas-end {
-  width: 60%;
-}
-
-.pagination {
-  --bs-pagination-color: #454d55;
-  --bs-pagination-hover-color: #4c6550;
-  --bs-pagination-hover-bg: #cbdfcc;
-  --bs-pagination-active-color: #fff;
-  --bs-pagination-active-border-color: #779f7d;
-  --bs-pagination-active-bg: #779f7d;
-}
-
 .description-text {
   line-height: 1.8;
-}
-
-.navbar-dark {
-  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-
-.accordion {
-  --bs-accordion-active-color: #000;
-  --bs-accordion-active-bg: #cbdfcc;
-  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-  --bs-accordion-btn-focus-border-color: #779f7d;
-  --bs-accordion-btn-focus-box-shadow: #4c6550;
 }
 
 .hero-image,
@@ -267,10 +213,6 @@ input:checked {
   background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
 }
 
-.dropdown-toggle::after {
-  display: none;
-}
-
 .text-overflow {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -293,10 +235,10 @@ input:checked {
   width: 64px;
   height: 64px;
   margin: 8px;
-  border: 8px solid #00441b;
+  border: 8px solid #779f7d;
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #00441b transparent transparent;
+  border-color: #779f7d transparent transparent;
 }
 
 .lds-ring div:nth-child(1) {

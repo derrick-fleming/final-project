@@ -35,10 +35,6 @@ export default class SearchResult extends React.Component {
     this.nextPage = this.nextPage.bind(this);
   }
 
-  handleClick(event) {
-    window.location.hash = 'home';
-  }
-
   componentDidUpdate(prevProps, prevState) {
     if (this.props.search !== prevProps.search) {
       this.fetchData();
@@ -166,19 +162,14 @@ export default class SearchResult extends React.Component {
     }
     return (
       <Container fluid='xl' className='p-4'>
-        <Row className='justify-content-between'>
+        <Row >
           <Col xs={10}>
-            <h4 className='pt-2 pb-0 merriweather fw-light m-0'>
+            <h4 className='pt-2 merriweather fw-light m-0'>
               {results}
             </h4>
-            <h6 className='pt-0 open-sans gold fw-bold'>
+            <h6 className='open-sans gold fw-bold'>
               {viewingResults}
             </h6>
-          </Col>
-          <Col xs={2} className='pt-2 px-1 text-end'>
-            <a className='go-back text-decoration-none open-sans' onClick={this.handleClick}>
-              Go Back
-            </a>
           </Col>
         </Row>
         <Row className='justify-content-center'>
@@ -200,7 +191,7 @@ export default class SearchResult extends React.Component {
                     activityList = activityList.join(' | ');
                     return (
                       <Col key={parkCode} xs={12} md={6} className='mt-2 mb-2'>
-                        <Card id={parkCode} className='p-0 open-sans mb-4 shadow-sm'>
+                        <Card id={parkCode} className='open-sans mb-4 shadow-sm'>
                           <Card.Img variant="top" src={wikiImage} alt={name} className='image-size'/>
                           <Card.Body>
                             <Card.Text className='m-0 lh-lg'>

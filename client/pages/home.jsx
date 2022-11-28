@@ -115,7 +115,7 @@ export default class Home extends React.Component {
 
     return (
       <>
-        <div className='position-relative hero-background text-center'>
+        <div className='position-relative text-center'>
           <img src='images/mountain-scene.webp' alt='Mountain view' className='home-hero-image' />
           <div className='position-absolute top-50 start-50 translate-middle home-top'>
             <h1 className='merriweather fw-bold text-white mb-0'>Explore, review, and track your visits to <br />
