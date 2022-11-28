@@ -187,10 +187,8 @@ export default class ReviewPage extends React.Component {
     formData.append('stateCode', this.state.results.addresses[0].stateCode);
     formData.append('parkDetails', JSON.stringify(parkDetails));
     const token = window.localStorage.getItem('park-reviews-jwt');
-    let action = 'POST';
-    if (this.state.editing) {
-      action = 'PUT';
-    }
+    const action = this.state.editing ? 'PUT' : 'POST';
+
     fetch('/api/reviews', {
       method: action,
       headers: {

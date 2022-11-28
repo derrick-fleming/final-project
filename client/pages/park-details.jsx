@@ -68,32 +68,25 @@ export default class ParkDetails extends React.Component {
     const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
     fetch(link)
       .then(response => response.json())
-      .then(states => {
+      .then(result => {
         const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
-        const imageFetches = states.data.map(state => {
-          const title = state.fullName.replaceAll(' ', '%20');
-          const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
-          return (
-            fetch(apiEndPoint + '?' + params + '&origin=*')
-              .then(response => response.json())
-              .then(image => {
-                if (image.query.pages[0].thumbnail === undefined) {
-                  state.wikiImage = '/images/mountains.webp';
-                } else {
-                  state.wikiImage = image.query.pages[0].thumbnail.source;
-                }
-              })
-              .catch(err => console.error(err))
-          );
-        });
-        Promise
-          .all(imageFetches)
-          .then(results => {
+        const state = result.data[0];
+        const title = state.fullName.replaceAll(' ', '%20');
+        const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
+        fetch(apiEndPoint + '?' + params + '&origin=*')
+          .then(response => response.json())
+          .then(image => {
+            if (image.query.pages[0].thumbnail === undefined) {
+              state.wikiImage = '/images/mountains.webp';
+            } else {
+              state.wikiImage = image.query.pages[0].thumbnail.source;
+            }
             this.setState({
-              results: states.data[0],
+              results: state,
               isLoading: false
             });
-          });
+          })
+          .catch(err => console.error(err));
       })
       .catch(err => {
         console.error(err);
