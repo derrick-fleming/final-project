@@ -197,7 +197,7 @@ export default class UserAccount extends React.Component {
           <Row className='my-4 justify-content-center'>
             <Col xs={12}>
               <h2 className='merriweather text-center'>Park Tracker</h2>
-              <h5 className='merriweather fst-italic text-center fw-light'>Double click a state you&apos;ve visited to see your reviews </h5>
+              <h5 className='merriweather fst-italic text-center fw-light'>Double click a state you&apos;ve visited to see your reviews. </h5>
             </Col>
             <Col lg={9}>
               <div id="map" ref={this.infographicMap} />
@@ -215,16 +215,16 @@ export default class UserAccount extends React.Component {
                 <tbody>
                   <tr className='scale'>
                     <td />
-                    <td className='zero' />
-                    <td className='one' />
-                    <td className='two' />
-                    <td className='three' />
-                    <td className='four' />
-                    <td className='five' />
-                    <td className='six' />
-                    <td className='seven' />
-                    <td className='eight' />
-                    <td className='nine' />
+                    <td className='zero border' />
+                    <td className='one border' />
+                    <td className='two border' />
+                    <td className='three border' />
+                    <td className='four border' />
+                    <td className='five border' />
+                    <td className='six border' />
+                    <td className='seven border' />
+                    <td className='eight border' />
+                    <td className='nine border' />
                     <td />
                   </tr>
                   <tr className='scale open-sans fw-light'>
@@ -232,13 +232,13 @@ export default class UserAccount extends React.Component {
                     <td>0</td>
                     <td />
                     <td />
+                    <td>3</td>
                     <td />
                     <td />
+                    <td>6</td>
                     <td />
                     <td />
-                    <td />
-                    <td />
-                    <td>9</td>
+                    <td>9+</td>
                     <td />
                   </tr>
                 </tbody>

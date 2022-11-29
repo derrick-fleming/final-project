@@ -125,6 +125,10 @@ export default class AuthPage extends React.Component {
       ? (<div className="lds-ring"><div /><div /><div /><div /></div>)
       : '';
 
+    if (this.state.isLoading) {
+      return spinner;
+    }
+
     const serverError = this.state.show
       ? (
         <Alert variant='danger' onClose={this.handleClose} dismissible>
@@ -167,9 +171,6 @@ export default class AuthPage extends React.Component {
       );
     }
 
-    if (this.state.isLoading) {
-      return spinner;
-    }
     return (
       <>
         <div className='mb-4 position-relative hero-background text-center'>
@@ -205,7 +206,7 @@ export default class AuthPage extends React.Component {
                 </Form.Group>
                 <Row className='mt-4'>
                   <Col>
-                    <a className='btn merriweather go-back text-decoration-none fs-6' href={link}>
+                    <a className='btn merriweather go-back fs-6' href={link}>
                       {anchorText}
                     </a>
                   </Col>

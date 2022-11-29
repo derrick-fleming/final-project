@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Accordion from 'react-bootstrap/Accordion';
 import Col from 'react-bootstrap/Col';
-import SinglePointMap from '../components/oneLocationMap';
+import SinglePointMap from '../components/one-location-map';
 import activities from '../lib/details';
 import AppContext from '../lib/app-context';
 import Button from 'react-bootstrap/Button';
@@ -68,32 +68,25 @@ export default class ParkDetails extends React.Component {
     const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
     fetch(link)
       .then(response => response.json())
-      .then(states => {
+      .then(result => {
         const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
-        const imageFetches = states.data.map(state => {
-          const title = state.fullName.replaceAll(' ', '%20');
-          const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
-          return (
-            fetch(apiEndPoint + '?' + params + '&origin=*')
-              .then(response => response.json())
-              .then(image => {
-                if (image.query.pages[0].thumbnail === undefined) {
-                  state.wikiImage = '/images/mountains.webp';
-                } else {
-                  state.wikiImage = image.query.pages[0].thumbnail.source;
-                }
-              })
-              .catch(err => console.error(err))
-          );
-        });
-        Promise
-          .all(imageFetches)
-          .then(results => {
+        const state = result.data[0];
+        const title = state.fullName.replaceAll(' ', '%20');
+        const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
+        fetch(apiEndPoint + '?' + params + '&origin=*')
+          .then(response => response.json())
+          .then(image => {
+            if (image.query.pages[0].thumbnail === undefined) {
+              state.wikiImage = '/images/mountains.webp';
+            } else {
+              state.wikiImage = image.query.pages[0].thumbnail.source;
+            }
             this.setState({
-              results: states.data[0],
+              results: state,
               isLoading: false
             });
-          });
+          })
+          .catch(err => console.error(err));
       })
       .catch(err => {
         console.error(err);
@@ -162,7 +155,7 @@ export default class ParkDetails extends React.Component {
         </div>
         <Container>
           {spinner}
-          <Row className='mb-2 large-screen-spacing justify-content-center'>
+          <Row className='mb-2 large-screen-spacing justify-content-center '>
             <Col xs={9} xl={8}>
               <h2 className=' merriweather fw-bold'>{name}</h2>
             </Col>
@@ -170,13 +163,13 @@ export default class ParkDetails extends React.Component {
               <a className='open-sans go-back text-decoration-none fw-bold' onClick={this.goBack}>Go Back</a>
             </Col>
           </Row>
-          <Row className='justify-content-center large-screen-spacing'>
+          <Row className='large-screen-spacing justify-content-center '>
             <Col xs={12} md={6} xl={5}>
               <img className='shadow-sm p-0 rounded image-details mt-1 mb-3' src={wikiImage} alt={name} />
             </Col>
             <Col xs={12} md={6}>
-              <h3 className='px-0 px-1-sm merriweather fw-bold'> Description <span className='fs-6 ps-1 ps-sm-5 ps-md-2 ps-lg-5'>Rating: {rating}</span></h3>
-              <p className='p-1 description-text fw-light fs-6'>{description}</p>
+              <h3 className='merriweather fw-bold'> Description <span className='fs-6 ps-1 ps-sm-5 ps-md-2 ps-lg-5'>Rating: {rating}</span></h3>
+              <p className='open-sans p-1 description-text fw-light fs-6'>{description}</p>
             </Col>
           </Row>
           <Row className='justify-content-center mb-4'>

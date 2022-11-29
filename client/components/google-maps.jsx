@@ -85,7 +85,8 @@ export default class GoogleMaps extends React.Component {
           map.fitBounds(bound);
           map.getCenter();
         }
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   render() {

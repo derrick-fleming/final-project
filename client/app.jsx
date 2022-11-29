@@ -1,16 +1,16 @@
 import React from 'react';
 import parseRoute from './lib/parse-route';
-import SearchResults from './pages/searchResults';
+import SearchResults from './pages/search-results';
 import Home from './pages/home';
-import NavigationBar from './components/navigationBar';
-import SearchBar from './components/searchBar';
-import ParkDetails from './pages/details';
-import ReviewPage from './pages/reviews';
-import UserAccount from './pages/userAccount';
+import NavigationBar from './components/navigation-bar';
+import SearchBar from './components/search-bar';
+import ParkDetails from './pages/park-details';
+import ReviewPage from './pages/review-form';
+import UserAccount from './pages/user-account';
 import AppContext from './lib/app-context';
 import AuthPage from './pages/auth-page';
 import jwtDecode from 'jwt-decode';
-import UserReviews from './pages/list-reviews';
+import UserReviews from './pages/user-reviews';
 
 export default class App extends React.Component {
   constructor(props) {

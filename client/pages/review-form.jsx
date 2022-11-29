@@ -5,7 +5,6 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import activities from '../lib/activities';
 import Button from 'react-bootstrap/Button';
-import AppContext from '../lib/app-context';
 import Image from 'react-bootstrap/Image';
 
 const visitors = ['Everyone', 'History Buffs', 'Families', 'Casual Travelers', 'Teens & Adults', 'Outdoor Enthusiast', 'Nature Lovers'];
@@ -35,6 +34,7 @@ export default class ReviewPage extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.retrieveReview = this.retrieveReview.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -61,7 +61,7 @@ export default class ReviewPage extends React.Component {
         const endDate = datesVisited.split(',')[1].split(')')[0];
         const activities = recommendedActivities.split(',');
         const visitors = recommendedVisitors.split(',');
-        const generalThoughts = result[0].genralThoughts === null ? '' : result[0].generalThoughts;
+        const generalThoughts = result[0].generalThoughts === null ? '' : result[0].generalThoughts;
         this.setState({
           rating,
           activities,
@@ -82,6 +82,10 @@ export default class ReviewPage extends React.Component {
         });
       });
 
+  }
+
+  handleClick() {
+    window.history.back();
   }
 
   handleInputChange(event) {
@@ -171,10 +175,8 @@ export default class ReviewPage extends React.Component {
     };
 
     const dates = [this.state.startDate, this.state.endDate];
-    let image = null;
-    if (this.fileInputRef.current.files[0]) {
-      image = this.fileInputRef.current.files[0];
-    }
+    const image = this.fileInputRef.current.files[0] ? this.fileInputRef.current.files[0] : null;
+
     const formData = new FormData();
     formData.append('image', image);
     formData.append('parkCode', this.props.park);
@@ -187,10 +189,8 @@ export default class ReviewPage extends React.Component {
     formData.append('stateCode', this.state.results.addresses[0].stateCode);
     formData.append('parkDetails', JSON.stringify(parkDetails));
     const token = window.localStorage.getItem('park-reviews-jwt');
-    let action = 'POST';
-    if (this.state.editing) {
-      action = 'PUT';
-    }
+    const action = this.state.editing ? 'PUT' : 'POST';
+
     fetch('/api/reviews', {
       method: action,
       headers: {
@@ -317,22 +317,24 @@ export default class ReviewPage extends React.Component {
                   {star1}
                   <label htmlFor='rating-1' className='pt-1 fa-solid fa-star' />
                   <Form.Control.Feedback type="invalid">Missing rating.</Form.Control.Feedback>
+
                 </div>
               </Col>
+
             </Form.Group>
             <Row>
               <Col sm={12} lg={6}>
                 <Form.Group className='mb-3'>
                   <h5 className='mb-0 pb-1'><span className='fa-regular fa-calendar-days pe-2' />Dates Visited*</h5>
                   <hr className='mt-0'/>
-                  <div>
-                    <Form.Label htmlFor='start-dates' className='pe-2 fw-light'> Start Date: </Form.Label>
-                    <input required value={this.state.startDate} className='border' min="1970-01-01" max={todayFormat} id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
+                  <div className='mb-2'>
+                    <Form.Label htmlFor='start-dates' className='pe-2 fw-light mb-0'> Start Date: </Form.Label>
+                    <input required value={this.state.startDate} className='border gray-scale' min="1970-01-01" max={todayFormat} id='start-dates' type='date' name='startDate' onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing start date.</Form.Control.Feedback>
                   </div>
-                  <div>
-                    <Form.Label htmlFor='end-dates' className='pe-3 fw-light'> End Date: </Form.Label>
-                    <input value={this.state.endDate} className='border' required id='end-dates' type='date' name='endDate' min="1970-01-01" max={todayFormat} onChange={this.handleInputChange}/>
+                  <div className='mt-3'>
+                    <Form.Label htmlFor='end-dates' className='mb-0 pe-3 fw-light'> End Date: </Form.Label>
+                    <input value={this.state.endDate} className='border gray-scale' required id='end-dates' type='date' name='endDate' min="1970-01-01" max={todayFormat} onChange={this.handleInputChange}/>
                     <Form.Control.Feedback type="invalid">Missing end date.</Form.Control.Feedback>
                     <Form.Text className='d-block text-danger'>{this.state.dateError}</Form.Text>
                   </div>
@@ -393,12 +395,12 @@ export default class ReviewPage extends React.Component {
                   <Form.Control.Feedback type="invalid">Write at least one tip</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className='mb-3'>
-                  <Form.Label className='mb-0 pb-1 fs-5'>
-                    <span htmlFor='generalThoughts'className='fa-solid fa-lightbulb pe-2' />General Thoughts
+                  <Form.Label htmlFor='generalThoughts' className='mb-0 pb-1 fs-5'>
+                    <span className='fa-solid fa-lightbulb pe-2' />General Thoughts
                   </Form.Label>
                   <hr className='my-0' />
                   <Form.Text className='fs-6 fst-italic fw-light'>
-                    Explain your rating or write about a memorable experience at this park.
+                    Explain your rating or write about a memorable experience at {this.state.results.name}.
                   </Form.Text>
                   <Form.Control id='generalThoughts' name='generalThoughts' as='textarea' className='text-box mt-3' value={this.state.generalThoughts} onChange={this.handleInputChange} placeholder='Write your thoughts here' />
                   <Form.Control.Feedback type="valid">General Thoughts are optional</Form.Control.Feedback>
@@ -423,9 +425,9 @@ export default class ReviewPage extends React.Component {
             </Row>
             <Row className='my-2'>
               <Col>
-                <a className='btn btn-secondary merriweather lh-lg px-4' href={`#details?park=${this.props.park}`}>
+                <Button className='btn btn-secondary merriweather lh-lg px-4' onClick={this.handleClick}>
                   Cancel
-                </a>
+                </Button>
               </Col>
               <Col className='text-end'>
                 <Button className='merriweather lh-lg px-4' variant="success" type='submit'>
@@ -439,5 +441,3 @@ export default class ReviewPage extends React.Component {
     );
   }
 }
-
-ReviewPage.contextType = AppContext;

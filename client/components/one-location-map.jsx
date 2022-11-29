@@ -75,7 +75,8 @@ export default class SinglePointMap extends React.Component {
           map.getCenter();
         });
         map.getCenter();
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
