@@ -1,6 +1,6 @@
 # Park-Advisor
 
-A full stack web application for travelers who want to search, review, and track their vists to different national parks & monuments.
+A full stack web application for travelers who want to search, review, and track their visits to different national parks & monuments.
 
 ## Why I Built This
 
@@ -59,7 +59,7 @@ Try the application live at [https://park-advisor.derrickfleming.com/](https://p
 ## Getting Started
 1. Clone the repository
     ```shell
-    git clone https://github.com/derrick-fleming/final-project.git
+    git clone https://github.com/derrick-fleming/park-advisor.git
     ```
 2. Install all dependencies with NPM
     ```shell
