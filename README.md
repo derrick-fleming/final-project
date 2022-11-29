@@ -46,10 +46,10 @@ Try the application live at [https://park-advisor.derrickfleming.com/](https://p
 ## Preview
 
 ### Users can view an infographic map of states visited
-![view an infographic map of states visited](/server/public/images/users-view-map.gif)
+![view an infographic map of states visited](/server/public/images/user-view-infographic.gif)
 
 ### Users can create a review of a park
-![create a review](/server/public/images/users-write-reviews.gif)
+![create a review](/server/public/images/user-write-reviews.gif)
 
 ## Stretch Features
 - Users can delete their reviews
@@ -58,7 +58,6 @@ Try the application live at [https://park-advisor.derrickfleming.com/](https://p
 
 ## Getting Started
 1. Clone the repository
-
     ```shell
     git clone https://github.com/derrick-fleming/final-project.git
     ```
