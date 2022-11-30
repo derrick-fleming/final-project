@@ -7,6 +7,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Nav from 'react-bootstrap/Nav';
 import AppContext from '../lib/app-context';
+import Col from 'react-bootstrap/Col';
 
 export default class NavigationBar extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ export default class NavigationBar extends React.Component {
     return (
       <Navbar collapseOnSelect variant="dark" expand={expand} className="p-0 mb-0 search-green">
         <Container fluid='xl' className="flex-nowrap">
-          <a className="pe-4 text-white nav-title fs-1" href="#home">Park-Advisor</a>
+          <a className="text-white nav-title fs-1" href="#home">Park-Advisor</a>
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-${expand}`}
             aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
@@ -69,7 +70,7 @@ export default class NavigationBar extends React.Component {
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              <Nav className="justify-content-start flex-grow-1 pe-3">
+              <Nav className="px-md-4">
                 <Nav.Link className='merriweather fs-6' href="#home">Home</Nav.Link>
                 <NavDropdown className='merriweather fs-6'
                   title="Browse"
@@ -86,24 +87,26 @@ export default class NavigationBar extends React.Component {
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
-          <div className='d-flex'>
-            <Navbar.Toggle className='border-0 px-1' aria-controls={`offcanvasNavbar-expand-${expand}`} />
-            <Form className={buttonClass} onSubmit={this.handleSubmit}>
-              <Form.Control
-                type="search"
-                placeholder="Search"
-                className="me-1"
-                aria-label="Search"
-                onChange={this.handleChange}
-              />
-              <Button variant="outline-light" onClick={this.handleSubmit} className='nav-search open-sans'>Search</Button>
-            </Form>
-            <button className='navbar-toggler border-0 text-white open-sans px-1' onClick={this.revealSearch}>
-              <span>
-                <i className={`fa-solid ${iconClass} nav-icon`} />
-              </span>
-            </button>
-          </div>
+          <Col xs={7} sm={8} md={4}>
+            <div className='d-flex justify-content-end'>
+              <Navbar.Toggle className='border-0 px-1' aria-controls={`offcanvasNavbar-expand-${expand}`} />
+              <Form className={buttonClass} onSubmit={this.handleSubmit}>
+                <Form.Control
+                  type="search"
+                  placeholder="Search"
+                  className="me-1"
+                  aria-label="Search"
+                  onChange={this.handleChange}
+                />
+                <Button variant="outline-light" onClick={this.handleSubmit} className='nav-search open-sans'>Search</Button>
+              </Form>
+              <button className='navbar-toggler border-0 text-white open-sans px-1' onClick={this.revealSearch}>
+                <span>
+                  <i className={`fa-solid ${iconClass} nav-icon`} />
+                </span>
+              </button>
+            </div>
+          </Col>
         </Container>
       </Navbar>
     );
