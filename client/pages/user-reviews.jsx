@@ -91,6 +91,7 @@ export default class UserReviews extends React.Component {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item href={`#edit-review?parkCode=${review.parkCode}`}>Edit Review</Dropdown.Item>
+                      <Dropdown.Item>Delete Review </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
