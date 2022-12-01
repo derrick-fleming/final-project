@@ -20,6 +20,7 @@ export default class UserReviews extends React.Component {
       networkError: false,
       deleteId: null
     };
+    this.retrieveReviews = this.retrieveReviews.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -49,9 +50,29 @@ export default class UserReviews extends React.Component {
   }
 
   handleDelete(event) {
-    this.setState({
-      showDelete: false
-    });
+    const parkCode = this.state.deleteId;
+    const token = window.localStorage.getItem('park-reviews-jwt');
+    const request = {
+      method: 'delete',
+      headers: {
+        'X-Access-Token': token
+      }
+    };
+    fetch(`/api/reviews/${parkCode}`, request)
+      .then(response => response.json())
+      .then(result => {
+        this.retrieveReviews();
+        this.setState({
+          showDelete: false
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
+      });
   }
 
   showDelete(event) {
@@ -204,7 +225,7 @@ export default class UserReviews extends React.Component {
     return reviewCards;
   }
 
-  componentDidMount() {
+  retrieveReviews() {
     const state = this.props.state;
     const token = window.localStorage.getItem('park-reviews-jwt');
     const header = {
@@ -227,6 +248,10 @@ export default class UserReviews extends React.Component {
           isLoading: false
         });
       });
+  }
+
+  componentDidMount() {
+    this.retrieveReviews();
   }
 
   render() {
