@@ -17,13 +17,15 @@ export default class UserReviews extends React.Component {
       result: null,
       imageUrl: null,
       isLoading: true,
-      networkError: false
+      networkError: false,
+      deleteId: null
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
     this.showDelete = this.showDelete.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleClick(event) {
@@ -42,13 +44,20 @@ export default class UserReviews extends React.Component {
   handleClose(event) {
     this.setState({
       show: false,
-      deleteShow: false
+      showDelete: false
+    });
+  }
+
+  handleDelete(event) {
+    this.setState({
+      showDelete: false
     });
   }
 
   showDelete(event) {
     this.setState({
-      showDelete: true
+      showDelete: true,
+      deleteId: event.target.id
     });
   }
 
@@ -99,7 +108,7 @@ export default class UserReviews extends React.Component {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item href={`#edit-review?parkCode=${review.parkCode}`}>Edit Review</Dropdown.Item>
-                      <Dropdown.Item onClick={this.showDelete}>Delete Review </Dropdown.Item>
+                      <Dropdown.Item onClick={this.showDelete} id={review.parkCode}>Delete Review </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
