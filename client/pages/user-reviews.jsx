@@ -17,12 +17,15 @@ export default class UserReviews extends React.Component {
       result: null,
       imageUrl: null,
       isLoading: true,
-      networkError: false
+      networkError: false,
+      deleteId: null
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
+    this.showDelete = this.showDelete.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleClick(event) {
@@ -40,7 +43,44 @@ export default class UserReviews extends React.Component {
 
   handleClose(event) {
     this.setState({
-      show: false
+      show: false,
+      showDelete: false
+    });
+  }
+
+  handleDelete(event) {
+    const parkCode = this.state.deleteId;
+    const token = window.localStorage.getItem('park-reviews-jwt');
+    const request = {
+      method: 'delete',
+      headers: {
+        'X-Access-Token': token
+      }
+    };
+    fetch(`/api/reviews/${parkCode}`, request)
+      .then(response => response.json())
+      .then(result => {
+        const updatedReviews = this.state.result.filter(park => {
+          return park.parkCode !== parkCode;
+        });
+        this.setState({
+          showDelete: false,
+          result: updatedReviews
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          networkError: true,
+          isLoading: false
+        });
+      });
+  }
+
+  showDelete(event) {
+    this.setState({
+      showDelete: true,
+      deleteId: event.target.id
     });
   }
 
@@ -91,6 +131,7 @@ export default class UserReviews extends React.Component {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item href={`#edit-review?parkCode=${review.parkCode}`}>Edit Review</Dropdown.Item>
+                      <Dropdown.Item onClick={this.showDelete} id={review.parkCode}>Delete Review </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
@@ -229,7 +270,7 @@ export default class UserReviews extends React.Component {
     if (this.state.result.length === 0) {
       return (
         <>
-          <h3 className='m-5 merriweather text-center'>Sorry, 0 reviews found. </h3>
+          <h3 className='m-5 merriweather text-center'>Sorry, 0 reviews found for this state. </h3>
           <h5 className='merriweather text-center'>Return to your <a href='#accounts/user'>account page</a> or start writing reviews by <a href='#home?browse=states'>browsing states</a></h5>
         </>
       );
@@ -264,6 +305,26 @@ export default class UserReviews extends React.Component {
             <Image fluid src={this.state.imageUrl} alt='Larger user image' />
           </Modal.Body>
           <Modal.Footer className='light-box' />
+        </Modal>
+        <Modal centered show={this.state.showDelete} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title className='merriweather gray-scale w-100 text-center ms-4'>Remove Review?</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='open-sans fs-5 fw-light pt-4 gray-scale text-center'>
+            Are you sure you want to delete your review?
+            <br />
+            <span className='fst-italic'>Note: All saved data will be lost.</span>
+          </Modal.Body>
+          <Modal.Footer>
+            <Col>
+              <Button variant="secondary" onClick={this.handleClose} className='merriweather lh-lg px-4'>
+                NO
+              </Button>
+            </Col>
+            <Col className='text-end'>
+              <a className='merriweather btn btn-success lh-lg px-4' onClick={this.handleDelete} > YES</a>
+            </Col>
+          </Modal.Footer>
         </Modal>
       </>
     )

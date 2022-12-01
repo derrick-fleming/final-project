@@ -257,6 +257,22 @@ app.put('/api/reviews', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/reviews/:parkCode', (req, res, next) => {
+  const { accountId } = req.user;
+  const parkCode = req.params.parkCode;
+  const sql = `
+    delete from "reviews"
+    where "accountId" = $1
+      and "parkCode" = $2
+    returning *`;
+  const params = [accountId, parkCode];
+  db.query(sql, params)
+    .then(result => {
+      res.json(result);
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
