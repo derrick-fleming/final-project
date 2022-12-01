@@ -23,6 +23,7 @@ export default class UserReviews extends React.Component {
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.renderReviews = this.renderReviews.bind(this);
+    this.showDelete = this.showDelete.bind(this);
   }
 
   handleClick(event) {
@@ -40,7 +41,14 @@ export default class UserReviews extends React.Component {
 
   handleClose(event) {
     this.setState({
-      show: false
+      show: false,
+      deleteShow: false
+    });
+  }
+
+  showDelete(event) {
+    this.setState({
+      showDelete: true
     });
   }
 
@@ -91,7 +99,7 @@ export default class UserReviews extends React.Component {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item href={`#edit-review?parkCode=${review.parkCode}`}>Edit Review</Dropdown.Item>
-                      <Dropdown.Item>Delete Review </Dropdown.Item>
+                      <Dropdown.Item onClick={this.showDelete}>Delete Review </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </Col>
