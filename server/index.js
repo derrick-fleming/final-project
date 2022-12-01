@@ -269,7 +269,8 @@ app.delete('/api/reviews/:parkCode', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       res.json(result);
-    });
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
