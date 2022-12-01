@@ -266,6 +266,26 @@ export default class UserReviews extends React.Component {
           </Modal.Body>
           <Modal.Footer className='light-box' />
         </Modal>
+        <Modal centered show={this.state.showDelete} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title className='merriweather gray-scale w-100 text-center ms-4'>Remove Review?</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='open-sans fs-5 fw-light pt-4 gray-scale text-center'>
+            Are you sure you want to delete your review?
+            <br />
+            <span className='fst-italic'>Note: All saved data will be lost.</span>
+          </Modal.Body>
+          <Modal.Footer>
+            <Col>
+              <Button variant="secondary" onClick={this.handleClose} className='merriweather lh-lg px-4'>
+                NO
+              </Button>
+            </Col>
+            <Col className='text-end'>
+              <a className='merriweather btn btn-success lh-lg px-4' onClick={this.handleDelete} > YES</a>
+            </Col>
+          </Modal.Footer>
+        </Modal>
       </>
     )
     ;
