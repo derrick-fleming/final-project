@@ -268,12 +268,6 @@ app.delete('/api/reviews/:parkCode', (req, res, next) => {
   const params = [accountId, parkCode];
   db.query(sql, params)
     .then(result => {
-      const deletedPark = result.rows[0];
-      if (!deletedPark) {
-        res.status(404).json({
-          error: `Cannot find park with parkCode ${parkCode}`
-        });
-      }
       res.json(result);
     });
 });
