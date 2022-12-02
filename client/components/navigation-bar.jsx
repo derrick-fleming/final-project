@@ -54,6 +54,9 @@ export default class NavigationBar extends React.Component {
       iconClass = 'fa-xmark';
       buttonClass = 'd-flex';
     }
+    const signOut = user
+      ? <Button variant='link' className='text-start sign-out nav-link merriweather'>Sign Out</Button>
+      : null;
     return (
       <Navbar collapseOnSelect variant="dark" expand={expand} className="p-0 mb-0 search-green">
         <Container fluid='xl' className="flex-nowrap">
@@ -84,10 +87,11 @@ export default class NavigationBar extends React.Component {
                 </NavDropdown>
                 <hr />
                 <Nav.Link className='merriweather fs-6' href="#accounts/user">{accountText}</Nav.Link>
+                {signOut}
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
-          <Col xs={7} sm={8} md={4}>
+          <Col xs={7} sm={8} md={3} lg={5}>
             <div className='d-flex justify-content-end'>
               <Navbar.Toggle className='border-0 px-1' aria-controls={`offcanvasNavbar-expand-${expand}`} />
               <Form className={buttonClass} onSubmit={this.handleSubmit}>
