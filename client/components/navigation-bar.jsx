@@ -55,7 +55,7 @@ export default class NavigationBar extends React.Component {
       buttonClass = 'd-flex';
     }
     const signOut = user
-      ? <Button variant='link' className='text-start sign-out nav-link merriweather' onClick={this.context.handleSignOut}>Sign Out</Button>
+      ? <Button variant='link' className='text-start nav-link merriweather' onClick={this.context.handleSignOut}>Sign Out</Button>
       : null;
     return (
       <Navbar collapseOnSelect variant="dark" expand={expand} className="p-0 mb-0 search-green">
