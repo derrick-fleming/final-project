@@ -21,12 +21,20 @@ export default class App extends React.Component {
       isAuthorizing: true
     };
     this.handleSignIn = this.handleSignIn.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   handleSignIn(result) {
     const { user, token } = result;
     window.localStorage.setItem('park-reviews-jwt', token);
     this.setState({ user });
+  }
+
+  handleSignOut() {
+    window.localStorage.removeItem('park-reviews-jwt');
+    this.setState({
+      user: null
+    });
   }
 
   componentDidMount() {
@@ -86,9 +94,9 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.isAuthorizing) return null;
-    const { handleSignIn } = this;
+    const { handleSignIn, handleSignOut } = this;
     const { user, route } = this.state;
-    const contextValue = { user, route, handleSignIn };
+    const contextValue = { user, route, handleSignIn, handleSignOut };
     return (
       <AppContext.Provider value={contextValue}>
         <>
