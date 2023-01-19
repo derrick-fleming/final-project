@@ -35,6 +35,7 @@ export default class ReviewPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.retrieveReview = this.retrieveReview.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.postReview = this.postReview.bind(this);
   }
 
   componentDidMount() {
@@ -42,7 +43,7 @@ export default class ReviewPage extends React.Component {
     this.retrieveReview();
   }
 
-  retrieveReview() {
+  async retrieveReview() {
     const parkCode = this.props.park;
     const token = window.localStorage.getItem('park-reviews-jwt');
     const header = {
@@ -50,38 +51,36 @@ export default class ReviewPage extends React.Component {
         'X-Access-Token': token
       }
     };
-    fetch(`/api/edit/${parkCode}`, header)
-      .then(response => response.json())
-      .then(result => {
-        if (result.length === 0) {
-          return;
-        }
-        const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips, imageUrl } = result[0];
-        const startDate = datesVisited.split(',')[0].split('[')[1];
-        const endDate = datesVisited.split(',')[1].split(')')[0];
-        const activities = recommendedActivities.split(',');
-        const visitors = recommendedVisitors.split(',');
-        const generalThoughts = result[0].generalThoughts === null ? '' : result[0].generalThoughts;
-        this.setState({
-          rating,
-          activities,
-          visitors,
-          endDate,
-          startDate,
-          tips,
-          generalThoughts,
-          image: imageUrl,
-          editing: true
-        });
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({
-          isLoading: false,
-          networkError: true
-        });
+    try {
+      const response = await fetch(`/api/edit/${parkCode}`, header);
+      const result = await response.json();
+      if (result.length === 0) {
+        return;
+      }
+      const { rating, datesVisited, recommendedActivities, recommendedVisitors, tips, imageUrl } = result[0];
+      const startDate = datesVisited.split(',')[0].split('[')[1];
+      const endDate = datesVisited.split(',')[1].split(')')[0];
+      const activities = recommendedActivities.split(',');
+      const visitors = recommendedVisitors.split(',');
+      const generalThoughts = result[0].generalThoughts === null ? '' : result[0].generalThoughts;
+      this.setState({
+        rating,
+        activities,
+        visitors,
+        endDate,
+        startDate,
+        tips,
+        generalThoughts,
+        image: imageUrl,
+        editing: true
       });
-
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        isLoading: false,
+        networkError: true
+      });
+    }
   }
 
   handleClick() {
@@ -190,59 +189,61 @@ export default class ReviewPage extends React.Component {
     formData.append('parkDetails', JSON.stringify(parkDetails));
     const token = window.localStorage.getItem('park-reviews-jwt');
     const action = this.state.editing ? 'PUT' : 'POST';
-
-    fetch('/api/reviews', {
+    const requestOptions = {
       method: action,
       headers: {
         'X-Access-Token': token
       },
       body: formData
-    })
-      .then(response => response.json())
-      .then(result => {
-        if (this.state.editing) {
-          window.location.hash = `#accounts/reviews?state=${this.state.results.addresses[0].stateCode}`;
-          return;
-        }
-        window.location.hash = `#details?park=${this.props.park}`;
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({
-          networkError: true,
-          isLoading: false
-        });
-      });
+    };
+    this.postReview(requestOptions);
   }
 
-  fetchData() {
+  async postReview(options) {
+    try {
+      const response = await fetch('/api/reviews', options);
+      const result = await response.json();
+      if (this.state.editing) {
+        window.location.hash = `#accounts/reviews?state=${this.state.results.addresses[0].stateCode}`;
+        return result;
+      }
+      window.location.hash = `#details?park=${this.props.park}`;
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        networkError: true,
+        isLoading: false
+      });
+    }
+  }
+
+  async fetchData() {
     const search = this.props.park;
     const parkKey = process.env.PARKS_API;
     const action = 'parkCode=';
     const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
-    fetch(link)
-      .then(response => response.json())
-      .then(result => {
-        const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
-        const state = result.data[0];
-        const title = state.fullName.replaceAll(' ', '%20');
-        const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
-        fetch(apiEndPoint + '?' + params + '&origin=*')
-          .then(response => response.json())
-          .then(image => {
-            if (image.query.pages[0].thumbnail === undefined) {
-              state.wikiImage = '/images/mountains.webp';
-            } else {
-              state.wikiImage = image.query.pages[0].thumbnail.source;
-            }
-            this.setState({
-              results: state,
-              isLoading: false
-            });
-          })
-          .catch(err => console.error(err));
-      })
-      .catch(err => console.error(err));
+    try {
+      const response = await fetch(link);
+      const result = await response.json();
+      const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
+      const state = result.data[0];
+      const title = state.fullName.replaceAll(' ', '%20');
+      const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
+      const url = apiEndPoint + '?' + params + '&origin=*';
+      const imageResponse = await fetch(url);
+      const image = await imageResponse.json();
+      if (image.query.pages[0].thumbnail === undefined) {
+        state.wikiImage = '/images/mountains.webp';
+      } else {
+        state.wikiImage = image.query.pages[0].thumbnail.source;
+      }
+      this.setState({
+        results: state,
+        isLoading: false
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   render() {
