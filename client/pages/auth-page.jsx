@@ -23,7 +23,7 @@ export default class AuthPage extends React.Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     this.setState({
       isLoading: true
     });
@@ -42,44 +42,41 @@ export default class AuthPage extends React.Component {
       },
       body: JSON.stringify(account)
     };
-    fetch(`/api/auth/${action}`, req)
-      .then(res => {
-        if (res.status === 401) {
-          this.setState({
-            duplicate: 'Invalid login',
-            error: 'Invalid login',
-            isLoading: false
-          });
-        }
-        if (res.status === 409) {
-          this.setState({
-            duplicate: 'Username has already been taken',
-            isLoading: false
-          });
-        }
-        return res.json();
-      })
-      .then(result => {
-        if (result.error) {
-          return;
-        }
-        if (action === 'sign-up') {
-          window.location.hash = 'sign-in';
-          this.setState({
-            isLoading: false
-          });
-        } else if (result.user && result.token) {
-          this.props.onSignIn(result);
-          window.location.hash = 'accounts/user';
-        }
-      })
-      .catch(err => {
-        console.error(err);
+    try {
+      const res = await fetch(`/api/auth/${action}`, req);
+      if (res.status === 401) {
         this.setState({
-          isLoading: false,
-          show: true
+          duplicate: 'Invalid login',
+          error: 'Invalid login',
+          isLoading: false
         });
+      }
+      if (res.status === 409) {
+        this.setState({
+          duplicate: 'Username has already been taken',
+          isLoading: false
+        });
+      }
+      const result = await res.json();
+      if (result.error) {
+        return;
+      }
+      if (action === 'sign-up') {
+        window.location.hash = 'sign-in';
+        this.setState({
+          isLoading: false
+        });
+      } else if (result.user && result.token) {
+        this.props.onSignIn(result);
+        window.location.hash = 'accounts/user';
+      }
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        isLoading: false,
+        show: true
       });
+    }
   }
 
   validate(value) {

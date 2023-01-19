@@ -48,7 +48,7 @@ export default class UserReviews extends React.Component {
     });
   }
 
-  handleDelete(event) {
+  async handleDelete(event) {
     const parkCode = this.state.deleteId;
     const token = window.localStorage.getItem('park-reviews-jwt');
     const request = {
@@ -57,9 +57,9 @@ export default class UserReviews extends React.Component {
         'X-Access-Token': token
       }
     };
-    fetch(`/api/reviews/${parkCode}`, request)
-      .then(response => response.json())
-      .then(result => {
+    try {
+      const response = await fetch(`/api/reviews/${parkCode}`, request);
+      if (response.ok) {
         const updatedReviews = this.state.result.filter(park => {
           return park.parkCode !== parkCode;
         });
@@ -67,14 +67,14 @@ export default class UserReviews extends React.Component {
           showDelete: false,
           result: updatedReviews
         });
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({
-          networkError: true,
-          isLoading: false
-        });
+      }
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        networkError: true,
+        isLoading: false
       });
+    }
   }
 
   showDelete(event) {
@@ -227,7 +227,7 @@ export default class UserReviews extends React.Component {
     return reviewCards;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const state = this.props.state;
     const token = window.localStorage.getItem('park-reviews-jwt');
     const header = {
@@ -235,21 +235,20 @@ export default class UserReviews extends React.Component {
         'X-Access-Token': token
       }
     };
-    fetch(`api/reviews/${state}`, header)
-      .then(response => response.json())
-      .then(result => {
-        this.setState({
-          result,
-          isLoading: false
-        });
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({
-          networkError: true,
-          isLoading: false
-        });
+    try {
+      const response = await fetch(`api/reviews/${state}`, header);
+      const result = await response.json();
+      this.setState({
+        result,
+        isLoading: false
       });
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        networkError: true,
+        isLoading: false
+      });
+    }
   }
 
   render() {
