@@ -9,6 +9,8 @@ import * as d3 from 'd3';
 import states from '../lib/states';
 import AppContext from '../lib/app-context';
 
+let deepCopyDefaultStates = JSON.parse(JSON.stringify(defaultStates));
+
 export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
@@ -38,8 +40,8 @@ export default class UserAccount extends React.Component {
       if (result[0].length !== 0) {
         result[0].forEach(element => {
           const stateCode = element.stateCode;
-          if (defaultStates[stateCode]) {
-            defaultStates[stateCode].visits = element.visits;
+          if (deepCopyDefaultStates[stateCode]) {
+            deepCopyDefaultStates[stateCode].visits = element.visits;
           }
         });
         this.renderInfographic();
@@ -65,27 +67,32 @@ export default class UserAccount extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    deepCopyDefaultStates = JSON.parse(JSON.stringify(defaultStates));
+  }
+
   async renderInfographic() {
-    const dataObject = {};
-    for (const key in defaultStates) {
-      const stateName = defaultStates[key].name;
-      const visits = defaultStates[key].visits;
-      dataObject[stateName] = Number(visits);
-    }
-    const color = d3.scaleQuantize()
-      .domain([0, 9])
-      .range(d3.schemeGreens[9]);
-
-    const path = d3.geoPath();
-    const svg = d3.select(this.infographicMap.current)
-      .append('svg')
-      .attr('viewBox', '0 0 975 610');
-
-    const toolTip = d3.select(this.infographicMap.current)
-      .append('div')
-      .style('position', 'absolute')
-      .attr('class', 'tooltip');
     try {
+      const dataObject = {};
+      for (const key in deepCopyDefaultStates) {
+        const stateName = deepCopyDefaultStates[key].name;
+        const visits = deepCopyDefaultStates[key].visits;
+        dataObject[stateName] = Number(visits);
+      }
+      const color = d3.scaleQuantize()
+        .domain([0, 9])
+        .range(d3.schemeGreens[9]);
+
+      const path = d3.geoPath();
+      const svg = d3.select(this.infographicMap.current)
+        .append('svg')
+        .attr('viewBox', '0 0 975 610');
+
+      const toolTip = d3.select(this.infographicMap.current)
+        .append('div')
+        .style('position', 'absolute')
+        .attr('class', 'tooltip');
+
       const us = await d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json');
       svg.append('g')
         .selectAll('path')
@@ -152,10 +159,11 @@ export default class UserAccount extends React.Component {
             .style('top', (event.layerY) + 'px')
             .style('transform', offset);
         });
+      return svg.node();
+
     } catch (err) {
       console.error(err);
     }
-    return svg.node();
   }
 
   render() {
@@ -179,7 +187,7 @@ export default class UserAccount extends React.Component {
     let mostVisited = 'N/A';
     if (this.state.results && this.state.results.length > 0) {
       const stateCode = this.state.results[0].stateCode;
-      mostVisited = Object.values(defaultStates[stateCode].name);
+      mostVisited = Object.values(deepCopyDefaultStates[stateCode].name);
     }
 
     return (

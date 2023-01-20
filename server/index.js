@@ -159,11 +159,11 @@ app.post('/api/reviews', uploadsMiddleware, async (req, res, next) => {
   const parksParams = [parkCode, parkDetails, stateCode];
   const reviewParams = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
   try {
-    const firstResult = await db.query(sqlSelect, paramsSelect);
-    const parkCheck = firstResult.rows[0];
-    if (!parkCheck) {
-      const parksCache = await (parksCacheSql, parksParams);
-      if (parksCache.ok) {
+    const result = await db.query(sqlSelect, paramsSelect);
+    const park = await result.rows[0];
+    if (!park) {
+      const parksCache = await db.query(parksCacheSql, parksParams);
+      if (parksCache.length === 3) {
         const insertReview = await db.query(reviewSql, reviewParams);
         res.status(201).json(insertReview);
       }
