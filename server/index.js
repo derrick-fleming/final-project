@@ -22,56 +22,54 @@ const jsonMiddleWare = express.json();
 app.use(staticMiddleware);
 app.use(jsonMiddleWare);
 
-app.get('/api/parksCache/:parkCode', (req, res, next) => {
-  const parkCode = req.params.parkCode;
-  const sql = `
-    select avg("rating") as "rating"
-    from "parksCache"
-    join "reviews" using ("parkCode")
-    where "parkCode" = $1`;
-  const params = [parkCode];
-  db.query(sql, params)
-    .then(result => {
-      const [rating] = result.rows;
-      if (!rating) {
-        res.status(404).json({
-          error: `Cannot find park with "parkCode" ${parkCode}`
-        });
-      }
-      res.status(200).json(rating);
-    })
-    .catch(err => next(err));
+app.get('/api/parksCache/:parkCode', async (req, res, next) => {
+  try {
+    const parkCode = req.params.parkCode;
+    const sql = `
+      select avg("rating") as "rating"
+      from "parksCache"
+      join "reviews" using ("parkCode")
+      where "parkCode" = $1`;
+    const params = [parkCode];
+    const result = await db.query(sql, params);
+    const [rating] = result.rows;
+    if (!rating) {
+      res.status(404).json({
+        error: `Cannot find park with "parkCode" ${parkCode}`
+      });
+    }
+    res.status(200).json(rating);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.post('/api/auth/sign-up', (req, res, next) => {
+app.post('/api/auth/sign-up', async (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
     throw new ClientError(400, 'username and password are required fields');
   }
-
-  argon2
-    .hash(password)
-    .then(hashedPassword => {
-      const sql = `
+  try {
+    const hashedPassword = await argon2.hash(password);
+    const sql = `
       insert into "accounts" ("username", "hashedPassword")
       values ($1, $2)
       on conflict ("username")
       do nothing
       returning "accountId", "username", "joinedAt"`;
-      const params = [username, hashedPassword];
-      return db.query(sql, params);
-    })
-    .then(result => {
-      if (!result.rows[0]) {
-        throw new ClientError(409, 'username is already in use');
-      }
-      const [user] = result.rows;
-      res.status(201).json(user);
-    })
-    .catch(err => next(err));
+    const params = [username, hashedPassword];
+    const result = await db.query(sql, params);
+    if (!result.rows[0]) {
+      throw new ClientError(409, 'username is already in use');
+    }
+    const [user] = result.rows;
+    res.status(201).json(user);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.post('/api/auth/sign-in', (req, res, next) => {
+app.post('/api/auth/sign-in', async (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
     throw new ClientError(401, 'invalid login');
@@ -82,30 +80,28 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     from "accounts"
     where "username" = $1`;
   const params = [username];
-  db.query(sql, params)
-    .then(result => {
-      const [user] = result.rows;
-      if (!user) {
-        throw new ClientError(401, 'invalid login');
-      }
-      const { accountId, hashedPassword } = user;
-      return argon2
-        .verify(hashedPassword, password)
-        .then(isMatching => {
-          if (!isMatching) {
-            throw new ClientError(401, 'invalid login');
-          }
-          const payload = { accountId, username };
-          const token = jwt.sign(payload, process.env.TOKEN_SECRET);
-          res.json({ token, user: payload });
-        });
-    })
-    .catch(err => next(err));
+  try {
+    const result = await db.query(sql, params);
+    const [user] = result.rows;
+    if (!user) {
+      throw new ClientError(401, 'invalid login');
+    }
+    const { accountId, hashedPassword } = user;
+    const isMatching = await argon2.verify(hashedPassword, password);
+    if (!isMatching) {
+      throw new ClientError(401, 'invalid login');
+    }
+    const payload = { accountId, username };
+    const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+    res.json({ token, user: payload });
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.use(authorizationMiddleware);
 
-app.get('/api/accounts/', (req, res, next) => {
+app.get('/api/accounts/', async (req, res, next) => {
   const { accountId } = req.user;
 
   const sql = `
@@ -118,26 +114,22 @@ app.get('/api/accounts/', (req, res, next) => {
     order by "visits" desc`;
 
   const params = [accountId];
-  db.query(sql, params)
-    .then(result => {
-      const visits = result.rows;
-
-      const total = `
+  try {
+    const result = await db.query(sql, params);
+    const visits = result.rows;
+    const total = `
         select count(*) as "reviews"
         from "reviews"
         where "accountId" = $1`;
-
-      db.query(total, params)
-        .then(response => {
-          const amount = response.rows;
-          res.status(200).json([visits, amount]);
-        })
-        .catch(err => next(err));
-    })
-    .catch(err => next(err));
+    const totalResult = await db.query(total, params);
+    const amount = totalResult.rows;
+    res.status(200).json([visits, amount]);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
+app.post('/api/reviews', uploadsMiddleware, async (req, res, next) => {
   const { parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts, parkDetails, stateCode } = req.body;
   const { accountId } = req.user;
   if (!rating | !datesVisited | !recommendedActivities | !recommendedVisitors | !tips) {
@@ -166,32 +158,25 @@ app.post('/api/reviews', uploadsMiddleware, (req, res, next) => {
      `;
   const parksParams = [parkCode, parkDetails, stateCode];
   const reviewParams = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
-
-  db.query(sqlSelect, paramsSelect)
-    .then(result => {
-      const park = result.rows[0];
-      if (!park) {
-        db.query(parksCacheSql, parksParams)
-          .then(result => {
-            db.query(reviewSql, reviewParams)
-              .then(result => {
-                res.status(201).json(result);
-              })
-              .catch(err => next(err));
-          })
-          .catch(err => next(err));
-      } else {
-        db.query(reviewSql, reviewParams)
-          .then(result => {
-            res.status(201).json(result);
-          })
-          .catch(err => next(err));
+  try {
+    const firstResult = await db.query(sqlSelect, paramsSelect);
+    const parkCheck = firstResult.rows[0];
+    if (!parkCheck) {
+      const parksCache = await (parksCacheSql, parksParams);
+      if (parksCache.ok) {
+        const insertReview = await db.query(reviewSql, reviewParams);
+        res.status(201).json(insertReview);
       }
-    })
-    .catch(err => next(err));
+    } else {
+      const postReview = await db.query(reviewSql, reviewParams);
+      res.status(201).json(postReview);
+    }
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.get('/api/reviews/:stateCode', (req, res, next) => {
+app.get('/api/reviews/:stateCode', async (req, res, next) => {
   const { accountId } = req.user;
   const stateCode = req.params.stateCode;
   const sql = `
@@ -200,15 +185,16 @@ app.get('/api/reviews/:stateCode', (req, res, next) => {
     join "parksCache" using ("parkCode")
     where "stateCode" = $1 and "accountId" = $2`;
   const params = [stateCode, accountId];
-  db.query(sql, params)
-    .then(result => {
-      const reviews = result.rows;
-      res.status(200).json(reviews);
-    })
-    .catch(err => next(err));
+  try {
+    const result = await db.query(sql, params);
+    const reviews = result.rows;
+    res.status(200).json(reviews);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.get('/api/edit/:parkCode', (req, res, next) => {
+app.get('/api/edit/:parkCode', async (req, res, next) => {
   const { accountId } = req.user;
   const parkCode = req.params.parkCode;
   const sql = `
@@ -216,15 +202,16 @@ app.get('/api/edit/:parkCode', (req, res, next) => {
     from "reviews"
     where "accountId" = $1 and "parkCode" = $2`;
   const params = [accountId, parkCode];
-  db.query(sql, params)
-    .then(result => {
-      const park = result.rows;
-      res.status(200).json(park);
-    })
-    .catch(err => next(err));
+  try {
+    const result = await db.query(sql, params);
+    const park = result.rows;
+    res.status(200).json(park);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.put('/api/reviews', uploadsMiddleware, (req, res, next) => {
+app.put('/api/reviews', uploadsMiddleware, async (req, res, next) => {
   const { accountId } = req.user;
   const { parkCode, rating, datesVisited, recommendedActivities, recommendedVisitors, tips, generalThoughts } = req.body;
 
@@ -249,15 +236,16 @@ app.put('/api/reviews', uploadsMiddleware, (req, res, next) => {
   where "parkCode" = $2 and "accountId" = $1
   returning *`;
   const params = [accountId, parkCode, rating, dates, recommendedActivities, recommendedVisitors, tips, generalThoughts, url];
-  db.query(sql, params)
-    .then(result => {
-      const update = result.rows[0];
-      res.status(200).json(update);
-    })
-    .catch(err => next(err));
+  try {
+    const result = await db.query(sql, params);
+    const update = result.rows[0];
+    res.status(200).json(update);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.delete('/api/reviews/:parkCode', (req, res, next) => {
+app.delete('/api/reviews/:parkCode', async (req, res, next) => {
   const { accountId } = req.user;
   const parkCode = req.params.parkCode;
   const sql = `
@@ -266,11 +254,12 @@ app.delete('/api/reviews/:parkCode', (req, res, next) => {
       and "parkCode" = $2
     returning *`;
   const params = [accountId, parkCode];
-  db.query(sql, params)
-    .then(result => {
-      res.json(result);
-    })
-    .catch(err => next(err));
+  try {
+    const result = await db.query(sql, params);
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.use(errorMiddleware);
