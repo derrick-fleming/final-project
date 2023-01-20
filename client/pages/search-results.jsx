@@ -56,7 +56,7 @@ export default class SearchResult extends React.Component {
     this.fetchData();
   }
 
-  fetchData() {
+  async fetchData() {
 
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
@@ -69,42 +69,28 @@ export default class SearchResult extends React.Component {
       start = ((Number(this.state.active) * 50) - 50);
     }
     const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&start=${start}&api_key=${parkKey}`;
-    fetch(link)
-      .then(response => response.json())
-      .then(states => {
-        const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
-        const imageFetches = states.data.map(state => {
-          const title = state.fullName.replaceAll(' ', '%20');
-          const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
-          return (
-            fetch(apiEndPoint + '?' + params + '&origin=*')
-              .then(response => response.json())
-              .then(image => {
-                if (image.query.pages[0].thumbnail === undefined) {
-                  state.wikiImage = '/images/mountains.webp';
-                } else {
-                  state.wikiImage = image.query.pages[0].thumbnail.source;
-                }
-              })
-              .catch(err => console.error(err))
-          );
-        });
-        Promise
-          .all(imageFetches)
-          .then(results => {
-            this.setState({
-              results: states,
-              isLoading: false
-            });
-          });
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({
-          networkError: true,
-          isLoading: false
-        });
+    try {
+      const response = await fetch(link);
+      const states = await response.json();
+      const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
+      const imageFetches = await Promise.all(states.data.map(state => {
+        const title = state.fullName.replaceAll(' ', '%20');
+        const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
+        const url = apiEndPoint + '?' + params + '&origin=*';
+        return (fetchWikiImage(url, state));
+      }));
+      this.setState({
+        results: states,
+        isLoading: false,
+        imageFetches
       });
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        networkError: true,
+        isLoading: false
+      });
+    }
   }
 
   render() {
@@ -217,5 +203,19 @@ export default class SearchResult extends React.Component {
         {pagination}
       </Container>
     );
+  }
+}
+
+async function fetchWikiImage(url, state) {
+  try {
+    const response = await fetch(url);
+    const image = await response.json();
+    if (image.query.pages[0].thumbnail === undefined) {
+      state.wikiImage = '/images/mountains.webp';
+    } else {
+      state.wikiImage = image.query.pages[0].thumbnail.source;
+    }
+  } catch (err) {
+    console.error(err);
   }
 }

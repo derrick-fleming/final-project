@@ -28,16 +28,17 @@ export default class ParkDetails extends React.Component {
     window.history.back();
   }
 
-  showRating() {
+  async showRating() {
     const park = this.props.search;
-    fetch(`/api/parksCache/${park}`)
-      .then(response => response.json())
-      .then(result => {
-        this.setState({
-          parkRating: result
-        });
-      })
-      .catch(err => console.error(err));
+    try {
+      const response = await fetch(`/api/parksCache/${park}`);
+      const result = await response.json();
+      this.setState({
+        parkRating: result
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   handleShow(event) {
@@ -61,40 +62,36 @@ export default class ParkDetails extends React.Component {
     this.showRating();
   }
 
-  fetchData() {
+  async fetchData() {
     const search = this.props.search;
     const parkKey = process.env.PARKS_API;
     const action = 'parkCode=';
     const link = `https://developer.nps.gov/api/v1/parks?${action}${search}&api_key=${parkKey}`;
-    fetch(link)
-      .then(response => response.json())
-      .then(result => {
-        const apiEndPoint = 'https://en.wikipedia.org/w/api.php';
-        const state = result.data[0];
-        const title = state.fullName.replaceAll(' ', '%20');
-        const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
-        fetch(apiEndPoint + '?' + params + '&origin=*')
-          .then(response => response.json())
-          .then(image => {
-            if (image.query.pages[0].thumbnail === undefined) {
-              state.wikiImage = '/images/mountains.webp';
-            } else {
-              state.wikiImage = image.query.pages[0].thumbnail.source;
-            }
-            this.setState({
-              results: state,
-              isLoading: false
-            });
-          })
-          .catch(err => console.error(err));
-      })
-      .catch(err => {
-        console.error(err);
-        this.setState({
-          networkError: true,
-          isLoading: false
-        });
+    try {
+      const response = await fetch(link);
+      const result = await response.json();
+      const apiEndPoint = 'https://en.wikipedia.org/w/api.php?';
+      const state = result.data[0];
+      const title = state.fullName.replaceAll(' ', '%20');
+      const params = `action=query&format=json&prop=pageimages&titles=${title}&redirects=1&formatversion=2&piprop=thumbnail&pithumbsize=500&pilimit=3`;
+      const imageResponse = await fetch(apiEndPoint + params + '&origin=*');
+      const image = await imageResponse.json();
+      if (image.query.pages[0].thumbnail === undefined) {
+        state.wikiImage = '/images/mountains.webp';
+      } else {
+        state.wikiImage = image.query.pages[0].thumbnail.source;
+      }
+      this.setState({
+        results: state,
+        isLoading: false
       });
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        networkError: true,
+        isLoading: false
+      });
+    }
   }
 
   render() {

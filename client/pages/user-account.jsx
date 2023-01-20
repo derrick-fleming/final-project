@@ -9,6 +9,8 @@ import * as d3 from 'd3';
 import states from '../lib/states';
 import AppContext from '../lib/app-context';
 
+let deepCopyDefaultStates = JSON.parse(JSON.stringify(defaultStates));
+
 export default class UserAccount extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +23,7 @@ export default class UserAccount extends React.Component {
     this.infographicMap = React.createRef();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (!this.context.user) {
       return;
     }
@@ -32,132 +34,136 @@ export default class UserAccount extends React.Component {
         'X-Access-Token': token
       }
     };
-    fetch('/api/accounts/', request)
-      .then(response => response.json())
-      .then(result => {
-        if (result[0].length !== 0) {
-          result[0].forEach(element => {
-            const stateCode = element.stateCode;
-            if (defaultStates[stateCode]) {
-              defaultStates[stateCode].visits = element.visits;
-            }
-          });
-          this.renderInfographic();
-          this.setState({
-            results: result[0],
-            total: result[1][0].reviews,
-            isLoading: false
-          });
-        } else {
-          this.renderInfographic();
-          this.setState({
-            results: null,
-            total: 'N/A',
-            isLoading: false
-          });
-        }
-      })
-      .catch(err => {
-        console.error(err);
+    try {
+      const response = await fetch('/api/accounts/', request);
+      const result = await response.json();
+      if (result[0].length !== 0) {
+        result[0].forEach(element => {
+          const stateCode = element.stateCode;
+          if (deepCopyDefaultStates[stateCode]) {
+            deepCopyDefaultStates[stateCode].visits = element.visits;
+          }
+        });
+        this.renderInfographic();
         this.setState({
-          networkError: true,
+          results: result[0],
+          total: result[1][0].reviews,
           isLoading: false
         });
+      } else {
+        this.renderInfographic();
+        this.setState({
+          results: null,
+          total: 'N/A',
+          isLoading: false
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      this.setState({
+        networkError: true,
+        isLoading: false
       });
+    }
   }
 
-  renderInfographic() {
-    const dataObject = {};
-    for (const key in defaultStates) {
-      const stateName = defaultStates[key].name;
-      const visits = defaultStates[key].visits;
-      dataObject[stateName] = Number(visits);
-    }
-    const color = d3.scaleQuantize()
-      .domain([0, 9])
-      .range(d3.schemeGreens[9]);
+  componentWillUnmount() {
+    deepCopyDefaultStates = JSON.parse(JSON.stringify(defaultStates));
+  }
 
-    const path = d3.geoPath();
-    const svg = d3.select(this.infographicMap.current)
-      .append('svg')
-      .attr('viewBox', '0 0 975 610');
+  async renderInfographic() {
+    try {
+      const dataObject = {};
+      for (const key in deepCopyDefaultStates) {
+        const stateName = deepCopyDefaultStates[key].name;
+        const visits = deepCopyDefaultStates[key].visits;
+        dataObject[stateName] = Number(visits);
+      }
+      const color = d3.scaleQuantize()
+        .domain([0, 9])
+        .range(d3.schemeGreens[9]);
 
-    const toolTip = d3.select(this.infographicMap.current)
-      .append('div')
-      .style('position', 'absolute')
-      .attr('class', 'tooltip');
+      const path = d3.geoPath();
+      const svg = d3.select(this.infographicMap.current)
+        .append('svg')
+        .attr('viewBox', '0 0 975 610');
 
-    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json')
-      .then(us => {
-        svg.append('g')
-          .selectAll('path')
-          .data(topojson.feature(us, us.objects.states).features)
-          .enter().append('path')
-          .attr('d', path)
-          .attr('class', 'states')
-          .style('fill', d => color(dataObject[d.properties.name]))
-          .style('stroke', '#636363');
+      const toolTip = d3.select(this.infographicMap.current)
+        .append('div')
+        .style('position', 'absolute')
+        .attr('class', 'tooltip');
 
-        svg.selectAll('path')
-          .on('click', (event, d) => {
-            const name = d.properties.name;
-            if (dataObject[name] === 0) {
-              return;
-            }
-            if (this.state.name === name) {
-              const state = states.find(state => state.name === name);
-              const stateCode = state.code;
-              window.location.hash = `#accounts/reviews?state=${stateCode}`;
-            } else {
-              this.setState({
-                name
-              });
-            }
-          })
-          .on('mouseover', function (event, d) {
-            d3.selectAll('.states')
-              .transition()
-              .duration(200)
-              .style('stroke-width', '1px')
-              .style('opacity', 0.8)
-              .style('box-shadow', '2px 2px 0.5rem black');
+      const us = await d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json');
+      svg.append('g')
+        .selectAll('path')
+        .data(topojson.feature(us, us.objects.states).features)
+        .enter().append('path')
+        .attr('d', path)
+        .attr('class', 'states')
+        .style('fill', d => color(dataObject[d.properties.name]))
+        .style('stroke', '#636363');
 
-            d3.select(this)
-              .transition()
-              .duration(200)
-              .style('opacity', 1)
-              .style('stroke-width', '2px')
-              .style('cursor', 'pointer');
+      svg.selectAll('path')
+        .on('click', (event, d) => {
+          const name = d.properties.name;
+          if (dataObject[name] === 0) {
+            return;
+          }
+          if (this.state.name === name) {
+            const state = states.find(state => state.name === name);
+            const stateCode = state.code;
+            window.location.hash = `#accounts/reviews?state=${stateCode}`;
+          } else {
+            this.setState({
+              name
+            });
+          }
+        })
+        .on('mouseover', function (event, d) {
+          d3.selectAll('.states')
+            .transition()
+            .duration(200)
+            .style('stroke-width', '1px')
+            .style('opacity', 0.8)
+            .style('box-shadow', '2px 2px 0.5rem black');
 
-            d3.select('.tooltip')
-              .style('opacity', 1);
+          d3.select(this)
+            .transition()
+            .duration(200)
+            .style('opacity', 1)
+            .style('stroke-width', '2px')
+            .style('cursor', 'pointer');
 
-          })
-          .on('mouseout', function (event) {
-            d3.selectAll('.states')
-              .transition()
-              .duration(200)
-              .style('opacity', 1)
-              .style('stroke-width', '1px');
+          d3.select('.tooltip')
+            .style('opacity', 1);
 
-            toolTip.style('opacity', 0);
-          })
-          .on('mousemove', function (event, d) {
-            const offsetX = event.layerX > parent.innerWidth * 0.5 ? '-105%' : '5%';
-            const offsetY = event.layerY > parent.innerWidth * 0.5 ? '-105%' : '5%';
-            const offset = `translate(${offsetX}, ${offsetY})`;
+        })
+        .on('mouseout', function (event) {
+          d3.selectAll('.states')
+            .transition()
+            .duration(200)
+            .style('opacity', 1)
+            .style('stroke-width', '1px');
 
-            toolTip
-              .html(`<h6 class='open-sans mb-0 mt-2'>${escape(d.properties.name)}</h6>
+          toolTip.style('opacity', 0);
+        })
+        .on('mousemove', function (event, d) {
+          const offsetX = event.layerX > parent.innerWidth * 0.5 ? '-105%' : '5%';
+          const offsetY = event.layerY > parent.innerWidth * 0.5 ? '-105%' : '5%';
+          const offset = `translate(${offsetX}, ${offsetY})`;
+
+          toolTip
+            .html(`<h6 class='open-sans mb-0 mt-2'>${escape(d.properties.name)}</h6>
               <p class='open-sans fw-light'> Number of visits: <span class='fw-bold'>${escape(dataObject[d.properties.name])}</span></p>`)
-              .style('left', (event.layerX) + 'px')
-              .style('top', (event.layerY) + 'px')
-              .style('transform', offset);
-          });
-      });
+            .style('left', (event.layerX) + 'px')
+            .style('top', (event.layerY) + 'px')
+            .style('transform', offset);
+        });
+      return svg.node();
 
-    return svg.node();
-
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   render() {
@@ -181,7 +187,7 @@ export default class UserAccount extends React.Component {
     let mostVisited = 'N/A';
     if (this.state.results && this.state.results.length > 0) {
       const stateCode = this.state.results[0].stateCode;
-      mostVisited = Object.values(defaultStates[stateCode].name);
+      mostVisited = Object.values(deepCopyDefaultStates[stateCode].name);
     }
 
     return (
